@@ -1,20 +1,65 @@
-type Blog @model {
+type User @model
+{
   id: ID!
   name: String!
-  posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
+  alarmTime: String!
+  email: String!
+  keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
 }
 
-type Post @model @key(name: "byBlog", fields: ["blogID"]) {
+type UserKeyword @model
+@key(
+  name: "byUserId",
+  fields: [ "userId", "keywordId"]
+)
+@key(
+  name: "byKeywordId",
+  fields:[ "keywordId", "userId"]
+){
   id: ID!
-  title: String!
-  blogID: ID!
-  blog: Blog @connection(fields: ["blogID"])
-  comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
+  userId: ID!
+  keywordId: ID!
+  user: User! @connection(fields:["userId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+type Notification @model
+{
   id: ID!
-  postID: ID!
-  post: Post @connection(fields: ["postID"])
+  name: String!
   content: String!
+  link: String!
+  organization: Organization! @connection
+  keywords: [NotiKeyword] @connection
 }
+
+type NotiKeyword @model
+@key(
+  name: "byNotiId",
+  fields: [ "notiId", "keywordId"]
+)
+@key(
+  name: "byKeywordId",
+  fields: [ "keywordId", "notiId"]
+){
+  id: ID!
+  notiId: ID!
+  keywordId: ID!
+  noti: Notification! @connection(fields:["notiId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
+}
+
+type Keyword @model
+{
+  id: ID!
+  name: String!
+  users: [UserKeyword] @connection(keyName: "byKeywordId", fields:["id"])
+  notis: [NotiKeyword] @connection(keyName: "byKeywordId", fields:["id"])
+}
+
+type Organization @model
+{
+  id: ID!
+  name: String!
+}
+

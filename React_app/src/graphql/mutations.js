@@ -1,19 +1,21 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const createBlog = /* GraphQL */ `
-  mutation CreateBlog(
-    $input: CreateBlogInput!
-    $condition: ModelBlogConditionInput
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    createBlog(input: $input, condition: $condition) {
+    createUser(input: $input, condition: $condition) {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -24,19 +26,21 @@ export const createBlog = /* GraphQL */ `
     }
   }
 `;
-export const updateBlog = /* GraphQL */ `
-  mutation UpdateBlog(
-    $input: UpdateBlogInput!
-    $condition: ModelBlogConditionInput
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    updateBlog(input: $input, condition: $condition) {
+    updateUser(input: $input, condition: $condition) {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -47,19 +51,21 @@ export const updateBlog = /* GraphQL */ `
     }
   }
 `;
-export const deleteBlog = /* GraphQL */ `
-  mutation DeleteBlog(
-    $input: DeleteBlogInput!
-    $condition: ModelBlogConditionInput
+export const deleteUser = /* GraphQL */ `
+  mutation DeleteUser(
+    $input: DeleteUserInput!
+    $condition: ModelUserConditionInput
   ) {
-    deleteBlog(input: $input, condition: $condition) {
+    deleteUser(input: $input, condition: $condition) {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -70,95 +76,138 @@ export const deleteBlog = /* GraphQL */ `
     }
   }
 `;
-export const createPost = /* GraphQL */ `
-  mutation CreatePost(
-    $input: CreatePostInput!
-    $condition: ModelPostConditionInput
+export const createUserKeyword = /* GraphQL */ `
+  mutation CreateUserKeyword(
+    $input: CreateUserKeywordInput!
+    $condition: ModelUserKeywordConditionInput
   ) {
-    createPost(input: $input, condition: $condition) {
+    createUserKeyword(input: $input, condition: $condition) {
       id
-      title
-      blogID
-      blog {
+      userId
+      keywordId
+      user {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updatePost = /* GraphQL */ `
-  mutation UpdatePost(
-    $input: UpdatePostInput!
-    $condition: ModelPostConditionInput
-  ) {
-    updatePost(input: $input, condition: $condition) {
-      id
-      title
-      blogID
-      blog {
+      keyword {
         id
         name
-        posts {
+        users {
+          nextToken
+        }
+        notis {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deletePost = /* GraphQL */ `
-  mutation DeletePost(
-    $input: DeletePostInput!
-    $condition: ModelPostConditionInput
+export const updateUserKeyword = /* GraphQL */ `
+  mutation UpdateUserKeyword(
+    $input: UpdateUserKeywordInput!
+    $condition: ModelUserKeywordConditionInput
   ) {
-    deletePost(input: $input, condition: $condition) {
+    updateUserKeyword(input: $input, condition: $condition) {
       id
-      title
-      blogID
-      blog {
+      userId
+      keywordId
+      user {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserKeyword = /* GraphQL */ `
+  mutation DeleteUserKeyword(
+    $input: DeleteUserKeywordInput!
+    $condition: ModelUserKeywordConditionInput
+  ) {
+    deleteUserKeyword(input: $input, condition: $condition) {
+      id
+      userId
+      keywordId
+      user {
+        id
+        name
+        alarmTime
+        email
+        keyword {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createNotification = /* GraphQL */ `
+  mutation CreateNotification(
+    $input: CreateNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    createNotification(input: $input, condition: $condition) {
+      id
+      name
+      content
+      link
+      organization {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
         items {
           id
-          postID
-          content
+          notiId
+          keywordId
           createdAt
           updatedAt
         }
@@ -169,91 +218,330 @@ export const deletePost = /* GraphQL */ `
     }
   }
 `;
-export const createComment = /* GraphQL */ `
-  mutation CreateComment(
-    $input: CreateCommentInput!
-    $condition: ModelCommentConditionInput
+export const updateNotification = /* GraphQL */ `
+  mutation UpdateNotification(
+    $input: UpdateNotificationInput!
+    $condition: ModelNotificationConditionInput
   ) {
-    createComment(input: $input, condition: $condition) {
+    updateNotification(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      name
+      content
+      link
+      organization {
         id
-        title
-        blogID
-        blog {
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteNotification = /* GraphQL */ `
+  mutation DeleteNotification(
+    $input: DeleteNotificationInput!
+    $condition: ModelNotificationConditionInput
+  ) {
+    deleteNotification(input: $input, condition: $condition) {
+      id
+      name
+      content
+      link
+      organization {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createNotiKeyword = /* GraphQL */ `
+  mutation CreateNotiKeyword(
+    $input: CreateNotiKeywordInput!
+    $condition: ModelNotiKeywordConditionInput
+  ) {
+    createNotiKeyword(input: $input, condition: $condition) {
+      id
+      notiId
+      keywordId
+      noti {
+        id
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const updateComment = /* GraphQL */ `
-  mutation UpdateComment(
-    $input: UpdateCommentInput!
-    $condition: ModelCommentConditionInput
+export const updateNotiKeyword = /* GraphQL */ `
+  mutation UpdateNotiKeyword(
+    $input: UpdateNotiKeywordInput!
+    $condition: ModelNotiKeywordConditionInput
   ) {
-    updateComment(input: $input, condition: $condition) {
+    updateNotiKeyword(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      notiId
+      keywordId
+      noti {
         id
-        title
-        blogID
-        blog {
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteComment = /* GraphQL */ `
-  mutation DeleteComment(
-    $input: DeleteCommentInput!
-    $condition: ModelCommentConditionInput
+export const deleteNotiKeyword = /* GraphQL */ `
+  mutation DeleteNotiKeyword(
+    $input: DeleteNotiKeywordInput!
+    $condition: ModelNotiKeywordConditionInput
   ) {
-    deleteComment(input: $input, condition: $condition) {
+    deleteNotiKeyword(input: $input, condition: $condition) {
       id
-      postID
-      post {
+      notiId
+      keywordId
+      noti {
         id
-        title
-        blogID
-        blog {
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createKeyword = /* GraphQL */ `
+  mutation CreateKeyword(
+    $input: CreateKeywordInput!
+    $condition: ModelKeywordConditionInput
+  ) {
+    createKeyword(input: $input, condition: $condition) {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateKeyword = /* GraphQL */ `
+  mutation UpdateKeyword(
+    $input: UpdateKeywordInput!
+    $condition: ModelKeywordConditionInput
+  ) {
+    updateKeyword(input: $input, condition: $condition) {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteKeyword = /* GraphQL */ `
+  mutation DeleteKeyword(
+    $input: DeleteKeywordInput!
+    $condition: ModelKeywordConditionInput
+  ) {
+    deleteKeyword(input: $input, condition: $condition) {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createOrganization = /* GraphQL */ `
+  mutation CreateOrganization(
+    $input: CreateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    createOrganization(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateOrganization = /* GraphQL */ `
+  mutation UpdateOrganization(
+    $input: UpdateOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    updateOrganization(input: $input, condition: $condition) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteOrganization = /* GraphQL */ `
+  mutation DeleteOrganization(
+    $input: DeleteOrganizationInput!
+    $condition: ModelOrganizationConditionInput
+  ) {
+    deleteOrganization(input: $input, condition: $condition) {
+      id
+      name
       createdAt
       updatedAt
     }

@@ -1,16 +1,18 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const onCreateBlog = /* GraphQL */ `
-  subscription OnCreateBlog {
-    onCreateBlog {
+export const onCreateUser = /* GraphQL */ `
+  subscription OnCreateUser {
+    onCreateUser {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -21,16 +23,18 @@ export const onCreateBlog = /* GraphQL */ `
     }
   }
 `;
-export const onUpdateBlog = /* GraphQL */ `
-  subscription OnUpdateBlog {
-    onUpdateBlog {
+export const onUpdateUser = /* GraphQL */ `
+  subscription OnUpdateUser {
+    onUpdateUser {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -41,16 +45,18 @@ export const onUpdateBlog = /* GraphQL */ `
     }
   }
 `;
-export const onDeleteBlog = /* GraphQL */ `
-  subscription OnDeleteBlog {
-    onDeleteBlog {
+export const onDeleteUser = /* GraphQL */ `
+  subscription OnDeleteUser {
+    onDeleteUser {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -61,86 +67,126 @@ export const onDeleteBlog = /* GraphQL */ `
     }
   }
 `;
-export const onCreatePost = /* GraphQL */ `
-  subscription OnCreatePost {
-    onCreatePost {
+export const onCreateUserKeyword = /* GraphQL */ `
+  subscription OnCreateUserKeyword {
+    onCreateUserKeyword {
       id
-      title
-      blogID
-      blog {
+      userId
+      keywordId
+      user {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdatePost = /* GraphQL */ `
-  subscription OnUpdatePost {
-    onUpdatePost {
-      id
-      title
-      blogID
-      blog {
+      keyword {
         id
         name
-        posts {
+        users {
+          nextToken
+        }
+        notis {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeletePost = /* GraphQL */ `
-  subscription OnDeletePost {
-    onDeletePost {
+export const onUpdateUserKeyword = /* GraphQL */ `
+  subscription OnUpdateUserKeyword {
+    onUpdateUserKeyword {
       id
-      title
-      blogID
-      blog {
+      userId
+      keywordId
+      user {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserKeyword = /* GraphQL */ `
+  subscription OnDeleteUserKeyword {
+    onDeleteUserKeyword {
+      id
+      userId
+      keywordId
+      user {
+        id
+        name
+        alarmTime
+        email
+        keyword {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateNotification = /* GraphQL */ `
+  subscription OnCreateNotification {
+    onCreateNotification {
+      id
+      name
+      content
+      link
+      organization {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
         items {
           id
-          postID
-          content
+          notiId
+          keywordId
           createdAt
           updatedAt
         }
@@ -151,82 +197,297 @@ export const onDeletePost = /* GraphQL */ `
     }
   }
 `;
-export const onCreateComment = /* GraphQL */ `
-  subscription OnCreateComment {
-    onCreateComment {
+export const onUpdateNotification = /* GraphQL */ `
+  subscription OnUpdateNotification {
+    onUpdateNotification {
       id
-      postID
-      post {
+      name
+      content
+      link
+      organization {
         id
-        title
-        blogID
-        blog {
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteNotification = /* GraphQL */ `
+  subscription OnDeleteNotification {
+    onDeleteNotification {
+      id
+      name
+      content
+      link
+      organization {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateNotiKeyword = /* GraphQL */ `
+  subscription OnCreateNotiKeyword {
+    onCreateNotiKeyword {
+      id
+      notiId
+      keywordId
+      noti {
+        id
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onUpdateComment = /* GraphQL */ `
-  subscription OnUpdateComment {
-    onUpdateComment {
+export const onUpdateNotiKeyword = /* GraphQL */ `
+  subscription OnUpdateNotiKeyword {
+    onUpdateNotiKeyword {
       id
-      postID
-      post {
+      notiId
+      keywordId
+      noti {
         id
-        title
-        blogID
-        blog {
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const onDeleteComment = /* GraphQL */ `
-  subscription OnDeleteComment {
-    onDeleteComment {
+export const onDeleteNotiKeyword = /* GraphQL */ `
+  subscription OnDeleteNotiKeyword {
+    onDeleteNotiKeyword {
       id
-      postID
-      post {
+      notiId
+      keywordId
+      noti {
         id
-        title
-        blogID
-        blog {
+        name
+        content
+        link
+        organization {
           id
           name
           createdAt
           updatedAt
         }
-        comments {
+        keywords {
           nextToken
         }
         createdAt
         updatedAt
       }
-      content
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateKeyword = /* GraphQL */ `
+  subscription OnCreateKeyword {
+    onCreateKeyword {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateKeyword = /* GraphQL */ `
+  subscription OnUpdateKeyword {
+    onUpdateKeyword {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteKeyword = /* GraphQL */ `
+  subscription OnDeleteKeyword {
+    onDeleteKeyword {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateOrganization = /* GraphQL */ `
+  subscription OnCreateOrganization {
+    onCreateOrganization {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateOrganization = /* GraphQL */ `
+  subscription OnUpdateOrganization {
+    onUpdateOrganization {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteOrganization = /* GraphQL */ `
+  subscription OnDeleteOrganization {
+    onDeleteOrganization {
+      id
+      name
       createdAt
       updatedAt
     }

@@ -1,16 +1,18 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
+export const getUser = /* GraphQL */ `
+  query GetUser($id: ID!) {
+    getUser(id: $id) {
       id
       name
-      posts {
+      alarmTime
+      email
+      keyword {
         items {
           id
-          title
-          blogID
+          userId
+          keywordId
           createdAt
           updatedAt
         }
@@ -21,17 +23,19 @@ export const getBlog = /* GraphQL */ `
     }
   }
 `;
-export const listBlogs = /* GraphQL */ `
-  query ListBlogs(
-    $filter: ModelBlogFilterInput
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listBlogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
@@ -41,55 +45,64 @@ export const listBlogs = /* GraphQL */ `
     }
   }
 `;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
+export const getUserKeyword = /* GraphQL */ `
+  query GetUserKeyword($id: ID!) {
+    getUserKeyword(id: $id) {
       id
-      title
-      blogID
-      blog {
+      userId
+      keywordId
+      user {
         id
         name
-        posts {
+        alarmTime
+        email
+        keyword {
           nextToken
         }
         createdAt
         updatedAt
       }
-      comments {
-        items {
-          id
-          postID
-          content
-          createdAt
-          updatedAt
+      keyword {
+        id
+        name
+        users {
+          nextToken
         }
-        nextToken
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
       }
       createdAt
       updatedAt
     }
   }
 `;
-export const listPosts = /* GraphQL */ `
-  query ListPosts(
-    $filter: ModelPostFilterInput
+export const listUserKeywords = /* GraphQL */ `
+  query ListUserKeywords(
+    $filter: ModelUserKeywordFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listPosts(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserKeywords(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        blogID
-        blog {
+        userId
+        keywordId
+        user {
+          id
+          name
+          alarmTime
+          email
+          createdAt
+          updatedAt
+        }
+        keyword {
           id
           name
           createdAt
           updatedAt
-        }
-        comments {
-          nextToken
         }
         createdAt
         updatedAt
@@ -98,51 +111,207 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
-export const getComment = /* GraphQL */ `
-  query GetComment($id: ID!) {
-    getComment(id: $id) {
+export const getNotification = /* GraphQL */ `
+  query GetNotification($id: ID!) {
+    getNotification(id: $id) {
       id
-      postID
-      post {
-        id
-        title
-        blogID
-        blog {
-          id
-          name
-          createdAt
-          updatedAt
-        }
-        comments {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      name
       content
+      link
+      organization {
+        id
+        name
+        createdAt
+        updatedAt
+      }
+      keywords {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
   }
 `;
-export const listComments = /* GraphQL */ `
-  query ListComments(
-    $filter: ModelCommentFilterInput
+export const listNotifications = /* GraphQL */ `
+  query ListNotifications(
+    $filter: ModelNotificationFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listNotifications(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        postID
-        post {
+        name
+        content
+        link
+        organization {
           id
-          title
-          blogID
+          name
           createdAt
           updatedAt
         }
+        keywords {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getNotiKeyword = /* GraphQL */ `
+  query GetNotiKeyword($id: ID!) {
+    getNotiKeyword(id: $id) {
+      id
+      notiId
+      keywordId
+      noti {
+        id
+        name
         content
+        link
+        organization {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        keywords {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      keyword {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listNotiKeywords = /* GraphQL */ `
+  query ListNotiKeywords(
+    $filter: ModelNotiKeywordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listNotiKeywords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        notiId
+        keywordId
+        noti {
+          id
+          name
+          content
+          link
+          createdAt
+          updatedAt
+        }
+        keyword {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getKeyword = /* GraphQL */ `
+  query GetKeyword($id: ID!) {
+    getKeyword(id: $id) {
+      id
+      name
+      users {
+        items {
+          id
+          userId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      notis {
+        items {
+          id
+          notiId
+          keywordId
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listKeywords = /* GraphQL */ `
+  query ListKeywords(
+    $filter: ModelKeywordFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listKeywords(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getOrganization = /* GraphQL */ `
+  query GetOrganization($id: ID!) {
+    getOrganization(id: $id) {
+      id
+      name
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOrganizations = /* GraphQL */ `
+  query ListOrganizations(
+    $filter: ModelOrganizationFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrganizations(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
         createdAt
         updatedAt
       }
