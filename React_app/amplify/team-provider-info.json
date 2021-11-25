@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hyunotider-dev-114251-authRole",
+      "UnauthRoleArn": "arn:aws:iam::440997862429:role/amplify-hyunotider-dev-114251-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::440997862429:role/amplify-hyunotider-dev-114251-authRole",
+      "Region": "ap-northeast-2",
+      "DeploymentBucketName": "amplify-hyunotider-dev-114251-deployment",
+      "UnauthRoleName": "amplify-hyunotider-dev-114251-unauthRole",
+      "StackName": "amplify-hyunotider-dev-114251",
+      "StackId": "arn:aws:cloudformation:ap-northeast-2:440997862429:stack/amplify-hyunotider-dev-114251/3998da70-4cd0-11ec-b4db-0ac3dd937822",
+      "AmplifyAppId": "dlr01hlkd3uqd"
+    }
+  }
+}

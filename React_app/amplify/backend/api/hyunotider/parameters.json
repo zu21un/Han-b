@@ -1,0 +1,5 @@
+{
+  "AppSyncApiName": "hyunotider",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false
+}
