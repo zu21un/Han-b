@@ -17,7 +17,7 @@ class KeywordMain extends Component {
             currentKeyword : '',
         }
     }
-
+    
     render() {
         return <Grid container spacing={10} sx = {{ display: 'flex'}}>
             <Grid item xs ={4}>
