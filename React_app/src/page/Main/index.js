@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Outlet } from 'react-router-dom';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -6,7 +8,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-// import Search from './Search';
+
 import Header from './Header';
 import Search from './Search';
 import Setting from './Setting';
@@ -184,7 +186,7 @@ class Mainpage extends Component {
             {/* <Header onDrawerToggle={handleDrawerToggle} /> */}
             <Header />
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Setting />
+                <Outlet />
               </Box>
           </Box>
         </Box>

@@ -39,10 +39,8 @@ function Header() {
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
           <Tabs value={0} textColor="inherit">
-              <Tab label="검 색">
-              </Tab>
-              <Tab label="설 정" >
-              </Tab>
+              <Tab label="검 색" />
+              <Tab label="설 정" />
           </Tabs>
       </AppBar>
     </React.Fragment>
