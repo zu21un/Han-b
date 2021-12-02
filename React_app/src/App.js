@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-
-// routes
+import Amplify from 'aws-amplify'
+import config from './aws-exports'
 import Router from './routes';
+Amplify.configure(config)
 
 
 function App() {
