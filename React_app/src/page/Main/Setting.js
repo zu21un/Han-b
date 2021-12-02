@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -11,8 +11,38 @@ import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import API from '@aws-amplify/api';
+import { getUser } from '../../graphql/queries'
+
 
 export default function Setting() {
+  const [email, setEmail] = useState('');
+  const [wholekeywords, setWholekeywords] = useState([]);
+  const [mykeywords, setMykeywords] = useState([]);
+
+  // useEffect(() => {
+  //   API.graphql({ query: getUser, variables:{id:"1"}})
+  //   .then(res => {
+  //     let keywordList = [];
+  //     for (let key of res.data.getUser.keyword.items) {
+  //       keywordList.push(key.keyword.name)
+  //     }
+  //     setMykeywords(keywordList);
+  //   }).catch(e => console.log(e));
+  // },[])
+
+  useEffect(() => {
+    API.graphql({ query: getUser, variables:{id:"1"}})
+    .then(res => {
+      setEmail(res.data.getUser.email)
+      let keywordList = [];
+      for (let key of res.data.getUser.keyword.items) {
+        keywordList.push(key.keyword.name)
+      }
+      setMykeywords(keywordList);
+    }).catch(e => console.log(e));
+  },[])
+
   return (
     <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
       <AppBar
@@ -28,7 +58,7 @@ export default function Setting() {
             </Grid>
             <Grid item>
               <Typography color="text.secondary" align="center">
-                jwjoo03@gmail.com
+                {email}
               </Typography>
             </Grid>
           </Grid>
@@ -60,6 +90,10 @@ export default function Setting() {
                   </Grid>
                 </Toolbar>
               </AppBar>
+              {mykeywords.map((item) => 
+                // <Typography>{item}</Typography>
+                <Button variant="contained" sx={{ width:50 }}>{item}</Button>
+              )}
           </Paper>
         </Grid>
         {/* 추가 가능한 키워드 */}

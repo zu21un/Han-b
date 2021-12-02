@@ -45,8 +45,6 @@ function Header() {
           </Tabs>
         </Box>
       </AppBar>
-      {/* <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
-      </AppBar> */}
     </React.Fragment>
   );
 }
