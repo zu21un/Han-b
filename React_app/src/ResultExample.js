@@ -11,7 +11,7 @@ let ResultExample = (props) => {
     const [keywords, setKeywords] = useState([]);
     useEffect(() => {
         console.log(message);
-    }, [message])
+    }, [])
 
     useEffect(()=> {
         console.log(keywords)

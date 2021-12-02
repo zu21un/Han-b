@@ -16,14 +16,14 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-
+import Box from '@mui/material/Box';
 
 
 function Header() {
-  const [tabvalue, setTabvalue] = useState(0)
+  const [tabvalue, setTabvalue] = useState(0);
   return (
     <React.Fragment>
-      <AppBar position="sticky" elevation={0} sx={{ py:1.5, bgcolor:"#004ba0" }}>
+      <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
@@ -38,12 +38,12 @@ function Header() {
             </Grid>
           </Grid>
         </Toolbar>
-      </AppBar>
-      <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
+        <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
           <Tabs value={tabvalue} textColor="inherit">
               <Tab label="검 색" component={RouterLink} to="/main/search" onClick={() => setTabvalue(0)} />
               <Tab label="설 정" component={RouterLink} to="/main/setting"onClick={() => setTabvalue(1)} />
           </Tabs>
+        </Box>
       </AppBar>
     </React.Fragment>
   );
