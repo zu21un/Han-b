@@ -4,12 +4,13 @@ import KeywordMain from './KeywordMain';
 import Amplify from 'aws-amplify'
 import config from './aws-exports'
 Amplify.configure(config)
+import Router from './routes';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <KeywordMain />
+        <Router />
       </header>
     </div>
   );
