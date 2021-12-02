@@ -1,0 +1,42 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hyunotider-dev-114251-authRole",
+      "UnauthRoleArn": "arn:aws:iam::440997862429:role/amplify-hyunotider-dev-114251-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::440997862429:role/amplify-hyunotider-dev-114251-authRole",
+      "Region": "ap-northeast-2",
+      "DeploymentBucketName": "amplify-hyunotider-dev-114251-deployment",
+      "UnauthRoleName": "amplify-hyunotider-dev-114251-unauthRole",
+      "StackName": "amplify-hyunotider-dev-114251",
+      "StackId": "arn:aws:cloudformation:ap-northeast-2:440997862429:stack/amplify-hyunotider-dev-114251/3998da70-4cd0-11ec-b4db-0ac3dd937822",
+      "AmplifyAppId": "dlr01hlkd3uqd"
+    }
+  },
+  "api": {
+    "hyunotider": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "description": ""
+            }
+          },
+          "additionalAuthenticationProviders": []
+        },
+        "GraphQLAPIIdOutput": "iwrkzo6ufzfpxidyj5nch7lk5a",
+        "GraphQLAPIEndpointOutput": "https://twrqjimskbdxnlixz5zpiz3fay.appsync-api.ap-northeast-2.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-c7ev5wd32ja65jilr2err6ejue"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-hyunotider-dev-114251-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apihyunotider"
+      },
+      "lastPushTimeStamp": "2021-11-24T14:49:42.056Z",
+      "lastPushDirHash": "J7IzdyyZl3vza1md5sItcYio4e0="
+    }
+  }
+}
