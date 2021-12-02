@@ -1,4 +1,6 @@
-import * as React from 'react';
+import React, { useState } from 'react';
+
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -18,7 +20,7 @@ import Typography from '@mui/material/Typography';
 
 
 function Header() {
-
+  const [tabvalue, setTabvalue] = useState(0)
   return (
     <React.Fragment>
       <AppBar position="sticky" elevation={0} sx={{ py:1.5, bgcolor:"#004ba0" }}>
@@ -26,7 +28,7 @@ function Header() {
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                ALLY 알리
+                HYU 공지알리
               </Typography>
             </Grid>
             <Grid item>
@@ -38,9 +40,9 @@ function Header() {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
-          <Tabs value={0} textColor="inherit">
-              <Tab label="검 색" />
-              <Tab label="설 정" />
+          <Tabs value={tabvalue} textColor="inherit">
+              <Tab label="검 색" component={RouterLink} to="/main/search"/>
+              <Tab label="설 정" component={RouterLink} to="/main/setting"/>
           </Tabs>
       </AppBar>
     </React.Fragment>
