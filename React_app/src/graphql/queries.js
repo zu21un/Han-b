@@ -13,6 +13,10 @@ export const getUser = /* GraphQL */ `
           id
           userId
           keywordId
+          keyword{
+            id
+            name
+          }
           createdAt
           updatedAt
         }

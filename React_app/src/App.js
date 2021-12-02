@@ -1,9 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
-
-// routes
+import KeywordMain from './KeywordMain';
+import Amplify from 'aws-amplify'
+import config from './aws-exports'
+Amplify.configure(config)
 import Router from './routes';
-
 
 function App() {
   return (
