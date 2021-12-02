@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -41,12 +41,8 @@ function Header() {
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
           <Tabs value={tabvalue} textColor="inherit">
-            <Link underline="none" component={RouterLink} to="/main/search">
-              <Tab label="검 색" />
-            </Link>
-            <Link underline="none" component={RouterLink} to="/main/setting">
+              <Tab label="검 색" component={RouterLink} to="/main/search"/>
               <Tab label="설 정" component={RouterLink} to="/main/setting"/>
-            </Link>
           </Tabs>
       </AppBar>
     </React.Fragment>
