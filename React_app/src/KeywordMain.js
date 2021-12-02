@@ -3,12 +3,15 @@ import KeywordTitle from './KeywordTitle';
 import KeywordSearchbar from './KeywordSearchbar';
 import KeywordRecommend from './KeywordRecommend';
 import KeywordSidebar from './KeywordSidebar';
+import ResultExample from './ResultExample';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 
+import {API} from 'aws-amplify'
+import {listUsers} from './graphql/queries'
 
 class KeywordMain extends Component {
     constructor(){
@@ -16,6 +19,11 @@ class KeywordMain extends Component {
         this.state = {
             currentKeyword : '',
         }
+    }
+
+    getUserList(){
+        let result = API.graphql({query:listUsers, variables:null})
+                    .then(result => console.log(result));
     }
     
     render() {
@@ -28,6 +36,7 @@ class KeywordMain extends Component {
                     <KeywordTitle />
                     <KeywordSearchbar />
                     <KeywordRecommend />
+                    <ResultExample />
                 </Stack>
             </Grid>
         </Grid>
