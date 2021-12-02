@@ -1,0 +1,65 @@
+type User @model
+{
+  id: ID!
+  name: String!
+  alarmTime: String!
+  email: String!
+  keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
+}
+
+type UserKeyword @model
+@key(
+  name: "byUserId",
+  fields: [ "userId", "keywordId"]
+)
+@key(
+  name: "byKeywordId",
+  fields:[ "keywordId", "userId"]
+){
+  id: ID!
+  userId: ID!
+  keywordId: ID!
+  user: User! @connection(fields:["userId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
+}
+
+type Notification @model
+{
+  id: ID!
+  name: String!
+  content: String!
+  link: String!
+  organization: Organization! @connection
+  keywords: [NotiKeyword] @connection
+}
+
+type NotiKeyword @model
+@key(
+  name: "byNotiId",
+  fields: [ "notiId", "keywordId"]
+)
+@key(
+  name: "byKeywordId",
+  fields: [ "keywordId", "notiId"]
+){
+  id: ID!
+  notiId: ID!
+  keywordId: ID!
+  noti: Notification! @connection(fields:["notiId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
+}
+
+type Keyword @model
+{
+  id: ID!
+  name: String!
+  users: [UserKeyword] @connection(keyName: "byUserId", fields:["id"])
+  notis: [NotiKeyword] @connection(keyName: "byKeywordId", fields:["id"])
+}
+
+type Organization @model
+{
+  id: ID!
+  name: String!
+}
+
