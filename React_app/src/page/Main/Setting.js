@@ -43,7 +43,6 @@ export default function Setting() {
               display: 'flex',
               flexDirection: 'column',
               height: 240,
-              bgcolor: "primary"
             }}>
               <AppBar
                 position="static"
