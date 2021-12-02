@@ -1,6 +1,4 @@
 import { Navigate, useRoutes } from 'react-router-dom';
-
-
 //pages
 import Mainpage from './page/Main/index';
 // import Loginpage from './page/Login';
@@ -15,7 +13,7 @@ export default function Router() {
         path: '/main',
         element: <Mainpage />,
         children: [
-          { element: <Navigate to="/main/search" replace /> },
+          { path: '/main', element: <Navigate to="/main/search"/> },
           { path: 'search', element: <Search /> },
           { path: 'setting', element: <Setting /> },
         ]
