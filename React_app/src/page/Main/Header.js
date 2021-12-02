@@ -20,7 +20,7 @@ import Typography from '@mui/material/Typography';
 
 
 function Header() {
-
+  const [tabvalue, setTabvalue] = useState(0)
   return (
     <React.Fragment>
       <AppBar position="sticky" elevation={0} sx={{ py:1.5, bgcolor:"#004ba0" }}>
@@ -40,12 +40,12 @@ function Header() {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
-          <Tabs value={1} textColor="inherit">
+          <Tabs value={tabvalue} textColor="inherit">
             <Link underline="none" component={RouterLink} to="/main/search">
               <Tab label="검 색" />
             </Link>
             <Link underline="none" component={RouterLink} to="/main/setting">
-              <Tab label="설 정" />
+              <Tab label="설 정" component={RouterLink} to="/main/setting"/>
             </Link>
           </Tabs>
       </AppBar>
