@@ -1,4 +1,6 @@
 import * as React from 'react';
+
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
@@ -26,7 +28,7 @@ function Header() {
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                ALLY 알리
+                HYU 공지알리
               </Typography>
             </Grid>
             <Grid item>
@@ -38,9 +40,13 @@ function Header() {
         </Toolbar>
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
-          <Tabs value={0} textColor="inherit">
+          <Tabs value={1} textColor="inherit">
+            <Link underline="none" component={RouterLink} to="/main/search">
               <Tab label="검 색" />
+            </Link>
+            <Link underline="none" component={RouterLink} to="/main/setting">
               <Tab label="설 정" />
+            </Link>
           </Tabs>
       </AppBar>
     </React.Fragment>
