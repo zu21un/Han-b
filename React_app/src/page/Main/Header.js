@@ -41,8 +41,8 @@ function Header() {
       </AppBar>
       <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2" }}>
           <Tabs value={tabvalue} textColor="inherit">
-              <Tab label="검 색" component={RouterLink} to="/main/search"/>
-              <Tab label="설 정" component={RouterLink} to="/main/setting"/>
+              <Tab label="검 색" component={RouterLink} to="/main/search" onClick={() => setTabvalue(0)} />
+              <Tab label="설 정" component={RouterLink} to="/main/setting"onClick={() => setTabvalue(1)} />
           </Tabs>
       </AppBar>
     </React.Fragment>
