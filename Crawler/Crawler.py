@@ -3,19 +3,17 @@ from bs4 import BeautifulSoup
 import inspect
 from urllib.request import urlopen
 from urllib.request import Request
-import emailTest 
+import SendingEmail 
 import schedule
 import time
+import boto3
+import traceback
 
-# print ("한양대학교 컴퓨터소프트웨어 학부")
-# webpage = requests.get("http://cs.hanyang.ac.kr/board/info_board.php")
-# soup = BeautifulSoup(webpage.content, "html.parser")
-# # print('soup : ')
-# # print(soup)
-# data = soup.select('.left')
+class Information:
+    def __init__(self, hypertitle, title):
+        self.hypertitle = hypertitle
+        self.title = title
 
-# for i in range(0, len(data) ):
-#     print(data[i].get_text())
 
 class Crawler:
     text = ''
@@ -36,28 +34,38 @@ class Crawler:
             
             response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
             
-
             html = response.read()
             soup = BeautifulSoup(html, 'html.parser')
             data = soup.select('.left')
             
+            #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
+            headInlink = soup.find('head').find('link')
+            link = headInlink['href']
+            
             
 
-            # Crawler.text += data.get_text()
+            title = []
             for i in range(0, len(data) ):
-                Crawler.text += data[i].get_text()
-                # print(data[i].get_text())
+                title.append(data[i].get_text().strip() )
+
+
+            hyperTitle = []
+            for i in range(0, len(data)):
+                hyperTitle.append( (link + data[i].find('a')['href']).strip()  )
+
+            info = Information(hyperTitle, title)
+
         except Exception as e:
             print('Exception ')
         #   raise CrawlerException(e)
 
-        return data #string형식으로 반환.
+        return info #string형식으로 반환.
 
 
 
 
 
-    def getData2(): #데이터 가져오는것.
+    def getData2(self): #데이터 가져오는것.
         print ("한양대학교 소프트웨어중심대학")
         req = Request("http://hysoft.hanyang.ac.kr/modules/board/bd_list.html?id=wt_notice")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
@@ -71,22 +79,35 @@ class Crawler:
             response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
 
             html = response.read()
-            print(html)
+            # print(html)
             soup = BeautifulSoup(html, 'html.parser')
-
-
-            
             data = soup.select('.alLeft')
             
+            #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
+            headInlink = soup.find('head').find('link')
+            link = headInlink['href']
+            print(link)
+
+            title = []
             for i in range(0, len(data) ):
-                print(data[i].get_text())
+                title.append(data[i].get_text().strip())
+
+            # print(data[i].find('a')['href'])
+            hyperTitle = []
+            for i in range(0, len(data)):
+             
+                hyperTitle.append((link + data[i].find('a')['href']).strip())
+
+            info = Information(hyperTitle, title)
+
+            
         except Exception as e:
             print('Exception ')
-        #   raise CrawlerException(e)
+        
 
-        return data #string형식으로 반환.
+        return info #string형식으로 반환.
 
-    def getData3(): #데이터 가져오는것.
+    def getData3(self): #데이터 가져오는것.
         print ("한양대학교 공과대학교")
         req = Request("http://eng.hanyang.ac.kr/people/notice.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
@@ -102,46 +123,96 @@ class Crawler:
             # print(html)
             soup = BeautifulSoup(html, 'html.parser') #여기서 오류발생. 
 
-
-            # print(soup)
-            # for line in response: #response에서 읽은 데이터를 list형태로 가져와서 data에 한줄씩 넣어주는듯. 
-            #         data += line
+            #Beautifulsoup를 통해 가져온 html을 select로 뽑아내기.
             data = soup.select('.left > a:nth-of-type(1)')
             
-            # print(data)
-
             
+            #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
+            headInlink = soup.find('head').find('link')
+            link = headInlink['href']
+            print(link)
+
+            title = []
             for i in range(0, len(data) ):
-                print(data[i].get_text())
+                title.append(data[i].get_text().strip())
+                print(title[i])
+
+            hyperTitle = []
+            for i in range(0, len(data)):
+                hyperTitle.append((link + (data[i])['href']).strip())
+
+            info = Information(hyperTitle, title)
+
+
         except Exception as e:
             print('Exception ')
         #   raise CrawlerException(e)
 
-        return data #string형식으로 반환.
+        return info #string형식으로 반환.
 
-c = Crawler()
-c.getData1()
-
-e = emailTest.Email()
+info = Crawler().getData3()
 
 
-schedule.every(3).minutes.do(e.send_mail,Crawler.text) # 3분마다 job 실행
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+for i in range(0, len(info.hypertitle)):
+    print('info.hyperlink : ' + info.hypertitle[i])
+    print('info.title : ' + info.title[i])
 
 
-# print(c.text)
-# getData1()
-# getData2()
-# getData3()
-# class MyClass(object):
-#     def __init(self, a=1):
-#         pass
-#     def somemethod(self, b=1):
-#         pass
+# dynamodb = boto3.resource('dynamodb')
 
-# for i in inspect.getmembers(MyClass):
-#     print(i)
-# print()
-# print(inspect.getmembers(MyClass, predicate=inspect.isfunction))
+# # print(dynamodb.get_item(TableName='Notification', Key={'id'}))
+
+# table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+# # print(table.table_status)
+
+
+# try:
+
+#     print(table.creation_date_time)
+
+#     # table.put_item(
+#     #     Item = {
+#     #         'title': 'asdf',
+#     #         'duration':'안녕하세요'
+#     #     }
+#     # )
+# except Exception as e:
+#     print(traceback.format_exc())
+
+
+
+# dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-2', aws_access_key_id='AKIAWNLMFLQOXWJMQRXQ',aws_secret_access_key='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')
+# #end_point =  https://dynamodb.ap-northeast-2.amazonaws.com
+# table = dynamodb.Table('Notification')
+
+# client =boto3.client('dynamodb')
+
+# response = client.get_item(
+#     TableName = 'Notification',
+#     Key = {id:'1'}
+
+# )
+# try:
+#     dynamodb = boto3.resource('dynamodb', region_name='ap-northeast-2')
+#     # , aws_access_key_id='AKIAWNLMFLQOXWJMQRXQ',aws_secret_access_key='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'
+# #end_point =  https://dynamodb.ap-northeast-2.amazonaws.com
+#     table = dynamodb.Table('Notification')
+
+#     table.put_item(Item={
+#         'id': 5,
+#         'content': '',
+#         'link':'안녕하세요'
+#     })
+# except Exception as e:
+#     print(e.response)
+
+
+# e = SendingEmail.Email()
+
+
+# schedule.every(3).minutes.do(e.send_mail,Crawler.text) # 3분마다 job 실행
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
+
+
