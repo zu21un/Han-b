@@ -216,17 +216,3 @@ for i in range(0, len(info.hypertitle)):
 #     time.sleep(1)
 
 
-# print(c.text)
-# getData1()
-# getData2()
-# getData3()
-# class MyClass(object):
-#     def __init(self, a=1):
-#         pass
-#     def somemethod(self, b=1):
-#         pass
-
-# for i in inspect.getmembers(MyClass):
-#     print(i)
-# print()
-# print(inspect.getmembers(MyClass, predicate=inspect.isfunction))
