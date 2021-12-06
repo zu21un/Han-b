@@ -12,7 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import API from '@aws-amplify/api';
-import { getUser } from '../../graphql/queries'
+import { getUser } from '../../../graphql/queries'
 
 
 export default function Setting() {

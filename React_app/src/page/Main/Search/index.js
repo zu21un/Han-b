@@ -11,7 +11,7 @@ import Link from '@mui/material/Link';
 
 import Header from './Header';
 import Search from './Search';
-import Setting from './Setting';
+
 
 // function Copyright() {
 //   return (
@@ -168,7 +168,7 @@ theme = {
   },
 };
 
-class Mainpage extends Component {
+class SearchPage extends Component {
 
   constructor(){
       super();
@@ -186,7 +186,7 @@ class Mainpage extends Component {
             {/* <Header onDrawerToggle={handleDrawerToggle} /> */}
             <Header />
               <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Outlet />
+                <Search />
               </Box>
           </Box>
         </Box>
@@ -195,4 +195,4 @@ class Mainpage extends Component {
   }
 }
 
-export default Mainpage;
+export default SearchPage;
