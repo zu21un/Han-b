@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import RefreshIcon from '@mui/icons-material/Refresh';
+
 import API from '@aws-amplify/api';
 import { getUser } from '../../../graphql/queries'
+
 
 
 export default function Setting() {
@@ -20,17 +21,14 @@ export default function Setting() {
   const [wholekeywords, setWholekeywords] = useState([]);
   const [mykeywords, setMykeywords] = useState([]);
 
+  //test code
   // useEffect(() => {
-  //   API.graphql({ query: getUser, variables:{id:"1"}})
-  //   .then(res => {
-  //     let keywordList = [];
-  //     for (let key of res.data.getUser.keyword.items) {
-  //       keywordList.push(key.keyword.name)
-  //     }
-  //     setMykeywords(keywordList);
-  //   }).catch(e => console.log(e));
-  // },[])
+  //   const keywords = ['현민','지운','용성','현민','지운','용성','현민', '지운', '용성'];
+  //   keywords.sort()
+  //   setMykeywords(keywords);
+  // }, [])
 
+  
   useEffect(() => {
     API.graphql({ query: getUser, variables:{id:"1"}})
     .then(res => {
@@ -39,6 +37,7 @@ export default function Setting() {
       for (let key of res.data.getUser.keyword.items) {
         keywordList.push(key.keyword.name)
       }
+      keywordList.sort()
       setMykeywords(keywordList);
     }).catch(e => console.log(e));
   },[])
@@ -90,10 +89,17 @@ export default function Setting() {
                   </Grid>
                 </Toolbar>
               </AppBar>
-              {mykeywords.map((item) => 
-                // <Typography>{item}</Typography>
-                <Button variant="contained" sx={{ width:50 }}>{item}</Button>
-              )}
+              <Box sx={{
+                
+              }}>
+                {mykeywords.map((item) => 
+                  <Button variant="contained" sx={{ width:50, mx: 1, my: 1 }}>
+                    <Typography>
+                    {item}
+                    </Typography>
+                  </Button>
+                )}
+              </Box>
           </Paper>
         </Grid>
         {/* 추가 가능한 키워드 */}
