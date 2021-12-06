@@ -153,19 +153,16 @@ export const listNotifications = /* GraphQL */ `
       items {
         id
         name
-        content
         link
-        organization {
-          id
-          name
-          createdAt
-          updatedAt
-        }
         keywords {
+          items{
+            keyword{
+              id
+              name
+            }
+          }
           nextToken
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
