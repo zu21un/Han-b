@@ -1,28 +1,27 @@
 import { Navigate, useRoutes } from 'react-router-dom';
+
 //pages
-import Mainpage from './page/Main/index';
+import SearchPage from './page/Main/Search/index';
+import SettingPage from './page/Main/Setting/index';
 // import Loginpage from './page/Login';
 
-import Search from './page/Main/Search';
-import Setting from './page/Main/Setting';
 
 //-----------------------------------------------------
 export default function Router() {
     return useRoutes([
       {
-        path: '/main',
-        element: <Mainpage />,
+        path: '/',
         children: [
-          { path: '/main', element: <Navigate to="/main/search"/> },
-          { path: 'search', element: <Search /> },
-          { path: 'setting', element: <Setting /> },
+          { path: '/', element: <Navigate to="/search" /> },
         ]
       },
       {
-        path: '/',
-        children: [
-          { path: '/', element: <Navigate to="/main" /> },
-        ]
+        path: 'search',
+        element: <SearchPage />
+      },
+      {
+        path: 'setting',
+        element: <SettingPage />
       },
     ]);
   }

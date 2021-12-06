@@ -20,7 +20,6 @@ import Box from '@mui/material/Box';
 
 
 function Header() {
-  const [tabvalue, setTabvalue] = useState(0);
   return (
     <React.Fragment>
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
@@ -39,9 +38,9 @@ function Header() {
           </Grid>
         </Toolbar>
         <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
-          <Tabs value={tabvalue} textColor="inherit">
-              <Tab label="검 색" component={RouterLink} to="/main/search" onClick={() => setTabvalue(0)} />
-              <Tab label="설 정" component={RouterLink} to="/main/setting"onClick={() => setTabvalue(1)} />
+          <Tabs value={1} textColor="inherit">
+              <Tab label="검 색" component={RouterLink} to="/search"  />
+              <Tab label="설 정" component={RouterLink} to="/setting" />
           </Tabs>
         </Box>
       </AppBar>
