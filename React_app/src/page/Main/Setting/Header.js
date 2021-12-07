@@ -21,7 +21,6 @@ import Box from '@mui/material/Box';
 
 function Header() {
   return (
-    <React.Fragment>
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
@@ -44,7 +43,6 @@ function Header() {
           </Tabs>
         </Box>
       </AppBar>
-    </React.Fragment>
   );
 }
 

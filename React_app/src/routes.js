@@ -17,7 +17,7 @@ export default function Router() {
       },
       {
         path: 'search',
-        element: <SearchPage value={0}/>
+        element: <SearchPage />
       },
       {
         path: 'setting',
