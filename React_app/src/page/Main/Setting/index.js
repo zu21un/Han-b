@@ -167,31 +167,19 @@ theme = {
   },
 };
 
-class SettingPage extends Component {
-
-  constructor(){
-      super();
-      this.state = {
-          current_tab: 0,
-      }
-  }
-
-  render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
-          <CssBaseline />
-          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-            {/* <Header onDrawerToggle={handleDrawerToggle} /> */}
-            <Header />
-              <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                <Setting />
-              </Box>
-          </Box>
+export default function SettingPage () {
+  return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
+        <CssBaseline />
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+          {/* <Header onDrawerToggle={handleDrawerToggle} /> */}
+          <Header />
+            <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+              <Setting />
+            </Box>
         </Box>
-      </ThemeProvider>
-    );
-  }
+      </Box>
+    </ThemeProvider>
+  );
 }
-
-export default SettingPage;
