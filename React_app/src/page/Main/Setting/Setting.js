@@ -12,34 +12,38 @@ import Tooltip from '@mui/material/Tooltip';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser } from '../../../graphql/queries'
+import { getUser, listKeywords } from '../../../graphql/queries'
 
 
 
 export default function Setting() {
   const [email, setEmail] = useState('');
-  const [wholekeywords, setWholekeywords] = useState([]);
-  const [mykeywords, setMykeywords] = useState([]);
-
-  //test code
-  // useEffect(() => {
-  //   const keywords = ['현민','지운','용성','현민','지운','용성','현민', '지운', '용성'];
-  //   keywords.sort()
-  //   setMykeywords(keywords);
-  // }, [])
+  const [myKeywords, setMyKeywords] = useState([]);
+  const [remainKeywords, setRemainKeywords] = useState([]);
 
   
   useEffect(() => {
-    API.graphql({ query: getUser, variables:{id:"1"}})
+    // email, user info setting
+    API.graphql({ query: getUser, variables:{ id:"1" }})
     .then(res => {
-      setEmail(res.data.getUser.email)
+      setEmail(res.data.getUser.email);
       let keywordList = [];
-      for (let key of res.data.getUser.keyword.items) {
-        keywordList.push(key.keyword.name)
+      for (let key of res.data.getUser.keyword.items){
+        keywordList.push(key.keyword.name);
       }
-      keywordList.sort()
-      setMykeywords(keywordList);
-    }).catch(e => console.log(e));
+      keywordList.sort();
+      setMyKeywords(keywordList);
+      return API.graphql({ query: listKeywords, variables:{}});
+    }).then(res => {
+        let remainKeys = [];
+        for (let key of res.data.listKeywords.items){
+          if (myKeywords.indexOf(key.name) < 0) {
+            remainKeys.push(key.name);
+          }
+        }
+        setRemainKeywords(remainKeys);
+      }).catch(e => console.log(e));
+
   },[])
 
   return (
@@ -90,15 +94,20 @@ export default function Setting() {
                 </Toolbar>
               </AppBar>
               <Box sx={{
-                
+                display: 'flex',
+                justifyContent: 'flex-start',
+                px: 1,
+                py: 0.5,
               }}>
-                {mykeywords.map((item) => 
-                  <Button variant="contained" sx={{ width:50, mx: 1, my: 1 }}>
+                {myKeywords.length > 0 ?
+                myKeywords.map((item) => 
+                  <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
                     <Typography>
                     {item}
                     </Typography>
                   </Button>
-                )}
+                ) : ""
+              }
               </Box>
           </Paper>
         </Grid>
@@ -127,6 +136,22 @@ export default function Setting() {
                   </Grid>
                 </Toolbar>
               </AppBar>
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'flex-start',
+                px: 1,
+                py: 0.5,
+              }}>
+                {remainKeywords.length > 0 ?
+                  remainKeywords.map((item) => 
+                    <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+                      <Typography>
+                      {item}
+                      </Typography>
+                    </Button>
+                  ) : ""
+                }
+              </Box>
           </Paper>
         </Grid>
       </Grid>
