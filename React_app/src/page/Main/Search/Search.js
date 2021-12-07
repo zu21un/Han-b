@@ -23,24 +23,31 @@ export default function Search() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(keyword)
     
-    API.graphql({query:listNotifications, variables:{}})
-        .then(res => {
-          let notiList = []
-          for(let item of res.data.listNotifications.items){
-            if(item.name.includes(keyword)){
-              notiList.push(item)
-            }
+    if (keyword.length == 0){
+      setSearchList([]);
+      setSearchKeyword(keyword);
+    } 
+    
+    else{
+      API.graphql({query:listNotifications, variables:{}})
+      .then(res => {
+        let notiList = []
+        for(let item of res.data.listNotifications.items){
+          if(item.name.includes(keyword)){
+            notiList.push(item)
           }
-          setSearchList(notiList);
-          setSearchKeyword(keyword);
-          console.log(notiList)
-        }).catch(e => {
-          console.log(e)
-        })
-    
+        }
+        setSearchList(notiList);
+        console.log(notiList)
+      }).then(() => {
+        setSearchKeyword(keyword);
+      }).catch(e => {
+        console.log(e)
+      })
+    }
   }
+
 
   return (
     <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
@@ -76,7 +83,7 @@ export default function Search() {
               <Grid item>
                 <Button 
                   type="submit"
-                  variant="contained" sx={{ mr: 1 }}
+                  variant="contained" sx={{ mr: 0.5 }}
                   onSubmit={handleSubmit}>
                   검 색
                 </Button>
@@ -84,25 +91,28 @@ export default function Search() {
             </Grid>
         </Toolbar>
       </AppBar>
-      <Box sx={{textAlign:'left'}}>
-        {searchList.length > 0 ?
-          <Typography sx={{ my:2 }} color="text.secondary" align="center">
-            공지사항
+      <Box item sx={{ 
+        textAlign:'left',
+        pb: 2
+        }}>
+        { searchList.length > 0 ?
+          <Typography sx={{ mt:2, mb: 0.5 }} color="text.primary" align="center">
+            "{searchKeyword}" 에 대한 검색 결과 : {searchList.length} 건
           </Typography>
-          :""
+          :
+            <Typography sx={{ mt: 5, mb: 3, mx: 2 }} color="text.secondary" align="center">
+              {searchKeyword} 검색 결과가 없습니다
+            </Typography>
         }
         { searchList.length > 0 ?
-            searchList.map((item, key) => {
+            searchList.map((item, key, idx) => {
               return  <div sx={{textAlign:'left'}} key={key}>
-                        <Link sx={{mx:10}} color="text.secondary" fontSize="14px" target="_blank" href={item.link} underline="none" key={key}>
+                        <Link sx={{ mx: 8 }} color="text.secondary" fontSize="14px" target="_blank" href={item.link} underline="none" key={key}>
                           {item.name}
                         </Link>
                       </div>
             })
-            : 
-            <Typography sx={{ my: 5, mx: 2 }} color="text.secondary" align="center">
-              {searchKeyword} 검색 결과가 없습니다
-            </Typography>
+            : ""
         }
       </Box>
     </Paper>
