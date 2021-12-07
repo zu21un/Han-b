@@ -21,16 +21,9 @@ export default function Setting() {
   const [wholekeywords, setWholekeywords] = useState([]);
   const [mykeywords, setMykeywords] = useState([]);
 
-  //test code
-  // useEffect(() => {
-  //   const keywords = ['현민','지운','용성','현민','지운','용성','현민', '지운', '용성'];
-  //   keywords.sort()
-  //   setMykeywords(keywords);
-  // }, [])
-
   
   useEffect(() => {
-    API.graphql({ query: getUser, variables:{id:"1"}})
+    API.graphql({ query: getUser, variables:{ id:"1" }})
     .then(res => {
       setEmail(res.data.getUser.email)
       let keywordList = [];
@@ -90,7 +83,10 @@ export default function Setting() {
                 </Toolbar>
               </AppBar>
               <Box sx={{
-                
+                display: 'flex',
+                justifyContent: 'flex-start',
+                px: 1,
+                py: 0.5,
               }}>
                 {mykeywords.map((item) => 
                   <Button variant="contained" sx={{ width:50, mx: 1, my: 1 }}>
