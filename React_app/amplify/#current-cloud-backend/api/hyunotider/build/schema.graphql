@@ -3,7 +3,8 @@ type User {
   name: String!
   alarmTime: String!
   email: String!
-  keyword(keywordId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
+  password: String!
+  keywords(keywordId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -144,6 +145,7 @@ input ModelUserFilterInput {
   name: ModelStringInput
   alarmTime: ModelStringInput
   email: ModelStringInput
+  password: ModelStringInput
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
@@ -175,7 +177,7 @@ type Query {
   listKeywords(filter: ModelKeywordFilterInput, limit: Int, nextToken: String): ModelKeywordConnection
   getOrganization(id: ID!): Organization
   listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
-  searchUsers(filter: SearchableUserFilterInput, sort: SearchableUserSortInput, limit: Int, nextToken: String, from: Int): SearchableUserConnection
+  userByEmail(email: String, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
   searchNotifications(filter: SearchableNotificationFilterInput, sort: SearchableNotificationSortInput, limit: Int, nextToken: String, from: Int): SearchableNotificationConnection
   searchNotiKeywords(filter: SearchableNotiKeywordFilterInput, sort: SearchableNotiKeywordSortInput, limit: Int, nextToken: String, from: Int): SearchableNotiKeywordConnection
   searchKeywords(filter: SearchableKeywordFilterInput, sort: SearchableKeywordSortInput, limit: Int, nextToken: String, from: Int): SearchableKeywordConnection
@@ -186,6 +188,7 @@ input CreateUserInput {
   name: String!
   alarmTime: String!
   email: String!
+  password: String!
 }
 
 input UpdateUserInput {
@@ -193,6 +196,7 @@ input UpdateUserInput {
   name: String
   alarmTime: String
   email: String
+  password: String
 }
 
 input DeleteUserInput {
@@ -224,6 +228,7 @@ input ModelUserConditionInput {
   name: ModelStringInput
   alarmTime: ModelStringInput
   email: ModelStringInput
+  password: ModelStringInput
   and: [ModelUserConditionInput]
   or: [ModelUserConditionInput]
   not: ModelUserConditionInput
@@ -509,39 +514,6 @@ input SearchableIDFilterInput {
   range: [ID]
 }
 
-input SearchableUserFilterInput {
-  id: SearchableIDFilterInput
-  name: SearchableStringFilterInput
-  alarmTime: SearchableStringFilterInput
-  email: SearchableStringFilterInput
-  and: [SearchableUserFilterInput]
-  or: [SearchableUserFilterInput]
-  not: SearchableUserFilterInput
-}
-
-enum SearchableSortDirection {
-  asc
-  desc
-}
-
-enum SearchableUserSortableFields {
-  id
-  name
-  alarmTime
-  email
-}
-
-input SearchableUserSortInput {
-  field: SearchableUserSortableFields
-  direction: SearchableSortDirection
-}
-
-type SearchableUserConnection {
-  items: [User]
-  nextToken: String
-  total: Int
-}
-
 input SearchableNotificationFilterInput {
   id: SearchableIDFilterInput
   name: SearchableStringFilterInput
@@ -551,6 +523,11 @@ input SearchableNotificationFilterInput {
   and: [SearchableNotificationFilterInput]
   or: [SearchableNotificationFilterInput]
   not: SearchableNotificationFilterInput
+}
+
+enum SearchableSortDirection {
+  asc
+  desc
 }
 
 enum SearchableNotificationSortableFields {

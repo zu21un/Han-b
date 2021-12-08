@@ -193,7 +193,7 @@
         }
     },
     "Resources": {
-        "UserkeywordResolver": {
+        "UserkeywordsResolver": {
             "Type": "AWS::AppSync::Resolver",
             "Properties": {
                 "ApiId": {
@@ -214,7 +214,7 @@
                         ]
                     }
                 },
-                "FieldName": "keyword",
+                "FieldName": "keywords",
                 "TypeName": "User",
                 "RequestMappingTemplateS3Location": {
                     "Fn::Sub": [
@@ -231,7 +231,7 @@
                                     ".",
                                     [
                                         "User",
-                                        "keyword",
+                                        "keywords",
                                         "req",
                                         "vtl"
                                     ]
@@ -255,7 +255,7 @@
                                     ".",
                                     [
                                         "User",
-                                        "keyword",
+                                        "keywords",
                                         "res",
                                         "vtl"
                                     ]

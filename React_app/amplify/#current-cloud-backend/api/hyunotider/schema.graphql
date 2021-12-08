@@ -1,10 +1,16 @@
-type User @model @searchable
+type User @model
+@key(
+  name: "byEmail",
+  fields: ["email"]
+  queryField: "userByEmail"
+)
 {
   id: ID!
   name: String!
   alarmTime: String!
   email: String!
-  keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
+  password: String!
+  keywords: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
 }
 
 type UserKeyword @model

@@ -8,11 +8,16 @@ export const getUser = /* GraphQL */ `
       name
       alarmTime
       email
-      keyword {
+      password
+      keywords {
         items {
           id
           userId
           keywordId
+          keyword{
+            id
+            name
+          }
           createdAt
           updatedAt
         }
@@ -35,7 +40,8 @@ export const listUsers = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -56,7 +62,8 @@ export const getUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -95,6 +102,7 @@ export const listUserKeywords = /* GraphQL */ `
           name
           alarmTime
           email
+          password
           createdAt
           updatedAt
         }
@@ -319,34 +327,38 @@ export const listOrganizations = /* GraphQL */ `
     }
   }
 `;
-export const searchUsers = /* GraphQL */ `
-  query SearchUsers(
-    $filter: SearchableUserFilterInput
-    $sort: SearchableUserSortInput
+export const userByEmail = /* GraphQL */ `
+  query UserByEmail(
+    $email: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
-    $from: Int
   ) {
-    searchUsers(
+    userByEmail(
+      email: $email
+      sortDirection: $sortDirection
       filter: $filter
-      sort: $sort
       limit: $limit
       nextToken: $nextToken
-      from: $from
     ) {
       items {
         id
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
+          keyword{
+            id
+            name
+          }
           nextToken
         }
         createdAt
         updatedAt
       }
       nextToken
-      total
     }
   }
 `;

@@ -227,7 +227,7 @@
                         {
                             "Ref": "APIKeyExpirationEpoch"
                         },
-                        1669986227
+                        1670528903
                     ]
                 }
             },
@@ -1069,7 +1069,6 @@
             },
             "DependsOn": [
                 "GraphQLSchema",
-                "User",
                 "Notification",
                 "NotiKeyword",
                 "Keyword"

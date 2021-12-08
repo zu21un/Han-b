@@ -22,7 +22,6 @@ export default function Search() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-<<<<<<< Updated upstream:React_app/src/page/Main/Search/Search.js
     
     if (keyword.length == 0){
       setSearchList([]);
@@ -46,21 +45,6 @@ export default function Search() {
         console.log(e)
       })
     }
-=======
-    console.log(keyword)
-    API.graphql({query:searchNotifications, variables:{
-      filter:{
-        keywords : {
-          keyword : {
-            name: keyword
-          }
-        }
-      }
-    }})
-        .then(res => {
-            console.log(res)
-        }).catch(e => console.log(e))
->>>>>>> Stashed changes:React_app/src/page/Main/Search.js
   }
 
 

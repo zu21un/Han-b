@@ -10,7 +10,7 @@ type User @model
   alarmTime: String!
   email: String!
   password: String!
-  keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
+  keywords: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
 }
 
 type UserKeyword @model
@@ -26,7 +26,7 @@ type UserKeyword @model
   userId: ID!
   keywordId: ID!
   user: User! @connection(fields:["userId"])
-  keywords: Keyword! @connection(fields:["keywordId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
 }
 
 type Notification @model @searchable
@@ -37,11 +37,7 @@ type Notification @model @searchable
   link: String!
   orgId: ID!
   organization: Organization! @connection(fields:["orgId"])
-<<<<<<< Updated upstream
-  keywords: [NotiKeyword] @connection
-=======
   keywords: [NotiKeyword] @connection (keyName: "byNotiId", fields:["id"])
->>>>>>> Stashed changes
 }
 
 type NotiKeyword @model @searchable

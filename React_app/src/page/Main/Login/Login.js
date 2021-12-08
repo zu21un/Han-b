@@ -39,7 +39,7 @@ const theme = createTheme();
 
 
 export default function Login(props) {
-  const [loginSuccess,setLoginSuccess] = useState(false);
+  let loginSuccess = false;
   const [loginError, setLoginError] = useState('');
   console.log(props)
   const handleSubmit = (event) => {
@@ -47,6 +47,7 @@ export default function Login(props) {
     const data = new FormData(event.currentTarget);
     let email = data.get('email')
     let sha256Password = sha256(data.get('password')+data.get('email'))
+    console.log(sha256Password)
     
     API.graphql({query:listUsers, variables:{}})
         .then(res => {
@@ -55,10 +56,11 @@ export default function Login(props) {
             for( let user of userData){
               console.log(data.get('email'))
               console.log(user.email)
-              console.log(user.id)
+              console.log(user.password)
               if(user.email == email && user.password == sha256Password){
-                props.setUserId(user.id);
-                setLoginSuccess(true)
+                props.setUserId(user.id); 
+                loginSuccess = true
+                console.log('loginSUccess', loginSuccess)
                 break;
               }
             }
