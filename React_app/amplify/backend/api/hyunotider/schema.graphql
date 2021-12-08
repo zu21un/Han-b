@@ -29,7 +29,7 @@ type UserKeyword @model
   keywords: Keyword! @connection(fields:["keywordId"])
 }
 
-type Notification @model
+type Notification @model @searchable
 {
   id: ID!
   name: String!
@@ -37,10 +37,14 @@ type Notification @model
   link: String!
   orgId: ID!
   organization: Organization! @connection(fields:["orgId"])
+<<<<<<< Updated upstream
   keywords: [NotiKeyword] @connection
+=======
+  keywords: [NotiKeyword] @connection (keyName: "byNotiId", fields:["id"])
+>>>>>>> Stashed changes
 }
 
-type NotiKeyword @model
+type NotiKeyword @model @searchable
 @key(
   name: "byNotiId",
   fields: [ "notiId", "keywordId"]
@@ -53,13 +57,13 @@ type NotiKeyword @model
   notiId: ID!
   keywordId: ID!
   noti: Notification! @connection(fields:["notiId"])
-  keyword: Keyword! @connection(fields:["keywordId"])
+  keyword: Keyword! @connection(fields:["keywordId"]) 
 }
 
-type Keyword @model
+type Keyword @model @searchable
 {
   id: ID!
-  name: String!
+  name: String! 
   users: [UserKeyword] @connection(keyName: "byKeywordId", fields:["id"])
   notis: [NotiKeyword] @connection(keyName: "byKeywordId", fields:["id"])
 }

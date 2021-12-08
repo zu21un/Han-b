@@ -1,4 +1,4 @@
-type User @model
+type User @model @searchable
 {
   id: ID!
   name: String!
@@ -23,17 +23,18 @@ type UserKeyword @model
   keyword: Keyword! @connection(fields:["keywordId"])
 }
 
-type Notification @model
+type Notification @model @searchable
 {
   id: ID!
   name: String!
   content: String!
   link: String!
-  organization: Organization! @connection
-  keywords: [NotiKeyword] @connection
+  orgId: ID!
+  organization: Organization! @connection(fields:["orgId"])
+  keywords: [NotiKeyword] @connection (keyName: "byNotiId", fields:["id"])
 }
 
-type NotiKeyword @model
+type NotiKeyword @model @searchable
 @key(
   name: "byNotiId",
   fields: [ "notiId", "keywordId"]
@@ -46,14 +47,14 @@ type NotiKeyword @model
   notiId: ID!
   keywordId: ID!
   noti: Notification! @connection(fields:["notiId"])
-  keyword: Keyword! @connection(fields:["keywordId"])
+  keyword: Keyword! @connection(fields:["keywordId"]) 
 }
 
-type Keyword @model
+type Keyword @model @searchable
 {
   id: ID!
-  name: String!
-  users: [UserKeyword] @connection(keyName: "byUserId", fields:["id"])
+  name: String! 
+  users: [UserKeyword] @connection(keyName: "byKeywordId", fields:["id"])
   notis: [NotiKeyword] @connection(keyName: "byKeywordId", fields:["id"])
 }
 

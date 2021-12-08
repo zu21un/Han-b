@@ -1,0 +1,35 @@
+{
+  "stackTemplatePathOrUrl": "amplify-appsync-files/bb91b6d5191d0ed54ef9eb8e2f08e904d5cfdbf2/states/01/cloudformation-template.json",
+  "previousMetaKey": "amplify-appsync-files/bb91b6d5191d0ed54ef9eb8e2f08e904d5cfdbf2/states/initial-stack/deployment-meta.json",
+  "parameters": {
+    "DynamoDBModelTableReadIOPS": "5",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "ElasticSearchInstanceCount": "1",
+    "ElasticSearchStreamingIAMRoleName": "SearchableLambdaIAMRole",
+    "ElasticSearchEBSVolumeGB": "10",
+    "ElasticSearchAccessIAMRoleName": "AppSyncElasticsearchRole",
+    "env": "dev",
+    "S3DeploymentRootKey": "amplify-appsync-files/bb91b6d5191d0ed54ef9eb8e2f08e904d5cfdbf2/states/01",
+    "CreateAPIKey": "1",
+    "AuthCognitoUserPoolId": "NONE",
+    "ElasticSearchStreamingLambdaHandlerName": "python_streaming_function.lambda_handler",
+    "ElasticSearchStreamingLambdaRuntime": "python3.6",
+    "ElasticSearchInstanceType": "t2.small.elasticsearch",
+    "DynamoDBEnableServerSideEncryption": "false",
+    "DynamoDBEnablePointInTimeRecovery": "false",
+    "S3DeploymentBucket": "amplify-hyunotider-dev-114251-deployment",
+    "DynamoDBModelTableWriteIOPS": "5",
+    "ElasticSearchDebugStreamingLambda": "1",
+    "APIKeyExpirationEpoch": "0",
+    "ElasticSearchStreamingFunctionName": "DdbToEsFn",
+    "AppSyncApiName": "hyunotider"
+  },
+  "stackName": "arn:aws:cloudformation:ap-northeast-2:440997862429:stack/amplify-hyunotider-dev-114251-apihyunotider-A7GFQRHVIZZJ/ef9d8110-4cd3-11ec-ab5f-0247230b4b8c",
+  "tableNames": [
+    "NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev"
+  ],
+  "capabilities": [
+    "CAPABILITY_NAMED_IAM",
+    "CAPABILITY_AUTO_EXPAND"
+  ]
+}

@@ -13,10 +13,6 @@ export const getUser = /* GraphQL */ `
           id
           userId
           keywordId
-          keyword{
-            id
-            name
-          }
           createdAt
           updatedAt
         }
@@ -122,6 +118,7 @@ export const getNotification = /* GraphQL */ `
       name
       content
       link
+      orgId
       organization {
         id
         name
@@ -179,6 +176,7 @@ export const getNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        orgId
         organization {
           id
           name
@@ -224,6 +222,7 @@ export const listNotiKeywords = /* GraphQL */ `
           name
           content
           link
+          orgId
           createdAt
           updatedAt
         }
@@ -317,6 +316,149 @@ export const listOrganizations = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const searchUsers = /* GraphQL */ `
+  query SearchUsers(
+    $filter: SearchableUserFilterInput
+    $sort: SearchableUserSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchUsers(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        alarmTime
+        email
+        keyword {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchNotifications = /* GraphQL */ `
+  query SearchNotifications(
+    $filter: SearchableNotificationFilterInput
+    $sort: SearchableNotificationSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchNotifications(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        content
+        link
+        orgId
+        organization {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        keywords {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchNotiKeywords = /* GraphQL */ `
+  query SearchNotiKeywords(
+    $filter: SearchableNotiKeywordFilterInput
+    $sort: SearchableNotiKeywordSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchNotiKeywords(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        notiId
+        keywordId
+        noti {
+          id
+          name
+          content
+          link
+          orgId
+          createdAt
+          updatedAt
+        }
+        keyword {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchKeywords = /* GraphQL */ `
+  query SearchKeywords(
+    $filter: SearchableKeywordFilterInput
+    $sort: SearchableKeywordSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchKeywords(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
     }
   }
 `;

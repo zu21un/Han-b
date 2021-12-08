@@ -1,0 +1,8 @@
+{
+    "CreateAPIKey": 1,
+    "AppSyncApiName": "hyunotider",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "S3DeploymentBucket": "amplify-hyunotider-dev-114251-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/99dadef8338b317802b80f6426a0706f05b85c1f"
+}

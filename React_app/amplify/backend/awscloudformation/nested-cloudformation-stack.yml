@@ -78,7 +78,7 @@
           "DynamoDBBillingMode": "PAY_PER_REQUEST",
           "DynamoDBEnableServerSideEncryption": false,
           "S3DeploymentBucket": "amplify-hyunotider-dev-114251-deployment",
-          "S3DeploymentRootKey": "amplify-appsync-files/0ff0eb0f7192f4c8800ff8a334dd1e7ba283f45d",
+          "S3DeploymentRootKey": "amplify-appsync-files/bb91b6d5191d0ed54ef9eb8e2f08e904d5cfdbf2",
           "env": "dev"
         }
       }
