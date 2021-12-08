@@ -1,11 +1,11 @@
-#if( $util.isNull($ctx.source.notificationOrganizationId) )
+#if( $util.isNull($ctx.source.orgId) )
   #return
 #else
 {
       "version": "2018-05-29",
       "operation": "GetItem",
       "key": {
-          "id": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.source.notificationOrganizationId, "___xamznone____"))
+          "id": $util.dynamodb.toDynamoDBJson($util.defaultIfNullOrBlank($ctx.source.orgId, "___xamznone____"))
     }
   }
 #end

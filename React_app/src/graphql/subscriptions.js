@@ -8,7 +8,8 @@ export const onCreateUser = /* GraphQL */ `
       name
       alarmTime
       email
-      keyword {
+      password
+      keywords {
         items {
           id
           userId
@@ -30,7 +31,8 @@ export const onUpdateUser = /* GraphQL */ `
       name
       alarmTime
       email
-      keyword {
+      password
+      keywords {
         items {
           id
           userId
@@ -52,7 +54,8 @@ export const onDeleteUser = /* GraphQL */ `
       name
       alarmTime
       email
-      keyword {
+      password
+      keywords {
         items {
           id
           userId
@@ -78,7 +81,8 @@ export const onCreateUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -112,7 +116,8 @@ export const onUpdateUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -146,7 +151,8 @@ export const onDeleteUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -176,6 +182,7 @@ export const onCreateNotification = /* GraphQL */ `
       name
       content
       link
+      orgId
       organization {
         id
         name
@@ -204,6 +211,7 @@ export const onUpdateNotification = /* GraphQL */ `
       name
       content
       link
+      orgId
       organization {
         id
         name
@@ -232,6 +240,7 @@ export const onDeleteNotification = /* GraphQL */ `
       name
       content
       link
+      orgId
       organization {
         id
         name
@@ -264,6 +273,7 @@ export const onCreateNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        orgId
         organization {
           id
           name
@@ -304,6 +314,7 @@ export const onUpdateNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        orgId
         organization {
           id
           name
@@ -344,6 +355,7 @@ export const onDeleteNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        orgId
         organization {
           id
           name

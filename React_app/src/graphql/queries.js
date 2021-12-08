@@ -8,7 +8,8 @@ export const getUser = /* GraphQL */ `
       name
       alarmTime
       email
-      keyword {
+      password
+      keywords {
         items {
           id
           userId
@@ -39,7 +40,8 @@ export const listUsers = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -60,7 +62,8 @@ export const getUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        keyword {
+        password
+        keywords {
           nextToken
         }
         createdAt
@@ -99,6 +102,7 @@ export const listUserKeywords = /* GraphQL */ `
           name
           alarmTime
           email
+          password
           createdAt
           updatedAt
         }
@@ -122,6 +126,7 @@ export const getNotification = /* GraphQL */ `
       name
       content
       link
+      orgId
       organization {
         id
         name
@@ -179,6 +184,7 @@ export const getNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        orgId
         organization {
           id
           name
@@ -224,6 +230,7 @@ export const listNotiKeywords = /* GraphQL */ `
           name
           content
           link
+          orgId
           createdAt
           updatedAt
         }
@@ -317,6 +324,153 @@ export const listOrganizations = /* GraphQL */ `
         updatedAt
       }
       nextToken
+    }
+  }
+`;
+export const userByEmail = /* GraphQL */ `
+  query UserByEmail(
+    $email: String
+    $sortDirection: ModelSortDirection
+    $filter: ModelUserFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    userByEmail(
+      email: $email
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        name
+        alarmTime
+        email
+        password
+        keywords {
+          keyword{
+            id
+            name
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const searchNotifications = /* GraphQL */ `
+  query SearchNotifications(
+    $filter: SearchableNotificationFilterInput
+    $sort: SearchableNotificationSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchNotifications(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        content
+        link
+        orgId
+        organization {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        keywords {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchNotiKeywords = /* GraphQL */ `
+  query SearchNotiKeywords(
+    $filter: SearchableNotiKeywordFilterInput
+    $sort: SearchableNotiKeywordSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchNotiKeywords(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        notiId
+        keywordId
+        noti {
+          id
+          name
+          content
+          link
+          orgId
+          createdAt
+          updatedAt
+        }
+        keyword {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;
+export const searchKeywords = /* GraphQL */ `
+  query SearchKeywords(
+    $filter: SearchableKeywordFilterInput
+    $sort: SearchableKeywordSortInput
+    $limit: Int
+    $nextToken: String
+    $from: Int
+  ) {
+    searchKeywords(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+      from: $from
+    ) {
+      items {
+        id
+        name
+        users {
+          nextToken
+        }
+        notis {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+      total
     }
   }
 `;

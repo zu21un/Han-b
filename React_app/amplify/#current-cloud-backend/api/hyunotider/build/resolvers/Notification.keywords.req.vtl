@@ -1,4 +1,4 @@
-#if( $util.isNull($context.source.id) )
+#if( $util.isNull($ctx.source.id) )
   #set( $result = {
   "items":   []
 } )
@@ -6,16 +6,54 @@
 #else
   #set( $limit = $util.defaultIfNull($context.args.limit, 100) )
   #set( $query = {
-  "expression": "#connectionAttribute = :connectionAttribute",
+  "expression": "#partitionKey = :partitionKey",
   "expressionNames": {
-      "#connectionAttribute": "notificationKeywordsId"
+      "#partitionKey": "notiId"
   },
   "expressionValues": {
-      ":connectionAttribute": {
+      ":partitionKey": {
           "S": "$context.source.id"
     }
   }
 } )
+  ## [Start] Applying Key Condition **
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.beginsWith) )
+    #set( $query.expression = "$query.expression AND begins_with(#sortKey, :sortKey)" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.beginsWith" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.between) )
+    #set( $query.expression = "$query.expression AND #sortKey BETWEEN :sortKey0 AND :sortKey1" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey0", { "S": "$ctx.args.keywordId.between[0]" }))
+    $util.qr($query.expressionValues.put(":sortKey1", { "S": "$ctx.args.keywordId.between[1]" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.eq) )
+    #set( $query.expression = "$query.expression AND #sortKey = :sortKey" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.eq" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.lt) )
+    #set( $query.expression = "$query.expression AND #sortKey < :sortKey" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.lt" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.le) )
+    #set( $query.expression = "$query.expression AND #sortKey <= :sortKey" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.le" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.gt) )
+    #set( $query.expression = "$query.expression AND #sortKey > :sortKey" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.gt" }))
+  #end
+  #if( !$util.isNull($ctx.args.keywordId) && !$util.isNull($ctx.args.keywordId.ge) )
+    #set( $query.expression = "$query.expression AND #sortKey >= :sortKey" )
+    $util.qr($query.expressionNames.put("#sortKey", "keywordId"))
+    $util.qr($query.expressionValues.put(":sortKey", { "S": "$ctx.args.keywordId.ge" }))
+  #end
+  ## [End] Applying Key Condition **
 {
       "version": "2018-05-29",
       "operation": "Query",
@@ -40,6 +78,6 @@ $util.toJson($context.args.nextToken)
     #else
 null
     #end,
-      "index": "gsi-Notification.keywords"
+      "index": "byNotiId"
   }
 #end

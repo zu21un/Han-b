@@ -3,7 +3,8 @@ type User {
   name: String!
   alarmTime: String!
   email: String!
-  keyword(keywordId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
+  password: String!
+  keywords(keywordId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -23,8 +24,9 @@ type Notification {
   name: String!
   content: String!
   link: String!
+  orgId: ID!
   organization: Organization!
-  keywords(filter: ModelNotiKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelNotiKeywordConnection
+  keywords(keywordId: ModelIDKeyConditionInput, filter: ModelNotiKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelNotiKeywordConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
 }
@@ -42,7 +44,7 @@ type NotiKeyword {
 type Keyword {
   id: ID!
   name: String!
-  users(keywordId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
+  users(userId: ModelIDKeyConditionInput, filter: ModelUserKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelUserKeywordConnection
   notis(notiId: ModelIDKeyConditionInput, filter: ModelNotiKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelNotiKeywordConnection
   createdAt: AWSDateTime!
   updatedAt: AWSDateTime!
@@ -143,6 +145,7 @@ input ModelUserFilterInput {
   name: ModelStringInput
   alarmTime: ModelStringInput
   email: ModelStringInput
+  password: ModelStringInput
   and: [ModelUserFilterInput]
   or: [ModelUserFilterInput]
   not: ModelUserFilterInput
@@ -174,6 +177,10 @@ type Query {
   listKeywords(filter: ModelKeywordFilterInput, limit: Int, nextToken: String): ModelKeywordConnection
   getOrganization(id: ID!): Organization
   listOrganizations(filter: ModelOrganizationFilterInput, limit: Int, nextToken: String): ModelOrganizationConnection
+  userByEmail(email: String, sortDirection: ModelSortDirection, filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
+  searchNotifications(filter: SearchableNotificationFilterInput, sort: SearchableNotificationSortInput, limit: Int, nextToken: String, from: Int): SearchableNotificationConnection
+  searchNotiKeywords(filter: SearchableNotiKeywordFilterInput, sort: SearchableNotiKeywordSortInput, limit: Int, nextToken: String, from: Int): SearchableNotiKeywordConnection
+  searchKeywords(filter: SearchableKeywordFilterInput, sort: SearchableKeywordSortInput, limit: Int, nextToken: String, from: Int): SearchableKeywordConnection
 }
 
 input CreateUserInput {
@@ -181,6 +188,7 @@ input CreateUserInput {
   name: String!
   alarmTime: String!
   email: String!
+  password: String!
 }
 
 input UpdateUserInput {
@@ -188,6 +196,7 @@ input UpdateUserInput {
   name: String
   alarmTime: String
   email: String
+  password: String
 }
 
 input DeleteUserInput {
@@ -219,6 +228,7 @@ input ModelUserConditionInput {
   name: ModelStringInput
   alarmTime: ModelStringInput
   email: ModelStringInput
+  password: ModelStringInput
   and: [ModelUserConditionInput]
   or: [ModelUserConditionInput]
   not: ModelUserConditionInput
@@ -293,6 +303,7 @@ input ModelNotificationFilterInput {
   name: ModelStringInput
   content: ModelStringInput
   link: ModelStringInput
+  orgId: ModelIDInput
   and: [ModelNotificationFilterInput]
   or: [ModelNotificationFilterInput]
   not: ModelNotificationFilterInput
@@ -303,7 +314,7 @@ input CreateNotificationInput {
   name: String!
   content: String!
   link: String!
-  notificationOrganizationId: ID!
+  orgId: ID!
 }
 
 input UpdateNotificationInput {
@@ -311,7 +322,7 @@ input UpdateNotificationInput {
   name: String
   content: String
   link: String
-  notificationOrganizationId: ID
+  orgId: ID
 }
 
 input DeleteNotificationInput {
@@ -322,6 +333,7 @@ input ModelNotificationConditionInput {
   name: ModelStringInput
   content: ModelStringInput
   link: ModelStringInput
+  orgId: ModelIDInput
   and: [ModelNotificationConditionInput]
   or: [ModelNotificationConditionInput]
   not: ModelNotificationConditionInput
@@ -345,14 +357,12 @@ input CreateNotiKeywordInput {
   id: ID
   notiId: ID!
   keywordId: ID!
-  notificationKeywordsId: ID
 }
 
 input UpdateNotiKeywordInput {
   id: ID!
   notiId: ID
   keywordId: ID
-  notificationKeywordsId: ID
 }
 
 input DeleteNotiKeywordInput {
@@ -443,4 +453,148 @@ input ModelIDKeyConditionInput {
   gt: ID
   between: [ID]
   beginsWith: ID
+}
+
+input SearchableStringFilterInput {
+  ne: String
+  gt: String
+  lt: String
+  gte: String
+  lte: String
+  eq: String
+  match: String
+  matchPhrase: String
+  matchPhrasePrefix: String
+  multiMatch: String
+  exists: Boolean
+  wildcard: String
+  regexp: String
+  range: [String]
+}
+
+input SearchableIntFilterInput {
+  ne: Int
+  gt: Int
+  lt: Int
+  gte: Int
+  lte: Int
+  eq: Int
+  range: [Int]
+}
+
+input SearchableFloatFilterInput {
+  ne: Float
+  gt: Float
+  lt: Float
+  gte: Float
+  lte: Float
+  eq: Float
+  range: [Float]
+}
+
+input SearchableBooleanFilterInput {
+  eq: Boolean
+  ne: Boolean
+}
+
+input SearchableIDFilterInput {
+  ne: ID
+  gt: ID
+  lt: ID
+  gte: ID
+  lte: ID
+  eq: ID
+  match: ID
+  matchPhrase: ID
+  matchPhrasePrefix: ID
+  multiMatch: ID
+  exists: Boolean
+  wildcard: ID
+  regexp: ID
+  range: [ID]
+}
+
+input SearchableNotificationFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  content: SearchableStringFilterInput
+  link: SearchableStringFilterInput
+  orgId: SearchableIDFilterInput
+  and: [SearchableNotificationFilterInput]
+  or: [SearchableNotificationFilterInput]
+  not: SearchableNotificationFilterInput
+}
+
+enum SearchableSortDirection {
+  asc
+  desc
+}
+
+enum SearchableNotificationSortableFields {
+  id
+  name
+  content
+  link
+  orgId
+}
+
+input SearchableNotificationSortInput {
+  field: SearchableNotificationSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableNotificationConnection {
+  items: [Notification]
+  nextToken: String
+  total: Int
+}
+
+input SearchableNotiKeywordFilterInput {
+  id: SearchableIDFilterInput
+  notiId: SearchableIDFilterInput
+  keywordId: SearchableIDFilterInput
+  and: [SearchableNotiKeywordFilterInput]
+  or: [SearchableNotiKeywordFilterInput]
+  not: SearchableNotiKeywordFilterInput
+}
+
+enum SearchableNotiKeywordSortableFields {
+  id
+  notiId
+  keywordId
+}
+
+input SearchableNotiKeywordSortInput {
+  field: SearchableNotiKeywordSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableNotiKeywordConnection {
+  items: [NotiKeyword]
+  nextToken: String
+  total: Int
+}
+
+input SearchableKeywordFilterInput {
+  id: SearchableIDFilterInput
+  name: SearchableStringFilterInput
+  and: [SearchableKeywordFilterInput]
+  or: [SearchableKeywordFilterInput]
+  not: SearchableKeywordFilterInput
+}
+
+enum SearchableKeywordSortableFields {
+  id
+  name
+}
+
+input SearchableKeywordSortInput {
+  field: SearchableKeywordSortableFields
+  direction: SearchableSortDirection
+}
+
+type SearchableKeywordConnection {
+  items: [Keyword]
+  nextToken: String
+  total: Int
 }

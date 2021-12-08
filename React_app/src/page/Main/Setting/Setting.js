@@ -31,6 +31,7 @@ export default function Setting(props){
     console.log('user use Effect Start!')
     API.graphql({ query: getUser, variables:{ id: user.id }})
     .then(res => {
+      console.log('Setting', res);
       setEmail(res.data.getUser.email);
       let mykeys_ = res.data.getUser.keywords.items;
       setMyKeys(mykeys_.map((item) => item.keyword.name));

@@ -13,7 +13,6 @@ import {API} from 'aws-amplify'
 import {listNotifications, listUsers} from '../../../graphql/queries'
 
 
-
 export default function Search() {
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState([])

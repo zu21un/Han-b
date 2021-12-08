@@ -10,7 +10,7 @@ type User @model
   alarmTime: String!
   email: String!
   password: String!
-  keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
+  keywords: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
 }
 
 type UserKeyword @model
@@ -26,10 +26,10 @@ type UserKeyword @model
   userId: ID!
   keywordId: ID!
   user: User! @connection(fields:["userId"])
-  keywords: Keyword! @connection(fields:["keywordId"])
+  keyword: Keyword! @connection(fields:["keywordId"])
 }
 
-type Notification @model
+type Notification @model @searchable
 {
   id: ID!
   name: String!
@@ -37,10 +37,10 @@ type Notification @model
   link: String!
   orgId: ID!
   organization: Organization! @connection(fields:["orgId"])
-  keywords: [NotiKeyword] @connection
+  keywords: [NotiKeyword] @connection (keyName: "byNotiId", fields:["id"])
 }
 
-type NotiKeyword @model
+type NotiKeyword @model @searchable
 @key(
   name: "byNotiId",
   fields: [ "notiId", "keywordId"]
@@ -53,13 +53,13 @@ type NotiKeyword @model
   notiId: ID!
   keywordId: ID!
   noti: Notification! @connection(fields:["notiId"])
-  keyword: Keyword! @connection(fields:["keywordId"])
+  keyword: Keyword! @connection(fields:["keywordId"]) 
 }
 
-type Keyword @model
+type Keyword @model @searchable
 {
   id: ID!
-  name: String!
+  name: String! 
   users: [UserKeyword] @connection(keyName: "byKeywordId", fields:["id"])
   notis: [NotiKeyword] @connection(keyName: "byKeywordId", fields:["id"])
 }
