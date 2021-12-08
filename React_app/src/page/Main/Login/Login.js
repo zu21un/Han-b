@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,6 +10,8 @@ import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import FormHelperText from '@mui/material/FormHelperText';
+
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -16,6 +19,8 @@ import { Paper } from '@mui/material';
 
 import API from '@aws-amplify/api';
 import { listUsers } from '../../../graphql/queries';
+
+const sha256 = require('js-sha256');
 
 function Copyright(props) {
   return (
@@ -34,17 +39,16 @@ const theme = createTheme();
 
 
 export default function Login(props) {
+  const [loginSuccess,setLoginSuccess] = useState(false);
+  const [loginError, setLoginError] = useState('');
   console.log(props)
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    let email = data.get('email')
+    let sha256Password = sha256(data.get('password')+data.get('email'))
     
-    API.graphql({query:listUsers, variables:{id:"1"}})
+    API.graphql({query:listUsers, variables:{}})
         .then(res => {
             let userData = res.data.listUsers.items
             console.log(userData)
@@ -52,11 +56,19 @@ export default function Login(props) {
               console.log(data.get('email'))
               console.log(user.email)
               console.log(user.id)
-              if(user.email == data.get('email')){
-                props.setUserId(user.id)
+              if(user.email == email && user.password == sha256Password){
+                props.setUserId(user.id);
+                setLoginSuccess(true)
+                break;
               }
             }
-            props.navigate("/setting")
+            if(loginSuccess){
+              console.log('로그인 성공')
+              props.navigate("/setting")
+            }
+            else{
+              setLoginError('입력하신 정보에 해당하는 사용자가 없습니다.');
+            }
         }).catch(e => console.log(e))
   };
 
@@ -106,6 +118,7 @@ export default function Login(props) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
+            <FormHelperText error={true}>{loginError}</FormHelperText>
             <Button
               type="submit"
               fullWidth

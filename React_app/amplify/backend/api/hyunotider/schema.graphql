@@ -1,9 +1,15 @@
 type User @model
+@key(
+  name: "byEmail",
+  fields: ["email"]
+  queryField: "userByEmail"
+)
 {
   id: ID!
   name: String!
   alarmTime: String!
   email: String!
+  password: String!
   keyword: [UserKeyword] @connection(keyName: "byUserId", fields:["id"]) 
 }
 
@@ -20,7 +26,7 @@ type UserKeyword @model
   userId: ID!
   keywordId: ID!
   user: User! @connection(fields:["userId"])
-  keyword: Keyword! @connection(fields:["keywordId"])
+  keywords: Keyword! @connection(fields:["keywordId"])
 }
 
 type Notification @model
@@ -29,7 +35,8 @@ type Notification @model
   name: String!
   content: String!
   link: String!
-  organization: Organization! @connection
+  orgId: ID!
+  organization: Organization! @connection(fields:["orgId"])
   keywords: [NotiKeyword] @connection
 }
 
