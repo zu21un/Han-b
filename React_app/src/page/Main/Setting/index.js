@@ -163,7 +163,7 @@ theme = {
   },
 };
 
-export default function SettingPage () {
+export default function SettingPage (props) {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
@@ -171,7 +171,7 @@ export default function SettingPage () {
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header />
             <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-              <Setting />
+              <Setting userId={props.userId} navigate={props.navigate}/>
             </Box>
         </Box>
       </Box>

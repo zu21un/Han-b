@@ -164,7 +164,7 @@ theme = {
   },
 };
 
-export default function SearchPage () {
+export default function SearchPage (props) {
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
