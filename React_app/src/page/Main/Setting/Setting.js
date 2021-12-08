@@ -18,33 +18,59 @@ import { getUser, listKeywords } from '../../../graphql/queries'
 
 export default function Setting() {
   const [email, setEmail] = useState('');
-  const [myKeywords, setMyKeywords] = useState([]);
-  const [remainKeywords, setRemainKeywords] = useState([]);
+  const [listKeys, setListKeys] = useState([]);
+  const [myKeys, setMyKeys] = useState([]);
+  const [remainKeys, setRemainKeys] = useState([]);
 
-  
   useEffect(() => {
     // email, user info setting
     API.graphql({ query: getUser, variables:{ id:"1" }})
     .then(res => {
       setEmail(res.data.getUser.email);
-      let keywordList = [];
-      for (let key of res.data.getUser.keyword.items){
-        keywordList.push(key.keyword.name);
-      }
-      keywordList.sort();
-      setMyKeywords(keywordList);
-      return API.graphql({ query: listKeywords, variables:{}});
-    }).then(res => {
-        let remainKeys = [];
-        for (let key of res.data.listKeywords.items){
-          if (myKeywords.indexOf(key.name) < 0) {
-            remainKeys.push(key.name);
-          }
-        }
-        setRemainKeywords(remainKeys);
-      }).catch(e => console.log(e));
+      let mykeys_ = res.data.getUser.keyword.items;
+      setMyKeys(mykeys_.map((item) => item.keyword.name));
+    })
+    .catch(e => console.log(e));
+      
+    API.graphql({ query: listKeywords, variables:{}})
+    .then(res => {
+        let listkeys_ = res.data.listKeywords.items;
+        setListKeys(listkeys_.map((item) => item.name));
+    })
+    .catch(e => console.log(e));
 
-  },[])
+  },[]);
+
+  useEffect(() => {
+    let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);
+    if (remain.length > 0) {
+      setRemainKeys(listKeys.filter((item) => myKeys.indexOf(item) < 0));
+    }
+  }, [listKeys, myKeys]);
+
+
+  const Mykeys = () => {
+    return (myKeys.length > 0 ?
+    myKeys.map((item) => 
+      <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+        <Typography>
+        {item}
+        </Typography>
+      </Button>
+    ) : "")
+  }
+
+  const RemainKeys = () => {
+    return (remainKeys.length > 0 ?
+      remainKeys.map((item) => 
+        <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+          <Typography>
+          {item}
+          </Typography>
+        </Button>
+      ) : "")
+    }
+
 
   return (
     <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
@@ -99,15 +125,7 @@ export default function Setting() {
                 px: 1,
                 py: 0.5,
               }}>
-                {myKeywords.length > 0 ?
-                myKeywords.map((item) => 
-                  <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
-                    <Typography>
-                    {item}
-                    </Typography>
-                  </Button>
-                ) : ""
-              }
+                <Mykeys />
               </Box>
           </Paper>
         </Grid>
@@ -142,15 +160,7 @@ export default function Setting() {
                 px: 1,
                 py: 0.5,
               }}>
-                {remainKeywords.length > 0 ?
-                  remainKeywords.map((item) => 
-                    <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
-                      <Typography>
-                      {item}
-                      </Typography>
-                    </Button>
-                  ) : ""
-                }
+                <RemainKeys />
               </Box>
           </Paper>
         </Grid>
