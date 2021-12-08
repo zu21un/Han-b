@@ -32,7 +32,7 @@ export default function Setting(props){
     API.graphql({ query: getUser, variables:{ id: user.id }})
     .then(res => {
       setEmail(res.data.getUser.email);
-      let mykeys_ = res.data.getUser.keyword.items;
+      let mykeys_ = res.data.getUser.keywords.items;
       setMyKeys(mykeys_.map((item) => item.keyword.name));
     })
     .catch(e => console.log(e));
