@@ -168,6 +168,7 @@ theme = {
 export default function SettingPage (props) {
   const [user, setUser] = useState({})
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [myKeys, setMyKeys] = useState([]);
 
   useEffect(() => {
@@ -180,6 +181,7 @@ export default function SettingPage (props) {
       API.graphql({ query: getUser, variables:{ id: user.id }})
       .then(res => {
         console.log('Setting', res);
+        setName(res.data.getUser.name);
         setEmail(res.data.getUser.email);
         let mykeys_ = res.data.getUser.keywords.items;
         setMyKeys(mykeys_.map((item) => item.keyword.name));
@@ -196,7 +198,8 @@ export default function SettingPage (props) {
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
         <CssBaseline />
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header />
+          <Header userName={name}/>
+          {/* <Header /> */}
             <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
               <Setting 
                 userId={user.id} 

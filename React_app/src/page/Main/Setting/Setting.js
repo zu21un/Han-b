@@ -36,7 +36,7 @@ export default function Setting(props){
     })
     .catch(e => console.log(e));
 
-  },[user]);
+  },[user.id]);
 
   useEffect(() => {
     let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);

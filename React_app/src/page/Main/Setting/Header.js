@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
@@ -12,7 +12,14 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 
-function Header() {
+function Header(props) {
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    setName(props.userName);
+    console.log('props', props);
+  }, [props])
+
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
@@ -23,9 +30,14 @@ function Header() {
               </Typography>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" sx={{ p: 0.5 }}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-              </IconButton>
+              {name != '' ?
+                <Typography color="inherit">
+                  {name}님, 안녕하세요!
+                </Typography> :
+                <Typography color="inherit">
+                  로그인 해주세요
+                </Typography>
+              }
             </Grid>
           </Grid>
         </Toolbar>
