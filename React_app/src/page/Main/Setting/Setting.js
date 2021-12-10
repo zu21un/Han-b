@@ -13,31 +13,22 @@ import Tooltip from '@mui/material/Tooltip';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser, listKeywords } from '../../../graphql/queries'
-import { Link } from '@mui/material';
+import { listKeywords } from '../../../graphql/queries'
 
 export default function Setting(props){
   const [user, setUser] = useState({})
   const [email, setEmail] = useState('');
-  const [listKeys, setListKeys] = useState([]);
   const [myKeys, setMyKeys] = useState([]);
+  const [listKeys, setListKeys] = useState([]);
   const [remainKeys, setRemainKeys] = useState([]);  
   
   useEffect(() => {
-    setUser({id:props.userId})
-  }, [])
+    setUser({id:props.userId});
+    setEmail(props.userEmail);
+    setMyKeys(props.userKeywords);
+  }, [props])
+
   useEffect(() => {
-    // email, user info setting
-    console.log('user use Effect Start!')
-    API.graphql({ query: getUser, variables:{ id: user.id }})
-    .then(res => {
-      console.log('Setting', res);
-      setEmail(res.data.getUser.email);
-      let mykeys_ = res.data.getUser.keywords.items;
-      setMyKeys(mykeys_.map((item) => item.keyword.name));
-    })
-    .catch(e => console.log(e));
-      
     API.graphql({ query: listKeywords, variables:{}})
     .then(res => {
         let listkeys_ = res.data.listKeywords.items;
@@ -45,7 +36,7 @@ export default function Setting(props){
     })
     .catch(e => console.log(e));
 
-  },[user]);
+  },[user.id]);
 
   useEffect(() => {
     let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);
@@ -78,10 +69,6 @@ export default function Setting(props){
     )
   }
 
-  const login = (e) => {
-    props.navigate("/login")
-  }
-
   return (
     <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
       <AppBar
@@ -100,7 +87,7 @@ export default function Setting(props){
                 <Typography color="text.secondary" align="center">
                   {email}
                 </Typography> :
-                <Button variant="contained" onClick={login} sx={{ width:'auto', mx: 1, my: 1 }}>
+                <Button variant="contained" onClick={props.handleLogin} sx={{ width:'auto', mx: 1, my: 1 }}>
                   <Typography>
                     로그인
                   </Typography>

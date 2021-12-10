@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
+import API from '@aws-amplify/api';
+import { getUser } from '../../../graphql/queries'
 
 import Header from './Header';
 import Setting from './Setting';
@@ -164,14 +166,46 @@ theme = {
 };
 
 export default function SettingPage (props) {
+  const [user, setUser] = useState({})
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [myKeys, setMyKeys] = useState([]);
+
+  useEffect(() => {
+    setUser({id:props.userId})
+  }, [props])
+
+  useEffect(() => {
+      // email, user info setting
+      console.log('user use Effect Start!')
+      API.graphql({ query: getUser, variables:{ id: user.id }})
+      .then(res => {
+        console.log('Setting', res);
+        setName(res.data.getUser.name);
+        setEmail(res.data.getUser.email);
+        let mykeys_ = res.data.getUser.keywords.items;
+        setMyKeys(mykeys_.map((item) => item.keyword.name));
+      })
+      .catch(e => console.log(e));
+  }, [user]);
+
+  const handleLogin = (e) => {
+    props.navigate("/login")
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
         <CssBaseline />
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header />
+          <Header userName={name}/>
+          {/* <Header /> */}
             <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-              <Setting userId={props.userId} navigate={props.navigate}/>
+              <Setting 
+                userId={user.id} 
+                userEmail={email}
+                userKeywords={myKeys}
+                handleLogin={handleLogin} />
             </Box>
         </Box>
       </Box>
