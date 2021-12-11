@@ -23,9 +23,9 @@ function Header() {
               </Typography>
             </Grid>
             <Grid item>
-              <IconButton color="inherit" sx={{ p: 0.5 }}>
-                <Avatar src="/static/images/avatar/1.jpg" alt="My Avatar" />
-              </IconButton>
+              <Typography color="inherit">
+                로그인 해주세요
+              </Typography>
             </Grid>
           </Grid>
         </Toolbar>
