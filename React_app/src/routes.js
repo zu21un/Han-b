@@ -5,8 +5,8 @@ import React, { useState, useEffect } from 'react';
 import SearchPage from './page/Main/Search/index';
 import SettingPage from './page/Main/Setting/index';
 import LoginPage from './page/Main/Login/index';
-// import Loginpage from './page/Login';
-
+import SignupPage from './page/Main/Signup/index';
+import FindPasswordPage from './page/Main/FindPassword/index';
 
 //-----------------------------------------------------
 export default function Router() {
@@ -32,5 +32,13 @@ export default function Router() {
         path: 'login',
         element: <LoginPage setUserId={setUserId} navigate={navigate}/>
       },
+      {
+        path: 'signup',
+        element: <SignupPage setUserId={setUserId} navigate={navigate}/>
+      },
+      {
+        path: 'findpassword',
+        element: <FindPasswordPage setUserId={setUserId} navigate={navigate}/>
+      }
     ]);
   }

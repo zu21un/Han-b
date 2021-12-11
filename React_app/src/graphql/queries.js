@@ -344,14 +344,14 @@ export const userByEmail = /* GraphQL */ `
     ) {
       items {
         id
-        name
-        alarmTime
         email
         password
         keywords {
-          keyword{
-            id
-            name
+          items{
+            keyword{
+              id
+              name
+            }
           }
           nextToken
         }

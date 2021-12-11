@@ -158,7 +158,6 @@ theme = {
 };
 
 export default function LoginPage(props) {
-  
   return (
     <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>

@@ -8,7 +8,7 @@ import API from '@aws-amplify/api';
 import { getUser } from '../../../graphql/queries'
 
 import Header from './Header';
-import Signup from './Signup';
+import FindPassword from './FindPassword';
 
 // function Copyright() {
 //   return (
@@ -165,7 +165,7 @@ theme = {
   },
 };
 
-export default function SignupPage (props) {
+export default function FindPasswordPage (props) {
   return (
     <ThemeProvider theme={theme}>
         <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
@@ -173,7 +173,7 @@ export default function SignupPage (props) {
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Header />
                 <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                    <Signup setUserId={props.setUserId} navigate={props.navigate}/>
+                    <FindPassword setUserId={props.setUserId} navigate={props.navigate}/>
                 </Box>
             </Box>
         </Box>

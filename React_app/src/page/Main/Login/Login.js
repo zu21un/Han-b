@@ -18,7 +18,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Paper } from '@mui/material';
 
 import API from '@aws-amplify/api';
-import { listUsers } from '../../../graphql/queries';
+import { listUsers, userByEmail } from '../../../graphql/queries';
 
 const sha256 = require('js-sha256');
 
@@ -41,41 +41,36 @@ const theme = createTheme();
 export default function Login(props) {
   let loginSuccess = false;
   const [loginError, setLoginError] = useState('');
-  console.log(props)
+  
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
     let email = data.get('email')
     let sha256Password = sha256(data.get('password')+data.get('email'))
-    console.log(sha256Password)
     
-    API.graphql({query:listUsers, variables:{}})
+    API.graphql({query:userByEmail, variables:{email:email}})
         .then(res => {
-            let userData = res.data.listUsers.items
-            console.log(userData)
-            for( let user of userData){
-              console.log(data.get('email'))
-              console.log(user.email)
-              console.log(user.password)
-              if(user.email == email && user.password == sha256Password){
-                props.setUserId(user.id); 
-                loginSuccess = true
-                console.log('loginSUccess', loginSuccess)
-                break;
+            let userData = res.data.userByEmail.items
+            if(userData.length != 0){
+              let user = userData[0]
+              if(user.password == sha256Password){
+                props.setUserId(user.id);
+                props.navigate("/setting")
+              }else{
+                setLoginError('비밀번호가 일치하지 않습니다.');
               }
-            }
-            if(loginSuccess){
-              console.log('로그인 성공')
-              props.navigate("/setting")
-            }
-            else{
-              setLoginError('입력하신 정보에 해당하는 사용자가 없습니다.');
+            }else{
+              setLoginError('입력하신 아이디가 일치하는 사용자가 없습니다.');
             }
         }).catch(e => console.log(e))
   };
 
-  const onLoginSuccess = (event) => {
-    console.log(event)
+  const signup = (event) => {
+    props.navigate("signup");
+  }
+  const findpassword = (event) => {
+    props.navigate("findpassword")
   }
   return (
     <ThemeProvider theme={theme}>
@@ -126,18 +121,17 @@ export default function Login(props) {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={onLoginSuccess}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="findpassword" variant="body2">
+                <Link onClick={findpassword} variant="body2">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="signup" variant="body2">
+                <Link onClick={signup} variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

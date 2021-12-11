@@ -17,7 +17,7 @@ import { listKeywords } from '../../../graphql/queries'
 
 export default function Setting(props){
   const [user, setUser] = useState({})
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [myKeys, setMyKeys] = useState([]);
   const [listKeys, setListKeys] = useState([]);
   const [remainKeys, setRemainKeys] = useState([]);  
@@ -83,7 +83,7 @@ export default function Setting(props){
               <EmailOutlinedIcon color="inherit" sx={{ display: 'block' }} />
             </Grid>
             <Grid item>
-              { email != "" ?
+              { props.email != "" ?
                 <Typography color="text.secondary" align="center">
                   {email}
                 </Typography> :
