@@ -10,8 +10,6 @@ import boto3
 import traceback
 
 class Information:
-
-#이렇게 만들면 터질거같음. 
     total_hypertitle = []
     total_title = []
 
