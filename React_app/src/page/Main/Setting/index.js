@@ -166,46 +166,32 @@ theme = {
 };
 
 export default function SettingPage (props) {
-  const [user, setUser] = useState({})
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [myKeys, setMyKeys] = useState([]);
+  // const [user, setUser] = useState({})
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
 
-  useEffect(() => {
-    setUser({id:props.userId})
-  }, [props])
+  // const [myKeys, setMyKeys] = useState([]);
 
-  useEffect(() => {
-      // email, user info setting
-      console.log('user use Effect Start!')
-      API.graphql({ query: getUser, variables:{ id: user.id }})
-      .then(res => {
-        console.log('Setting', res);
-        setName(res.data.getUser.name);
-        setEmail(res.data.getUser.email);
-        let mykeys_ = res.data.getUser.keywords.items;
-        setMyKeys(mykeys_.map((item) => item.keyword.name));
-      })
-      .catch(e => console.log(e));
-  }, [user]);
+  // useEffect(() => {
+  //   setUser({id:props.userInfo.id});
+  //   setName(props.userInfo.Name);
+  //   setEmail(props.userInfo.email);
+  // }, [props])
 
-  const handleLogin = (e) => {
-    props.navigate("/login")
-  }
+  // const handleLogin = (e) => {
+  //   props.navigate("/login")
+  // }
 
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
         <CssBaseline />
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header userName={name}/>
-          {/* <Header /> */}
+          <Header userName={props.userInfo.Name}/>
             <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
               <Setting 
-                userId={user.id} 
-                userEmail={email}
-                userKeywords={myKeys}
-                handleLogin={handleLogin} />
+                userInfo={props.userInfo}
+                navigate={props.navigate} />
             </Box>
         </Box>
       </Box>

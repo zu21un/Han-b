@@ -13,21 +13,14 @@ import Tooltip from '@mui/material/Tooltip';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { listKeywords } from '../../../graphql/queries'
+import { getUser, listKeywords } from '../../../graphql/queries'
 
 export default function Setting(props){
-  const [user, setUser] = useState({})
-  const [email, setEmail] = useState('');
   const [myKeys, setMyKeys] = useState([]);
   const [listKeys, setListKeys] = useState([]);
   const [remainKeys, setRemainKeys] = useState([]);  
-  
-  useEffect(() => {
-    setUser({id:props.userId});
-    setEmail(props.userEmail);
-    setMyKeys(props.userKeywords);
-  }, [props])
 
+  // all Key info setting
   useEffect(() => {
     API.graphql({ query: listKeywords, variables:{}})
     .then(res => {
@@ -35,21 +28,45 @@ export default function Setting(props){
         setListKeys(listkeys_.map((item) => item.name));
     })
     .catch(e => console.log(e));
+  }, [])
 
-  },[user.id]);
+  // user Key info setting
+  useEffect(() => {
+    API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
+    .then(res => {
+      let mykeys_ = res.data.getUser.keywords.items;
+        setMyKeys(mykeys_.map((item) => item.keyword.name));
+    })
+    .catch(e => console.log(e));
+  },[props.userInfo.id]);
 
+  // can add Key info setting
   useEffect(() => {
     let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);
     if (remain.length > 0) {
       setRemainKeys(listKeys.filter((item) => myKeys.indexOf(item) < 0));
     }
-  }, [listKeys, myKeys]);
+  }, [myKeys]);  
 
+  const handleLogin = (e) => {
+    props.navigate("/login")
+  }
 
+  const handleAddkey = (item,e) => {
+    setMyKeys([...myKeys, item]);
+    setRemainKeys(remainKeys.filter((keyword) => keyword != item));
+  }
+
+  const handleDeletekey = (item,e) => {
+    setMyKeys(myKeys.filter((keyword) => keyword != item));
+    setRemainKeys([...remainKeys, item]);
+  }
+
+  
   const Mykeys = () => {
-    return (myKeys.length > 0 ?
+    return (myKeys.length > 0 && props.userInfo.id != "" ?
     myKeys.map((item) => 
-      <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+      <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
         <Typography>
         {item}
         </Typography>
@@ -58,9 +75,9 @@ export default function Setting(props){
   }
 
   const RemainKeys = () => {
-    return (remainKeys.length > 0 && email != "" ?
+    return (remainKeys.length > 0 && props.userInfo.id != "" ?
       remainKeys.map((item) => 
-        <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+        <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
           <Typography>
           {item}
           </Typography>
@@ -83,11 +100,11 @@ export default function Setting(props){
               <EmailOutlinedIcon color="inherit" sx={{ display: 'block' }} />
             </Grid>
             <Grid item>
-              { email != "" ?
+              { props.userInfo.email != "" ?
                 <Typography color="text.secondary" align="center">
-                  {email}
+                  {props.userInfo.email}
                 </Typography> :
-                <Button variant="contained" onClick={props.handleLogin} sx={{ width:'auto', mx: 1, my: 1 }}>
+                <Button variant="contained" onClick={handleLogin} sx={{ width:'auto', mx: 1, my: 1 }}>
                   <Typography>
                     로그인
                   </Typography>

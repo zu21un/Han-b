@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';

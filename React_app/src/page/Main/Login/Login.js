@@ -42,6 +42,7 @@ export default function Login(props) {
   let loginSuccess = false;
   const [loginError, setLoginError] = useState('');
   console.log(props)
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -58,7 +59,7 @@ export default function Login(props) {
               console.log(user.email)
               console.log(user.password)
               if(user.email == email && user.password == sha256Password){
-                props.setUserId(user.id); 
+                props.handleUser(user.id); 
                 loginSuccess = true
                 console.log('loginSUccess', loginSuccess)
                 break;

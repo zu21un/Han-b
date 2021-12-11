@@ -73,7 +73,7 @@ export default function Search() {
                   placeholder="키워드를 검색하세요"
                   InputProps={{
                     disableUnderline: true,
-                    sx: { fontSize: 'default', mt: 0.5 },
+                    sx: { fontSize: 'default', mt: 1 },
                   }}
                   variant="standard"
                   onChange={handleChange}
