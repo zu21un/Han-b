@@ -65,7 +65,7 @@ export default function SignUp(props) {
     API.graphql({query:userByEmail, variables:{email:email}})
       .then((res)=>{
         if (res.data.userByEmail.items.length != 0){
-          setSignupError('*입력하신 이메일이 중복되었습니다.')
+          setSignupError('*입력하신 이메일은 존재하는 이메일입니다.')
           return;
         }else{
           return API.graphql({query:createUser, variables:{input: {name:nickname, alarmTime:'0900', email:email, password:password}}})
@@ -74,7 +74,7 @@ export default function SignUp(props) {
       .then((res) => {
         console.log('res', res)
         if(res){
-          props.setUserId(res.data.createUser.id);
+          props.handleUser(res.data.createUser.id);
           props.navigate("login");
         }
       })
@@ -99,7 +99,10 @@ export default function SignUp(props) {
   const login = (e)=>{
     props.navigate("login")
   }
-
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.navigate("login");
+  }
   let checkboxLabel = '이메일 정보 제공에 대해서 동의합니다.'
   return (
     <ThemeProvider theme={theme}>
@@ -163,10 +166,18 @@ export default function SignUp(props) {
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ mt: 3, mb: 1 }}
               disabled={disabled}
             >
               Sign Up
+            </Button>
+            <Button
+            fullWidth
+            variant="contained"
+            sx={{ }}
+            onClick={handleBack}
+            >
+              Back
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

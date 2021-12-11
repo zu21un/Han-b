@@ -163,9 +163,9 @@ export default function LoginPage(props) {
         <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
             <CssBaseline />
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <Header />
+                <Header navigate={props.navigate} />
                 <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                    <Login setUserId={props.setUserId} navigate={props.navigate}/>
+                    <Login handleUser={props.handleUser} navigate={props.navigate}/>
                 </Box>
             </Box>
         </Box>

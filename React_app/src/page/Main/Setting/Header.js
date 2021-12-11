@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
-import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 
 function Header(props) {
@@ -20,23 +19,31 @@ function Header(props) {
     console.log('props', props);
   }, [props])
 
+  const login = () => {
+    props.navigate("login");
+  }
+  const search = () => {
+    props.navigate("search");
+  }
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
-              <Typography color="inherit" variant="h5" component="h1">
-                HYU 공지알리
-              </Typography>
+              <Button onClick={search} variant="h5" component="h1">
+                <Typography color="inherit" variant="h5" component="h1">
+                  HYU 공지알리
+                </Typography>
+              </Button>
             </Grid>
             <Grid item>
               {name != '' ?
                 <Typography color="inherit">
                   {name}님, 안녕하세요!
                 </Typography> :
-                <Typography color="inherit">
+                <Button onClick={login} color="inherit">
                   로그인 해주세요
-                </Typography>
+                </Button>
               }
             </Grid>
           </Grid>

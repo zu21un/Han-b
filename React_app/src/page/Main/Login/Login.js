@@ -41,7 +41,7 @@ const theme = createTheme();
 export default function Login(props) {
   let loginSuccess = false;
   const [loginError, setLoginError] = useState('');
-  
+  // console.log(props)
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -55,7 +55,7 @@ export default function Login(props) {
             if(userData.length != 0){
               let user = userData[0]
               if(user.password == sha256Password){
-                props.setUserId(user.id);
+                props.handleUser(user.id);
                 props.navigate("/setting")
               }else{
                 setLoginError('비밀번호가 일치하지 않습니다.');

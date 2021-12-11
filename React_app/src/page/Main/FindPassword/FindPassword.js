@@ -64,7 +64,7 @@ export default function FindPassword(props) {
             sx={{ mt: 3, mb: 2 }}
             onClick={handleBack}
           >
-            Back to Login
+            Back
           </Button>
         </Box>
         <Copyright sx={{ mt: 5 }} />

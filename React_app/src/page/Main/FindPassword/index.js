@@ -171,9 +171,9 @@ export default function FindPasswordPage (props) {
         <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
             <CssBaseline />
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <Header />
+                <Header navigate={props.navigate}/>
                 <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                    <FindPassword setUserId={props.setUserId} navigate={props.navigate}/>
+                    <FindPassword setUserId={props.handleUser} navigate={props.navigate}/>
                 </Box>
             </Box>
         </Box>
