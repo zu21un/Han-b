@@ -48,10 +48,25 @@ export default function Setting(props){
     }
   }, [myKeys]);  
 
+  const handleLogin = (e) => {
+    props.navigate("/login")
+  }
+
+  const handleAddkey = (item,e) => {
+    setMyKeys([...myKeys, item]);
+    setRemainKeys(remainKeys.filter((keyword) => keyword != item));
+  }
+
+  const handleDeletekey = (item,e) => {
+    setMyKeys(myKeys.filter((keyword) => keyword != item));
+    setRemainKeys([...remainKeys, item]);
+  }
+
+  
   const Mykeys = () => {
-    return (myKeys.length > 0 ?
+    return (myKeys.length > 0 && props.userInfo.id != "" ?
     myKeys.map((item) => 
-      <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+      <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
         <Typography>
         {item}
         </Typography>
@@ -60,19 +75,15 @@ export default function Setting(props){
   }
 
   const RemainKeys = () => {
-    return (remainKeys.length > 0 && props.userInfo.email != "" ?
+    return (remainKeys.length > 0 && props.userInfo.id != "" ?
       remainKeys.map((item) => 
-        <Button variant="contained" sx={{ width:'auto', mx: 1, my: 1 }}>
+        <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
           <Typography>
           {item}
           </Typography>
         </Button>
       ) : ""
     )
-  }
-
-  const handleLogin = (e) => {
-    props.navigate("/login")
   }
 
   return (
