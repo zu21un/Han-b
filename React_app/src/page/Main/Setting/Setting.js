@@ -16,6 +16,7 @@ import API from '@aws-amplify/api';
 import { getUser, listKeywords } from '../../../graphql/queries'
 
 export default function Setting(props){
+
   const [myKeys, setMyKeys] = useState([]);
   const [listKeys, setListKeys] = useState([]);
   const [remainKeys, setRemainKeys] = useState([]);  
@@ -24,6 +25,7 @@ export default function Setting(props){
   useEffect(() => {
     API.graphql({ query: listKeywords, variables:{}})
     .then(res => {
+        console.log('res' , res); 
         let listkeys_ = res.data.listKeywords.items;
         setListKeys(listkeys_.map((item) => item.name));
     })
@@ -35,18 +37,19 @@ export default function Setting(props){
     API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
     .then(res => {
       let mykeys_ = res.data.getUser.keywords.items;
-        setMyKeys(mykeys_.map((item) => item.keyword.name));
+      setMyKeys(mykeys_.map((item) => item.keyword.name));
     })
     .catch(e => console.log(e));
   },[props.userInfo.id]);
 
   // can add Key info setting
   useEffect(() => {
+    console.log('listkey', listKeys, myKeys);
     let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);
     if (remain.length > 0) {
       setRemainKeys(listKeys.filter((item) => myKeys.indexOf(item) < 0));
     }
-  }, [myKeys]);  
+  }, [myKeys, listKeys]);
 
   const handleLogin = (e) => {
     props.navigate("/login")

@@ -6,9 +6,10 @@ import SearchPage from './page/Main/Search/index';
 import SettingPage from './page/Main/Setting/index';
 import LoginPage from './page/Main/Login/index';
 
+import SignupPage from './page/Main/Signup/index';
+import FindPasswordPage from './page/Main/FindPassword/index';
 import API from '@aws-amplify/api';
 import { getUser } from './graphql/queries'
-
 
 //-----------------------------------------------------
 export default function Router() {
@@ -36,7 +37,7 @@ export default function Router() {
       },
       {
         path: 'search',
-        element: <SearchPage userInfo={userInfo}/>
+        element: <SearchPage userInfo={userInfo} navigate={navigate}/>
       },
       {
         path: 'setting',
@@ -46,5 +47,13 @@ export default function Router() {
         path: 'login',
         element: <LoginPage handleUser={handleUser} navigate={navigate}/>
       },
+      {
+        path: 'signup',
+        element: <SignupPage handleUser={handleUser} navigate={navigate}/>
+      },
+      {
+        path: 'findpassword',
+        element: <FindPasswordPage handleUser={handleUser} navigate={navigate}/>
+      }
     ]);
   }

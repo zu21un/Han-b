@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
@@ -19,12 +21,10 @@ function Header(props) {
     console.log('props', props);
   }, [props])
 
-  const login = () => {
-    props.navigate("login");
-  }
   const search = () => {
     props.navigate("search");
   }
+
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
@@ -37,19 +37,14 @@ function Header(props) {
               </Button>
             </Grid>
             <Grid item>
-              {name != '' ?
-                <Typography color="inherit">
-                  {name}님, 안녕하세요!
-                </Typography> :
-                <Button onClick={login} color="inherit">
-                  로그인 해주세요
-                </Button>
-              }
+              <Typography color="inherit">
+                로그인 해주세요
+              </Typography>
             </Grid>
           </Grid>
         </Toolbar>
         <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
-          <Tabs value={1} textColor="inherit">
+          <Tabs value={false} textColor="inherit">
               <Tab label="검 색" component={RouterLink} to="/search"  />
               <Tab label="설 정" component={RouterLink} to="/setting" />
           </Tabs>

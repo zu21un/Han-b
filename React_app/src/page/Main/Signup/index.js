@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
+import API from '@aws-amplify/api';
+import { getUser } from '../../../graphql/queries'
 
 import Header from './Header';
-import Search from './Search';
-
+import Signup from './Signup';
 
 // function Copyright() {
 //   return (
@@ -164,18 +165,18 @@ theme = {
   },
 };
 
-export default function SearchPage (props) {
+export default function SignupPage (props) {
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
-        <CssBaseline />
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header userInfo={props.userInfo} navigate={props.navigate}/>
-            <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-              <Search />
+        <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
+            <CssBaseline />
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <Header navigate={props.navigate}/>
+                <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
+                    <Signup handleUser={props.handleUser} navigate={props.navigate}/>
+                </Box>
             </Box>
         </Box>
-      </Box>
     </ThemeProvider>
   );
 }
