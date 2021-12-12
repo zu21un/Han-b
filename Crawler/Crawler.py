@@ -4,7 +4,7 @@ import inspect
 from urllib.request import urlopen
 from urllib.request import Request
 import SendingEmail 
-import schedule
+# import schedule
 import time
 import boto3
 import traceback
@@ -20,9 +20,6 @@ class Information:
     
     # def load(self, hypertitle, title):
 
-
-
-
 class Crawler:
     text = ''
 
@@ -35,11 +32,8 @@ class Crawler:
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
         req.add_header("Accept-Language", "ko-KR,ko;")
 
-
         data = ''
-
         try:
-            
             response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
             
             html = response.read()
@@ -50,12 +44,9 @@ class Crawler:
             headInlink = soup.find('head').find('link')
             link = headInlink['href']
             
-            
-
             title = []
             for i in range(0, len(data) ):
                 title.append(data[i].get_text().strip() )
-
 
             hyperTitle = []
             for i in range(0, len(data)):
@@ -69,17 +60,12 @@ class Crawler:
 
         return info #string형식으로 반환.
 
-
-
-
-
     def getData2(self): #데이터 가져오는것.
         print ("한양대학교 소프트웨어중심대학")
         req = Request("http://hysoft.hanyang.ac.kr/modules/board/bd_list.html?id=wt_notice")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
         req.add_header("Accept-Language", "ko-KR,ko;")
     
-
         data = ''
 
         try:
@@ -150,58 +136,60 @@ class Crawler:
 
             info = Information(hyperTitle, title, 3)
 
-
         except Exception as e:
             print('Exception ')
         #   raise CrawlerException(e)
 
         return info #string형식으로 반환.
 
-cnt = 0
-info = []
-info1 = Crawler().getData1()
+def main():
+    #Notification crawling
+    cnt = 0
+    info = []
+    info1 = Crawler().getData1()
+    info.append(info1)
 
-info.append(info1)
+    info2 = Crawler().getData2()
+    info.append(info2)
 
+    info3 = Crawler().getData3()
+    info.append(info3)
 
-info2 = Crawler().getData2()
-info.append(info2)
+    # cnt += len(info3.title)
+    # print(cnt)
+    # for i in range(0, len(info)):
+    #     print(info[i])
+    #     for j in range(0, len(info[i].hypertitle)):
+    #         print('info.hyperlink : ' + info[i].hypertitle[j])
+    #         print('info.title : ' + info[i].title[j])
+    #         print('organization : ', end='')
+    #         print(info[i].organization)
 
-info3 = Crawler().getData3()
-info.append(info3)
+    # data 넣는 작업
+    session = boto3.Session(profile_name='default')
+    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
+    table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
-# cnt += len(info3.title)
-# print(cnt)
-
-# for i in range(0, len(info)):
-#     print(info[i])
-#     for j in range(0, len(info[i].hypertitle)):
-#         print('info.hyperlink : ' + info[i].hypertitle[j])
-#         print('info.title : ' + info[i].title[j])
-#         print('organization : ', end='')
-#         print(info[i].organization)
-
-session = boto3.Session(profile_name='bns')
-dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
-table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
-cnt = 7
-try:
-    print('Put_Item')
-    for i in range(0, len(info)):
-        for j in range(0, len(info[i].hypertitle)):
-            # print()
-            table.put_item(
-                Item={
-                        'id': str(cnt),
-                        'link': info[i].hypertitle[j],
-                        'name': info[i].title[j],
-                        'notificationOrganizationId' : str(info[i].organization)
-                    }
-                )
-            cnt += 1
-            
-except Exception as e:
-    print(e.response)
+    res_data = table.scan()
+    print(len(res_data))
+    print(type(res_data))
+    # cnt = 7
+    # try:
+    #     print('Put_Item')
+    #     for i in range(0, len(info)):
+    #         for j in range(0, len(info[i].hypertitle)):
+    #             # print()
+    #             table.put_item(
+    #                 Item={
+    #                         'id': str(cnt),
+    #                         'link': info[i].hypertitle[j],
+    #                         'name': info[i].title[j],
+    #                         'orgId' : str(info[i].organization)
+    #                     }
+    #                 )
+    #             cnt += 1            
+    # except Exception as e:
+    #     print(e.response)
 
 
 # e = SendingEmail.Email()
@@ -211,3 +199,6 @@ except Exception as e:
 # while True:
 #     schedule.run_pending()
 #     time.sleep(1)
+
+if __name__=="__main__":
+    main()

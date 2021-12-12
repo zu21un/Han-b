@@ -1,5 +1,5 @@
 #set( $indexPath = "/notification/doc/_search" )
-#set( $nonKeywordFields = [] )
+#set( $nonKeywordFields = ["date"] )
 #if( $util.isNullOrEmpty($context.args.sort) )
   #set( $sortDirection = "desc" )
   #set( $sortField = "id" )

@@ -35,8 +35,8 @@
         "s3TemplateURL": "https://s3.amazonaws.com/amplify-hyunotider-dev-114251-deployment/amplify-cfn-templates/api/cloudformation-template.json",
         "logicalId": "apihyunotider"
       },
-      "lastPushTimeStamp": "2021-12-08T19:52:29.326Z",
-      "lastPushDirHash": "Audce2AKoC3jhJjhLLRe1mZhz8k="
+      "lastPushTimeStamp": "2021-12-12T14:21:15.174Z",
+      "lastPushDirHash": "JyYLn+H5fRpXdpbMHpBKiaJgfTY="
     }
   }
 }
