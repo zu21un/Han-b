@@ -6,64 +6,9 @@ from urllib.request import Request
 import SendingEmail 
 # import schedule
 import time
-import boto3
 import traceback
-from boto3.dynamodb.conditions import Key, Attr
 import datetime
-import random
-import string
 
-def get_random_string(length):
-    # choose from all lowercase letter
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
-
-def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
-    session = boto3.Session(profile_name='bns')
-    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
-    notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
-    keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
-    noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
-    
-    keyword_list = []
-    notification_list = []
-
-    response = keywordTable.scan (
-        FilterExpression = Attr('id').exists()
-    ) 
-
-    for item in response['Items']:
-        # print(item['name'])
-        keyword_list.append(item)
-        # print(item)
-
-    response = notiTable.scan (
-        FilterExpression = Attr('id').exists()
-    ) 
-
-    for item in response['Items']:
-        # print(item['name'])
-        # print(item['link'])
-        # print(item['id'])
-        notification_list.append(item)
-    
-    cnt = 0
-    for i in range(0, len(notification_list)):
-        for j in range(0, len(keyword_list)):
-            if keyword_list[j]['name'] in notification_list[i]['name']:
-                title =  notification_list[i]['name']
-                key = keyword_list[j]['name']
-
-                res = f'{key} : {title}'
-                print(res)
-                noti_key_Table.put_item(
-                    Item={
-                            'id': str(cnt),
-                            'keywordId': keyword_list[j]['id'],
-                            'notiId': notification_list[i]['id'],
-                        }
-                )
-                cnt += 1
 
 class Information:
     filter_text = []
@@ -121,7 +66,7 @@ class Crawler:
             info = Information(hyperTitle, title, 1, date)
 
         except Exception as e:
-            print('Exception ')
+            print('Exception!', e)
         #   raise CrawlerException(e)
 
         return info #string형식으로 반환.
@@ -135,7 +80,6 @@ class Crawler:
         data = ''
 
         try:
-            
             response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
 
             html = response.read()
@@ -172,7 +116,7 @@ class Crawler:
 
             
         except Exception as e:
-            print('Exception ')
+            print('Exception!', e)
         
 
         return info #string형식으로 반환.
@@ -186,107 +130,55 @@ class Crawler:
         # req.add_header("Accept-Language", "ko-KR,ko;")
         data = ''
         try:
-            
             response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
-            # print(response)
-            
             html = response.read()
-            # print(html)
-            # print('헬로')
             soup = BeautifulSoup(html, 'html.parser') #여기서 오류발생. 
-            # print(soup)
-            #Beautifulsoup를 통해 가져온 html을 select로 뽑아내기.
-            data = soup.select('.left > a:nth-of-type(1)')
-            #content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)
-            #content_in > div > table.bbs_con > tbody > tr:nth-child(14) > td.left > a:nth-child(2)
             
-            data_date = soup.select('#content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)')
-            
-            # print('헬로1')
-            # print(data_date)
-            # print('헬로')
-            #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
             headInlink = soup.find('head').find('link')
             link = headInlink['href']
-            print(link)
-
-            title = []
-            for i in range(0, len(data) ):
-                title.append(data[i].get_text().strip())
-                # print(title[i])
-
-            hyperTitle = []
-            for i in range(0, len(data)):
-                hyperTitle.append((link + (data[i])['href']).strip())
-
-            date = []
             
-            for i in range(0, len(data_date)):
-                list = (data_date[i].get_text().strip()).split('.')
-                print(list)
-                d = datetime.datetime( int( list[0]) , int(list[1]) , int(list[2]) )
-                
-                date.append( d )
+            title = []
+            hyperTitle = []
+            date = []
+            data = soup.select('tbody > tr')
+            for tr in data:
+                tds = tr.select('td')
+                notidate = tds[3].text.split('.')
+                hyperTitle.append((link + tds[1].select('a')[0]['href']).strip())
+                title.append(tds[1].select('a')[0].text)
+                date.append( datetime.datetime(int(notidate[0]), int(notidate[1]), int(notidate[2])) )
+                # print(tds[1].select('a')[0]['href'])
+                # print(tds[1].select('a')[0].text)
+                # print(tds[3].text)
+
             info = Information(hyperTitle, title, 3, date)
 
+            #Beautifulsoup를 통해 가져온 html을 select로 뽑아내기.
+            # data = soup.select('.left > a:nth-of-type(1)')
+            # #content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)
+            # #content_in > div > table.bbs_con > tbody > tr:nth-child(14) > td.left > a:nth-child(2)
+            # data_date = soup.select('#content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)')
+            # title = []
+            # for i in range(0, len(data) ):
+            #     title.append(data[i].get_text().strip())
+            #     # print(title[i])
+
+            # hyperTitle = []
+            # for i in range(0, len(data)):
+            #     hyperTitle.append((link + (data[i])['href']).strip())
+            # date = []
+            # for i in range(0, len(data_date)):
+            #     list = (data_date[i].get_text().strip()).split('.')
+            #     print(list)
+            #     d = datetime.datetime( int( list[0]) , int(list[1]) , int(list[2]) )    
+            #     date.append( d )
+            
         except Exception as e:
-            print('Exception ')
+            print('Exception!', e)
         #   raise CrawlerException(e)
 
         return info #string형식으로 반환.
-
-def main():
-    #Notification crawling
-    #information class를 저장하는 변수
-    cnt = 0
-    info = []
-    info1 = Crawler().getData1()
-    info.append(info1)
-
-    info2 = Crawler().getData2()
-    info.append(info2)
-
-    info3 = Crawler().getData3()
-    info.append(info3)
-
-    # cnt += len(info3.title)
-    # print(cnt)
-    # for i in range(0, len(info)):
-    #     print(info[i])
-    #     for j in range(0, len(info[i].hypertitle)):
-    #         print('info.hyperlink : ' + info[i].hypertitle[j])
-    #         print('info.title : ' + info[i].title[j])
-    #         print('organization : ', end='')
-    #         print(info[i].organization)
-
-    # 크롤링한 내용 Database에  넣는 작업
-    session = boto3.Session(profile_name='default')
-    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
-    table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
-
-    res_data = table.scan()
-    print(len(res_data))
-    print(type(res_data))
-    # cnt = 7
-    # try:
-    #     print('Put_Item')
-    #     for i in range(0, len(info)):
-    #         for j in range(0, len(info[i].hypertitle)):
-    #             # print()
-    #             table.put_item(
-    #                 Item={
-    #                         'id': str(cnt),
-    #                         'link': info[i].hypertitle[j],
-    #                         'name': info[i].title[j],
-    #                         'orgId' : str(info[i].organization)
-    #                     }
-    #                 )
-    #             cnt += 1            
-    # except Exception as e:
-    #     print(e.response)
-    # put_NotiKeyword()
-
-
+        
 # Information class에 keyword를 저장해놓기
 # save_str = ''
 # for item in response['Items']:
@@ -314,6 +206,3 @@ def main():
 # while True:
 #     schedule.run_pending()
 #     time.sleep(1)
-
-if __name__=="__main__":
-    main()

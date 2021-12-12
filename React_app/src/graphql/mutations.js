@@ -11,7 +11,6 @@ export const createUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -37,7 +36,6 @@ export const updateUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -63,7 +61,6 @@ export const deleteUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -93,7 +90,6 @@ export const createUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -131,7 +127,6 @@ export const updateUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -169,7 +164,6 @@ export const deleteUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
