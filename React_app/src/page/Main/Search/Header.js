@@ -21,15 +21,16 @@ function Header(props) {
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item xs>
-            <Button onClick={search} variant="h5" >
+        <Grid container alignItems="center">
+            <Grid item xs={4}/>
+            <Grid item xs={4}>
+              <Button onClick={search} variant="h5" >
                 <Typography color="inherit" variant="h5">
                   HYU 공지알리
                 </Typography>
               </Button>
             </Grid>
-            <Grid item>
+            <Grid item xs={4} sx={{textAlign:'right'}}>
               {props.userInfo.Name != '' ?
                 <Typography color="inherit">
                   {props.userInfo.Name}님, 안녕하세요!
