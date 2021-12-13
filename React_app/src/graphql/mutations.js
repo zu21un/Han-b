@@ -11,7 +11,6 @@ export const createUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -37,7 +36,6 @@ export const updateUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -63,7 +61,6 @@ export const deleteUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -93,7 +90,6 @@ export const createUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -131,7 +127,6 @@ export const updateUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -169,7 +164,6 @@ export const deleteUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -201,8 +195,8 @@ export const createNotification = /* GraphQL */ `
     createNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
+      date
       orgId
       organization {
         id
@@ -233,8 +227,8 @@ export const updateNotification = /* GraphQL */ `
     updateNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
+      date
       orgId
       organization {
         id
@@ -265,8 +259,8 @@ export const deleteNotification = /* GraphQL */ `
     deleteNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
+      date
       orgId
       organization {
         id
@@ -301,8 +295,8 @@ export const createNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
+        date
         orgId
         organization {
           id
@@ -345,8 +339,8 @@ export const updateNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
+        date
         orgId
         organization {
           id
@@ -389,8 +383,8 @@ export const deleteNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
+        date
         orgId
         organization {
           id

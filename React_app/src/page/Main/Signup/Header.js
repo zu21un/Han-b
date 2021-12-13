@@ -30,8 +30,8 @@ function Header(props) {
         <Toolbar>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
-              <Button onClick={search} variant="h5" component="h1">
-                <Typography color="inherit" variant="h5" component="h1">
+              <Button onClick={search} variant="h5">
+                <Typography color="inherit" variant="h5">
                   HYU 공지알리
                 </Typography>
               </Button>

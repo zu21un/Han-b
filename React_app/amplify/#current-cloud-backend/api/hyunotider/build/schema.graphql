@@ -24,6 +24,7 @@ type Notification {
   name: String!
   content: String!
   link: String!
+  date: String!
   orgId: ID!
   organization: Organization!
   keywords(keywordId: ModelIDKeyConditionInput, filter: ModelNotiKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelNotiKeywordConnection
@@ -303,6 +304,7 @@ input ModelNotificationFilterInput {
   name: ModelStringInput
   content: ModelStringInput
   link: ModelStringInput
+  date: ModelStringInput
   orgId: ModelIDInput
   and: [ModelNotificationFilterInput]
   or: [ModelNotificationFilterInput]
@@ -314,6 +316,7 @@ input CreateNotificationInput {
   name: String!
   content: String!
   link: String!
+  date: String!
   orgId: ID!
 }
 
@@ -322,6 +325,7 @@ input UpdateNotificationInput {
   name: String
   content: String
   link: String
+  date: String
   orgId: ID
 }
 
@@ -333,6 +337,7 @@ input ModelNotificationConditionInput {
   name: ModelStringInput
   content: ModelStringInput
   link: ModelStringInput
+  date: ModelStringInput
   orgId: ModelIDInput
   and: [ModelNotificationConditionInput]
   or: [ModelNotificationConditionInput]
@@ -519,6 +524,7 @@ input SearchableNotificationFilterInput {
   name: SearchableStringFilterInput
   content: SearchableStringFilterInput
   link: SearchableStringFilterInput
+  date: SearchableStringFilterInput
   orgId: SearchableIDFilterInput
   and: [SearchableNotificationFilterInput]
   or: [SearchableNotificationFilterInput]
@@ -535,6 +541,7 @@ enum SearchableNotificationSortableFields {
   name
   content
   link
+  date
   orgId
 }
 

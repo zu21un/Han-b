@@ -182,6 +182,7 @@ export const onCreateNotification = /* GraphQL */ `
       name
       content
       link
+      date
       orgId
       organization {
         id
@@ -211,6 +212,7 @@ export const onUpdateNotification = /* GraphQL */ `
       name
       content
       link
+      date
       orgId
       organization {
         id
@@ -240,6 +242,7 @@ export const onDeleteNotification = /* GraphQL */ `
       name
       content
       link
+      date
       orgId
       organization {
         id
@@ -273,6 +276,7 @@ export const onCreateNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        date
         orgId
         organization {
           id
@@ -314,6 +318,7 @@ export const onUpdateNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        date
         orgId
         organization {
           id
@@ -355,6 +360,7 @@ export const onDeleteNotiKeyword = /* GraphQL */ `
         name
         content
         link
+        date
         orgId
         organization {
           id

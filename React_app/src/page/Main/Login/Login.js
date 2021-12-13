@@ -48,6 +48,7 @@ export default function Login(props) {
     const data = new FormData(event.currentTarget);
     let email = data.get('email')
     let sha256Password = sha256(data.get('password')+data.get('email'))
+    console.log(sha256Password)
     
     API.graphql({query:userByEmail, variables:{email:email}})
         .then(res => {

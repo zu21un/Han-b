@@ -8,7 +8,6 @@ export const getUser = /* GraphQL */ `
       name
       alarmTime
       email
-      password
       keywords {
         items {
           id
@@ -40,7 +39,6 @@ export const listUsers = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -62,7 +60,6 @@ export const getUserKeyword = /* GraphQL */ `
         name
         alarmTime
         email
-        password
         keywords {
           nextToken
         }
@@ -102,18 +99,11 @@ export const listUserKeywords = /* GraphQL */ `
           name
           alarmTime
           email
-          password
-          createdAt
-          updatedAt
         }
         keyword {
           id
           name
-          createdAt
-          updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -124,8 +114,8 @@ export const getNotification = /* GraphQL */ `
     getNotification(id: $id) {
       id
       name
-      content
       link
+      date
       orgId
       organization {
         id
@@ -159,6 +149,12 @@ export const listNotifications = /* GraphQL */ `
         id
         name
         link
+        date
+        orgId
+        organization {
+          id
+          name
+        }
         keywords {
           items{
             keyword{
@@ -182,8 +178,8 @@ export const getNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
+        date
         orgId
         organization {
           id
@@ -228,8 +224,8 @@ export const listNotiKeywords = /* GraphQL */ `
         noti {
           id
           name
-          content
           link
+          date
           orgId
           createdAt
           updatedAt
@@ -344,6 +340,8 @@ export const userByEmail = /* GraphQL */ `
     ) {
       items {
         id
+        name
+        alarmTime
         email
         password
         keywords {
@@ -380,8 +378,8 @@ export const searchNotifications = /* GraphQL */ `
       items {
         id
         name
-        content
         link
+        date
         orgId
         organization {
           id
@@ -422,8 +420,8 @@ export const searchNotiKeywords = /* GraphQL */ `
         noti {
           id
           name
-          content
           link
+          date
           orgId
           createdAt
           updatedAt
@@ -431,11 +429,7 @@ export const searchNotiKeywords = /* GraphQL */ `
         keyword {
           id
           name
-          createdAt
-          updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
       total
