@@ -9,7 +9,6 @@ import time
 import traceback
 import datetime
 
-
 class Information:
     filter_text = []
 
@@ -53,7 +52,10 @@ class Crawler:
             # 하이퍼링크 저장
             hyperTitle = []
             for i in range(0, len(data)):
-                hyperTitle.append( (link + data[i].find('a')['href']).strip() )
+                if data[i].find('a')['href'][:4] == "http":
+                    hyperTitle.append(data[i].find('a')['href'].strip())
+                else:
+                    hyperTitle.append( (link + data[i].find('a')['href']).strip() )
 
             #date 저장
             date = []
@@ -90,7 +92,7 @@ class Crawler:
             
             #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
             headInlink = soup.find('head').find('link')
-            link = headInlink['href']
+            link = headInlink['href'] + 'modules/board/'
             print(link)
 
             title = []
@@ -101,7 +103,6 @@ class Crawler:
 
             hyperTitle = []
             for i in range(0, len(data)):
-             
                 hyperTitle.append((link + data[i].find('a')['href']).strip())
             
             date = []

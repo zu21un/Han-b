@@ -11,16 +11,16 @@ def main():
     info = []
     info1 = crawler.getData1()
     info.append(info1)
-    info2 = crawler.getData2()
-    info.append(info2)
-    info3 = crawler.getData3()
-    info.append(info3)
+    # info2 = crawler.getData2()
+    # info.append(info2)
+    # info3 = crawler.getData3()
+    # info.append(info3)
 
     # info 값 debugging 용도
     # debugging_info(info)
 
     # put_noti(info)
-    put_NotiKeyword()
+    # put_NotiKeyword()
 
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
@@ -47,7 +47,7 @@ def put_noti(info):
                             'link': info[i].hypertitle[j],
                             'name': info[i].title[j],
                             'orgId' : str(info[i].organization),
-                            'date' : info[i].date[j].strftime("%Y-%m-%dT%H:%M:%S")
+                            'date' : info[i].date[j].strftime("%Y-%m-%d")
                         }
                     )
                 cnt += 1
@@ -114,7 +114,6 @@ def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함
 
 def debugging_info(info):
     for i in range(0, len(info)):
-        print(info[i].date)
         for j in range(0, len(info[i].hypertitle)):
             print('info.hyperlink : %s'%(info[i].hypertitle[j]))
             print('info.title : %s'%(info[i].title[j]))
@@ -126,7 +125,6 @@ def get_random_string(length):
     # choose from all lowercase letter
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(length))
-
 
 if __name__=="__main__":
     main()
