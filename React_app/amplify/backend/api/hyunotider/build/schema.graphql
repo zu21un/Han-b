@@ -24,7 +24,7 @@ type Notification {
   name: String!
   content: String!
   link: String!
-  date: AWSDateTime!
+  date: String!
   orgId: ID!
   organization: Organization!
   keywords(keywordId: ModelIDKeyConditionInput, filter: ModelNotiKeywordFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelNotiKeywordConnection
@@ -316,7 +316,7 @@ input CreateNotificationInput {
   name: String!
   content: String!
   link: String!
-  date: AWSDateTime!
+  date: String!
   orgId: ID!
 }
 
@@ -325,7 +325,7 @@ input UpdateNotificationInput {
   name: String
   content: String
   link: String
-  date: AWSDateTime
+  date: String
   orgId: ID
 }
 

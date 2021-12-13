@@ -35,7 +35,7 @@ type Notification @model @searchable
   name: String!
   content: String!
   link: String!
-  date: AWSDateTime!
+  date: String!
   orgId: ID!
   organization: Organization! @connection(fields:["orgId"])
   keywords: [NotiKeyword] @connection (keyName: "byNotiId", fields:["id"])

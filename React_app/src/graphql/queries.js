@@ -99,17 +99,11 @@ export const listUserKeywords = /* GraphQL */ `
           name
           alarmTime
           email
-          createdAt
-          updatedAt
         }
         keyword {
           id
           name
-          createdAt
-          updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -120,7 +114,6 @@ export const getNotification = /* GraphQL */ `
     getNotification(id: $id) {
       id
       name
-      content
       link
       date
       orgId
@@ -155,15 +148,12 @@ export const listNotifications = /* GraphQL */ `
       items {
         id
         name
-        content
         link
         date
         orgId
         organization {
           id
           name
-          createdAt
-          updatedAt
         }
         keywords {
           items{
@@ -174,8 +164,6 @@ export const listNotifications = /* GraphQL */ `
           }
           nextToken
         }
-        createdAt
-        updatedAt
       }
       nextToken
     }
@@ -190,7 +178,6 @@ export const getNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
         date
         orgId
@@ -237,7 +224,6 @@ export const listNotiKeywords = /* GraphQL */ `
         noti {
           id
           name
-          content
           link
           date
           orgId
@@ -357,6 +343,7 @@ export const userByEmail = /* GraphQL */ `
         name
         alarmTime
         email
+        password
         keywords {
           items{
             keyword{
@@ -391,7 +378,6 @@ export const searchNotifications = /* GraphQL */ `
       items {
         id
         name
-        content
         link
         date
         orgId
@@ -434,7 +420,6 @@ export const searchNotiKeywords = /* GraphQL */ `
         noti {
           id
           name
-          content
           link
           date
           orgId
@@ -444,11 +429,7 @@ export const searchNotiKeywords = /* GraphQL */ `
         keyword {
           id
           name
-          createdAt
-          updatedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
       total

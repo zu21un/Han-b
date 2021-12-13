@@ -107,7 +107,7 @@ export default function Search() {
             searchList.map((item, key, idx) => {
               return  <div sx={{textAlign:'left'}} key={key}>
                         <Link sx={{ mx: 8 }} color="text.secondary" fontSize="14px" target="_blank" href={item.link} underline="none" key={key}>
-                          {item.name}
+                          {item.name + ' | ' + item.date.substring(0,10) + ' | ' + item.organization.name} 
                         </Link>
                       </div>
             })

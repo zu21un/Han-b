@@ -195,7 +195,6 @@ export const createNotification = /* GraphQL */ `
     createNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
       date
       orgId
@@ -228,7 +227,6 @@ export const updateNotification = /* GraphQL */ `
     updateNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
       date
       orgId
@@ -261,7 +259,6 @@ export const deleteNotification = /* GraphQL */ `
     deleteNotification(input: $input, condition: $condition) {
       id
       name
-      content
       link
       date
       orgId
@@ -298,7 +295,6 @@ export const createNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
         date
         orgId
@@ -343,7 +339,6 @@ export const updateNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
         date
         orgId
@@ -388,7 +383,6 @@ export const deleteNotiKeyword = /* GraphQL */ `
       noti {
         id
         name
-        content
         link
         date
         orgId

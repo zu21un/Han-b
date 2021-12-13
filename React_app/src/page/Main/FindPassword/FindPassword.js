@@ -54,7 +54,7 @@ export default function FindPassword(props) {
           <Typography component="h1" variant="h5">
             {"비밀번호 재설정은 이메일 인증 기능이 필요하여 개발 중입니다."}
           </Typography>
-          <Typography component="h1" variant="h5">
+          <Typography component="h2" variant="h5">
             {"우선 다른 이메일로 다시 가입해주세요:)"}
           </Typography>
           <Button
