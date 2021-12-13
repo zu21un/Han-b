@@ -166,6 +166,7 @@ theme = {
 };
 
 export default function SettingPage (props) {
+  console.log('Setting Page props', props.userInfo);
   // const [user, setUser] = useState({})
   // const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
