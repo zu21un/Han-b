@@ -17,13 +17,9 @@ export const getUser = /* GraphQL */ `
             id
             name
           }
-          createdAt
-          updatedAt
         }
         nextToken
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -50,8 +46,8 @@ export const listUsers = /* GraphQL */ `
   }
 `;
 export const getUserKeyword = /* GraphQL */ `
-  query GetUserKeyword($id: ID!) {
-    getUserKeyword(id: $id) {
+  query GetUserKeyword($userId: ID!) {
+    getUserKeyword(userId: $userId) {
       id
       userId
       keywordId
