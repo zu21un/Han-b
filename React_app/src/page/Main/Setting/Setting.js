@@ -13,7 +13,8 @@ import Tooltip from '@mui/material/Tooltip';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser, listKeywords } from '../../../graphql/queries'
+import { getUser, listKeywords } from '../../../graphql/queries';
+// import {} from '../../../graphql/mutations';
 
 export default function Setting(props){
 
@@ -27,7 +28,7 @@ export default function Setting(props){
     .then(res => {
         console.log('res' , res); 
         let listkeys_ = res.data.listKeywords.items;
-        setListKeys(listkeys_.map((item) => item.name));
+        setListKeys(listkeys_.map((item) => item));
     })
     .catch(e => console.log(e));
   }, [])
@@ -36,8 +37,11 @@ export default function Setting(props){
   useEffect(() => {
     API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
     .then(res => {
-      let mykeys_ = res.data.getUser.keywords.items;
-      setMyKeys(mykeys_.map((item) => item.keyword.name));
+      console.log('res' , res); 
+      let myItem = res.data.getUser.keywords.items;
+      let mykeys_id = myItem.map((item) => item.keyword.id);
+      let mykeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) >= 0);
+      setMyKeys(mykeys_.map((item) => item));
     })
     .catch(e => console.log(e));
   },[props.userInfo.id]);
@@ -71,7 +75,7 @@ export default function Setting(props){
     myKeys.map((item) => 
       <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
         <Typography>
-        {item}
+        {item.name}
         </Typography>
       </Button>
     ) : "")
@@ -82,7 +86,7 @@ export default function Setting(props){
       remainKeys.map((item) => 
         <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
           <Typography>
-          {item}
+          {item.name}
           </Typography>
         </Button>
       ) : ""
