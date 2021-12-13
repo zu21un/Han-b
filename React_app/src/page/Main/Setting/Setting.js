@@ -13,11 +13,11 @@ import Tooltip from '@mui/material/Tooltip';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser, listKeywords } from '../../../graphql/queries';
-// import {} from '../../../graphql/mutations';
+import { getUser, listKeywords, getUserKeyword } from '../../../graphql/queries';
+import { createUserKeyword, deleteUserKeyword } from '../../../graphql/mutations';
 
 export default function Setting(props){
-
+  const [myKeysId, setMyKeysId] = useState([]);
   const [myKeys, setMyKeys] = useState([]);
   const [listKeys, setListKeys] = useState([]);
   const [remainKeys, setRemainKeys] = useState([]);  
@@ -26,51 +26,106 @@ export default function Setting(props){
   useEffect(() => {
     API.graphql({ query: listKeywords, variables:{}})
     .then(res => {
-        console.log('res' , res); 
+        // console.log('res' , res); 
         let listkeys_ = res.data.listKeywords.items;
-        setListKeys(listkeys_.map((item) => item));
-    })
-    .catch(e => console.log(e));
-  }, [])
+        console.log('listkeys_' , listkeys_);
+        // setListKeys(listkeys_.map((item) => item));
+        setListKeys(listkeys_);
+        console.log(props.userInfo.id)
+      }).catch(e => console.log(e));
+    }, [])
 
-  // user Key info setting
+  // user Key's id setting
   useEffect(() => {
     API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
     .then(res => {
-      console.log('res' , res); 
       let myItem = res.data.getUser.keywords.items;
+      console.log('myItem' , myItem);
       let mykeys_id = myItem.map((item) => item.keyword.id);
-      let mykeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) >= 0);
-      setMyKeys(mykeys_.map((item) => item));
-    })
-    .catch(e => console.log(e));
-  },[props.userInfo.id]);
+      console.log('myKeys_id', mykeys_id);
+      setMyKeysId(mykeys_id.map((id) => id));
+    }).catch(e => console.log(e));
+  }, [props])
 
-  // can add Key info setting
+  // myKeys and remainKeys setting
   useEffect(() => {
-    console.log('listkey', listKeys, myKeys);
-    let remain = listKeys.filter((item) => myKeys.indexOf(item) < 0);
-    if (remain.length > 0) {
-      setRemainKeys(listKeys.filter((item) => myKeys.indexOf(item) < 0));
+    let mykeys_ = listKeys.filter((item) => myKeysId.indexOf(item.id) >= 0);
+    console.log('mykeys_', mykeys_);
+    if (mykeys_.length > 0){
+      setMyKeys(mykeys_.map((item) => item));
     }
-  }, [myKeys, listKeys]);
+    else {
+      setMyKeys([]);
+    }
+
+    let remainkeys_ = listKeys.filter((item) => myKeysId.indexOf(item.id) < 0);
+    console.log('remainkeys_', remainkeys_);
+    if (remainkeys_.length > 0){
+      setRemainKeys(remainkeys_.map((item) => item));
+    }
+    else {
+      setRemainKeys([]);
+    }
+  }, [myKeysId, listKeys])
+
+  // user Key info setting
+  // useEffect(() => {
+  //   console.log('props', props);
+  //   API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
+  //   .then(res => {
+  //     console.log('res' , res);
+  //     let myItem = res.data.getUser.keywords.items;
+
+  //     let mykeys_id = myItem.map((item) => item.keyword.id);
+  //     console.log('myKeys_id', mykeys_id);
+  //     setMyKeysId(mykeys_id.map((id) => id));
+
+  //     let mykeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) >= 0);
+  //     console.log('mykeys_', mykeys_);
+  //     setMyKeys(mykeys_.map((item) => item));
+
+  //     let remainkeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) < 0);
+  //     console.log('remainkeys_', remainkeys_);
+  //     setRemainKeys(remainkeys_.map((item) => item));
+  //   })
+  //   .catch(e => console.log(e));
+  // },[props]);
+
 
   const handleLogin = (e) => {
     props.navigate("/login")
   }
 
-  const handleAddkey = (item,e) => {
-    setMyKeys([...myKeys, item]);
-    setRemainKeys(remainKeys.filter((keyword) => keyword != item));
+    
+  const handleDeletekey = (item,e) => {
+    API.graphql({ query: getUserKeyword, variables:{ userId: props.userInfo.id }})
+    .then(res =>{
+      console.log('getUserKeyword',res);
+    }).catch(e => console.log(e));
+
+
+    API.graphql({ query: deleteUserKeyword, variables:
+      { input:{ userId: props.userInfo.id, keywordId: item.id }}})
+      .then(res => {
+        console.log('res' , res); 
+        setMyKeys(myKeys.filter((key) => key != item));
+        setRemainKeys([...remainKeys, item]);
+      }).catch(e => console.log(e));
   }
 
-  const handleDeletekey = (item,e) => {
-    setMyKeys(myKeys.filter((keyword) => keyword != item));
-    setRemainKeys([...remainKeys, item]);
+  const handleAddkey = (item,e) => {
+    API.graphql({ query: createUserKeyword, variables:
+      { input:{ userId: props.userInfo.id, keywordId: item.id }}})
+      .then(res => {
+        console.log('res' , res); 
+        setMyKeys([...myKeys, item]);
+        setRemainKeys(remainKeys.filter((key) => key != item));
+      }).catch(e => console.log(e));
   }
 
   
   const Mykeys = () => {
+    // console.log('Mykeys', myKeys);
     return (myKeys.length > 0 && props.userInfo.id != "" ?
     myKeys.map((item) => 
       <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
@@ -82,6 +137,7 @@ export default function Setting(props){
   }
 
   const RemainKeys = () => {
+    // console.log('RemainKeys', remainKeys);
     return (remainKeys.length > 0 && props.userInfo.id != "" ?
       remainKeys.map((item) => 
         <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
