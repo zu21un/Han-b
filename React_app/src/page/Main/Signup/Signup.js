@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,7 +8,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FormHelperText from '@mui/material/FormHelperText';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -64,7 +62,7 @@ export default function SignUp(props) {
     API.graphql({query:userByEmail, variables:{email:email}})
       .then((res)=>{
         if (res.data.userByEmail.items.length != 0){
-          setSignupError('*입력하신 이메일은 존재하는 이메일입니다.')
+          setSignupError('입력하신 이메일은 존재하는 이메일입니다.')
           return;
         }else{
           return API.graphql({query:createUser, variables:{input: {name:nickname, alarmTime:'0900', email:email, password:password}}})
@@ -109,24 +107,21 @@ export default function SignUp(props) {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            mt: 5,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
-          </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            회원가입
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mx:30, mt: 3 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt : 2, mx: 27 }}>
             <TextField
               required
               fullWidth
               id="nickname"
-              label="Nickname"
+              label="이름"
               name="nickname"
               autoComplete="nickname"
               onChange={nicknameChange}
@@ -136,7 +131,7 @@ export default function SignUp(props) {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="이메일"
               name="email"
               autoComplete="email"
               onChange={emailChange}
@@ -146,7 +141,7 @@ export default function SignUp(props) {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="비밀번호"
               type="password"
               id="password"
               autoComplete="new-password"
@@ -168,7 +163,7 @@ export default function SignUp(props) {
               sx={{ mt: 3, mb: 1 }}
               disabled={disabled}
             >
-              Sign Up
+              회원가입
             </Button>
             <Button
             fullWidth
@@ -176,18 +171,18 @@ export default function SignUp(props) {
             sx={{ }}
             onClick={handleBack}
             >
-              Back
+              뒤로가기
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
+            <Grid container justifyContent="center">
+              <Grid item >
                 <Link onClick={login} variant="body2">
-                  Already have an account? Login
+                  계정이 있을 경우 로그인
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        <Copyright sx={{ m: 5 }} />
       </Paper>
     </ThemeProvider>
   );
