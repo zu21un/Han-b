@@ -8,12 +8,11 @@ import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Tooltip from '@mui/material/Tooltip';
+
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser, listKeywords, getUserKeyword } from '../../../graphql/queries';
+import { getUser, listKeywords, getUserKeyword, listUserKeywords } from '../../../graphql/queries';
 import { createUserKeyword, deleteUserKeyword } from '../../../graphql/mutations';
 
 export default function Setting(props){
@@ -100,19 +99,18 @@ export default function Setting(props){
   const handleDeletekey = (item,e) => {
     console.log(item)
     console.log(e)
-    API.graphql({ query: getUserKeyword, variables:{ userId: props.userInfo.id }})
-    .then(res =>{
-      console.log('getUserKeyword',res);
-    }).catch(e => console.log(e));
-
-
-    API.graphql({ query: deleteUserKeyword, variables:
-      { input:{ userId: props.userInfo.id, keywordId: item.id }}})
+    API.graphql({ query: listUserKeywords, variables:
+      { filter:{ userId: { eq: props.userInfo.id }, keywordId: { eq: item.id }}}})
       .then(res => {
-        console.log('res' , res); 
+        console.log('listUserKeywords',res.data.listUserKeywords.items[0]);
+        
+        API.graphql({ query: deleteUserKeyword, variables:
+          { input:{ id: res.data.listUserKeywords.items[0].id }}});
+
         setMyKeys(myKeys.filter((key) => key != item));
         setRemainKeys([...remainKeys, item]);
       }).catch(e => console.log(e));
+
   }
 
   const handleAddkey = (item,e) => {
@@ -120,7 +118,6 @@ export default function Setting(props){
     API.graphql({ query: createUserKeyword, variables:
       { input:{ userId: props.userInfo.id, keywordId: item.id }}})
       .then(res => {
-        console.log('res' , res); 
         setMyKeys([...myKeys, item]);
         setRemainKeys(remainKeys.filter((key) => key != item));
       }).catch(e => console.log(e));

@@ -30,7 +30,7 @@ function Header(props) {
                 </Typography>
               </Button>
             </Grid>
-            <Grid item xs={4} sx={{textAlign:'right'}}>
+            <Grid item xs={4} sx={{ textAlign:'right' }}>
               {props.userInfo.Name != '' ?
                 <Typography color="inherit">
                   {props.userInfo.Name}님, 안녕하세요!

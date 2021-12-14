@@ -46,8 +46,8 @@ export const listUsers = /* GraphQL */ `
   }
 `;
 export const getUserKeyword = /* GraphQL */ `
-  query GetUserKeyword($userId: ID!) {
-    getUserKeyword(userId: $userId) {
+  query GetUserKeyword($id: ID!) {
+    getUserKeyword(id: $id) {
       id
       userId
       keywordId
