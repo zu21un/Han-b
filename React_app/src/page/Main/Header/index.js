@@ -22,25 +22,24 @@ function Header(props) {
     props.navigate("signup");
   }
 
-  // color:"#003F75"
   return (
       <AppBar position="sticky" elevation={0} sx={{ py:1, color:"white",bgcolor:"#003F75"}}>
         <Toolbar>
         <Grid container alignItems="center">
-            <Grid item xs={2} sx={{ textAlign:'left' }}>
-              <Button onClick={search} variant="h5" >
-                <Typography color="inherit" variant="h4">
-                  Han:b
-                </Typography>
-              </Button>
-            </Grid>
             <Grid item xs={8} sx={{ textAlign:'left' }}>
-              <Tabs value={false} textColor="white" sx={{}}>
-                <Tab label="검 색" component={RouterLink} to="/search" sx={{ fontSize: 16 }} />
-                <Tab label="설 정" component={RouterLink} to="/setting" sx={{ fontSize: 16 }} />
-              </Tabs>
+              <Box display="flex" justifyContent="flex-start" alignItems="center">
+                <Button onClick={search} variant="h5" >
+                  <Typography color="inherit" variant="h4">
+                    Han:b
+                  </Typography>
+                </Button>
+                <Tabs value={false} textColor="white" >
+                  <Tab label="검 색" component={RouterLink} to="/search" sx={{ fontSize: 18 }} />
+                  <Tab label="설 정" component={RouterLink} to="/setting" sx={{ fontSize: 18 }} />
+                </Tabs>
+              </Box>
             </Grid>
-            <Grid item xs={2} sx={{ textAlign:'right' }}>
+            <Grid item xs={4} sx={{ textAlign:'right' }}>
               {props.userInfo.Name !== '' ?
                 <Typography color="inherit" sx={{ fontSize: 16 }}>
                   {props.userInfo.Name} 님, 안녕하세요!
