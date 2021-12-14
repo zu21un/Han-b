@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import {useNavigate} from "react-router-dom"
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +11,7 @@ import Button from '@mui/material/Button';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 
 import API from '@aws-amplify/api';
-import { getUser, listKeywords, getUserKeyword, listUserKeywords } from '../../../graphql/queries';
+import { getUser, listKeywords, listUserKeywords } from '../../../graphql/queries';
 import { createUserKeyword, deleteUserKeyword } from '../../../graphql/mutations';
 
 export default function Setting(props){
@@ -177,7 +176,7 @@ export default function Setting(props){
           </Grid>
         </Toolbar>
       </AppBar>
-      <Grid container spacing={3}>
+      <Grid container>
         {/* 내 키워드 */}
         <Grid item xs={12} md={6}>
           <Paper
@@ -185,7 +184,7 @@ export default function Setting(props){
               m: 2,
               display: 'flex',
               flexDirection: 'column',
-              height: 240,
+              height: 180,
             }}>
               <AppBar
                 position="static"
@@ -220,7 +219,7 @@ export default function Setting(props){
               m: 2,
               display: 'flex',
               flexDirection: 'column',
-              height: 240,
+              height: 180,
             }}>
               <AppBar
                 position="static"

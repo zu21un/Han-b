@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link as RouterLink, useLocation } from 'react-router-dom';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import AppBar from '@mui/material/AppBar';
 import Grid from '@mui/material/Grid';
@@ -22,18 +22,17 @@ function Header(props) {
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
         <Grid container alignItems="center">
-            <Grid item xs={4}/>
-            <Grid item xs={4}>
+            <Grid item xs={6} sx={{ textAlign:'left' }}>
               <Button onClick={search} variant="h5" >
                 <Typography color="inherit" variant="h5">
-                  HYU 공지알리
+                  Han:b a.k.a.한양비서
                 </Typography>
               </Button>
             </Grid>
-            <Grid item xs={4} sx={{ textAlign:'right' }}>
-              {props.userInfo.Name != '' ?
-                <Typography color="inherit">
-                  {props.userInfo.Name}님, 안녕하세요!
+            <Grid item xs={6} sx={{ textAlign:'right' }}>
+              {props.userInfo.Name !== '' ?
+                <Typography color="inherit" sx={{ fontSize: 14 }}>
+                  {props.userInfo.Name} 님, 안녕하세요!
                 </Typography> :
                 <Button onClick={login} color="inherit">
                   로그인 해주세요
@@ -43,9 +42,9 @@ function Header(props) {
           </Grid>
         </Toolbar>
         <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
-          <Tabs value={props.select} textColor="inherit">
-              <Tab label="검 색" component={RouterLink} to="/search"  />
-              <Tab label="설 정" component={RouterLink} to="/setting" />
+          <Tabs value={props.select} textColor="inherit" variant="fullWidth">
+              <Tab label="키워드 검색" component={RouterLink} to="/search" sx={{ fontSize: 18 }} />
+              <Tab label="키워드 알람 설정" component={RouterLink} to="/setting" sx={{ fontSize: 18 }} />
           </Tabs>
         </Box>
       </AppBar>

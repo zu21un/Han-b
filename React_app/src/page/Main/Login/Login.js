@@ -4,8 +4,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,12 +11,11 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Paper } from '@mui/material';
 
 import API from '@aws-amplify/api';
-import { listUsers, userByEmail } from '../../../graphql/queries';
+import { userByEmail } from '../../../graphql/queries';
 
 const sha256 = require('js-sha256');
 
@@ -39,7 +36,6 @@ const theme = createTheme();
 
 
 export default function Login(props) {
-  let loginSuccess = false;
   const [loginError, setLoginError] = useState('');
   // console.log(props)
   const handleSubmit = (event) => {

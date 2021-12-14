@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 
-import API from '@aws-amplify/api';
-import { getUser } from '../../../graphql/queries'
 
 import Header from '../Header';
 import Signup from './Signup';

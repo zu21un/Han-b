@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from 'react';
-
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import React from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,8 +7,7 @@ import Box from '@mui/material/Box';
 
 import Header from '../Header';
 import Login from './Login';
-import API from '@aws-amplify/api';
-import { getUser, listKeywords } from '../../../graphql/queries'
+
 
 let theme = createTheme({
     palette: {
