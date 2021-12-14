@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -21,7 +21,7 @@ export default function Setting(props){
   const [remainKeys, setRemainKeys] = useState([]);  
 
   // all Key info setting
-  useEffect(() => {
+  useLayoutEffect(() => {
     API.graphql({ query: listKeywords, variables:{}})
     .then(res => {
         // console.log('res' , res); 
@@ -34,19 +34,20 @@ export default function Setting(props){
     }, [])
 
   // user Key's id setting
-  useEffect(() => {
+  useLayoutEffect(() => {
     API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
     .then(res => {
       let myItem = res.data.getUser.keywords.items;
       console.log('myItem' , myItem);
       let mykeys_id = myItem.map((item) => item.keyword.id);
       console.log('myKeys_id', mykeys_id);
+      mykeys_id.sort()
       setMyKeysId(mykeys_id.map((id) => id));
     }).catch(e => console.log(e));
   }, [props])
 
   // myKeys and remainKeys setting
-  useEffect(() => {
+  useLayoutEffect(() => {
     let mykeys_ = listKeys.filter((item) => myKeysId.indexOf(item.id) >= 0);
     console.log('mykeys_', mykeys_);
     if (mykeys_.length > 0){
@@ -91,7 +92,6 @@ export default function Setting(props){
   }
 
   const handleAddkey = (item,e) => {
-    
     API.graphql({ query: createUserKeyword, variables:
       { input:{ userId: props.userInfo.id, keywordId: item.id }}})
       .then(res => {
@@ -122,8 +122,7 @@ export default function Setting(props){
           {item.name}
           </Typography>
         </Button>
-      ) : ""
-    )
+      ) : "")
   }
 
   return (
@@ -144,10 +143,8 @@ export default function Setting(props){
                 <Typography color="text.secondary" align="center">
                   {props.userInfo.email}
                 </Typography> :
-                <Button variant="contained" onClick={handleLogin} sx={{ width:'auto', mx: 1, my: 1 }}>
-                  <Typography>
+                <Button variant="contained" onClick={handleLogin} sx={{ bgcolor:"#2D75B7", width:'auto', mx: 1, my: 1 }}>
                     로그인
-                  </Typography>
                 </Button>
               }
             </Grid>
