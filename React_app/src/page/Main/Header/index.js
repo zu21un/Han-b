@@ -18,13 +18,16 @@ function Header(props) {
   const search = () => {
     props.navigate("search");
   }
+  const signup = () => {
+    props.navigate("signup");
+  }
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
         <Grid container alignItems="center">
             <Grid item xs={6} sx={{ textAlign:'left' }}>
               <Button onClick={search} variant="h5" >
-                <Typography color="inherit" variant="h5">
+                <Typography color="inherit" variant="h4">
                   Han:b
                 </Typography>
               </Button>
@@ -34,9 +37,14 @@ function Header(props) {
                 <Typography color="inherit" sx={{ fontSize: 16 }}>
                   {props.userInfo.Name} 님, 안녕하세요!
                 </Typography> :
-                <Button onClick={login} color="inherit" sx={{ fontSize: 16 }}>
-                  로그인
-                </Button>
+                <>
+                  <Button onClick={login} color="inherit" sx={{ fontSize: 16 }}>
+                    로그인
+                  </Button>
+                  <Button onClick={signup} color="inherit" sx={{ fontSize: 16 }}>
+                    회원가입
+                  </Button>
+                </>   
               }
             </Grid>
           </Grid>
