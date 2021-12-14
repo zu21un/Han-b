@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import Link from '@mui/material/Link'
 import Box from '@mui/material/Box'
 import {API} from 'aws-amplify'
-import {listNotifications, listUsers} from '../../../graphql/queries'
+import {listNotifications} from '../../../graphql/queries'
 
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -19,7 +19,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TablePagination from '@mui/material/TablePagination';
-import { fontSize } from '@mui/system';
 
 
 
@@ -74,10 +73,10 @@ export default function Search() {
     return(
         searchList.length != 0 &&
         <Paper sx={{m:1}}>
-          <TableContainer component={Paper}>
-            <Table sx={{ width: 98/100 }} align="center" aria-label="simple table">
+          <TableContainer component={Paper} elevation={0} sx={{border:'1px'}}>
+            <Table sx={{ width: 98/100 }} align="center" aria-label="simple table" elevation={0} >
               <TableHead>
-                <TableRow >
+                <TableRow  >
                   <TableCell sx={{width:'7%'}} align="center">번호</TableCell>              
                   <TableCell sx={{width:'63%'}} align="center">공지 제목</TableCell>
                   <TableCell sx={{width:'12%'}} align="center">날짜</TableCell>
@@ -146,8 +145,8 @@ export default function Search() {
                   placeholder="키워드를 검색하세요"
                   InputProps={{
                     disableUnderline: true,
-                    sx: { fontSize: 'default', mt: 0.5 },
                   }}
+                  sx = {{ mt:0.5 }}
                   variant="standard"
                   onChange={handleChange}
                 />
@@ -155,8 +154,9 @@ export default function Search() {
               <Grid item>
                 <Button 
                   type="submit"
-                  variant="contained" sx={{ mr: 0.5 }}
-                  onSubmit={handleSubmit}>
+                  variant="contained" sx={{ mr: 0.5, fontSize:17 }}
+                  onSubmit={handleSubmit}
+                  >
                   검 색
                 </Button>
               </Grid>

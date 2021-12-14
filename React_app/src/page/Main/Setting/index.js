@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-
-import API from '@aws-amplify/api';
-import { getUser } from '../../../graphql/queries'
 
 import Header from '../Header';
 import Setting from './Setting';
@@ -166,23 +163,6 @@ theme = {
 };
 
 export default function SettingPage (props) {
-  console.log('Setting Page props', props.userInfo);
-  // const [user, setUser] = useState({})
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-
-  // const [myKeys, setMyKeys] = useState([]);
-
-  // useEffect(() => {
-  //   setUser({id:props.userInfo.id});
-  //   setName(props.userInfo.Name);
-  //   setEmail(props.userInfo.email);
-  // }, [props])
-
-  // const handleLogin = (e) => {
-  //   props.navigate("/login")
-  // }
-
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
