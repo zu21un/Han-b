@@ -143,10 +143,8 @@ export default function Setting(props){
                 <Typography color="text.secondary" align="center">
                   {props.userInfo.email}
                 </Typography> :
-                <Button variant="contained" onClick={handleLogin} sx={{ width:'auto', mx: 1, my: 1 }}>
-                  <Typography>
+                <Button variant="contained" onClick={handleLogin} sx={{ bgcolor:"#2D75B7", width:'auto', mx: 1, my: 1 }}>
                     로그인
-                  </Typography>
                 </Button>
               }
             </Grid>

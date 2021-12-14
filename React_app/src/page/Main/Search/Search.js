@@ -154,7 +154,7 @@ export default function Search() {
               <Grid item>
                 <Button 
                   type="submit"
-                  variant="contained" sx={{ mr: 0.5 }}
+                  variant="contained" sx={{ mr: 0.5, bgcolor:"#2D75B7" }}
                   onSubmit={handleSubmit}
                   >
                   검 색

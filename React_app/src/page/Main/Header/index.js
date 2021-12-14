@@ -21,18 +21,26 @@ function Header(props) {
   const signup = () => {
     props.navigate("signup");
   }
+
+  // color:"#003F75"
   return (
-      <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
+      <AppBar position="sticky" elevation={0} sx={{ py:1, color:"white",bgcolor:"#003F75"}}>
         <Toolbar>
         <Grid container alignItems="center">
-            <Grid item xs={6} sx={{ textAlign:'left' }}>
+            <Grid item xs={2} sx={{ textAlign:'left' }}>
               <Button onClick={search} variant="h5" >
                 <Typography color="inherit" variant="h4">
                   Han:b
                 </Typography>
               </Button>
             </Grid>
-            <Grid item xs={6} sx={{ textAlign:'right' }}>
+            <Grid item xs={8} sx={{ textAlign:'left' }}>
+              <Tabs value={false} textColor="white" sx={{}}>
+                <Tab label="검 색" component={RouterLink} to="/search" sx={{ fontSize: 16 }} />
+                <Tab label="설 정" component={RouterLink} to="/setting" sx={{ fontSize: 16 }} />
+              </Tabs>
+            </Grid>
+            <Grid item xs={2} sx={{ textAlign:'right' }}>
               {props.userInfo.Name !== '' ?
                 <Typography color="inherit" sx={{ fontSize: 16 }}>
                   {props.userInfo.Name} 님, 안녕하세요!
@@ -49,12 +57,9 @@ function Header(props) {
             </Grid>
           </Grid>
         </Toolbar>
-        <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
-          <Tabs value={props.select} textColor="inherit" variant="fullWidth">
-              <Tab label="키워드 검색" component={RouterLink} to="/search" sx={{ fontSize: 18 }} />
-              <Tab label="키워드 알람 설정" component={RouterLink} to="/setting" sx={{ fontSize: 18 }} />
-          </Tabs>
-        </Box>
+        {/* <Box  position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#E6EDEF", color:"text.secondary", mt:0.5 }}>
+          
+        </Box> */}
       </AppBar>
   );
 }
