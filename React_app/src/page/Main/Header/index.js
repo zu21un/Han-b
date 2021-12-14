@@ -25,17 +25,17 @@ function Header(props) {
             <Grid item xs={6} sx={{ textAlign:'left' }}>
               <Button onClick={search} variant="h5" >
                 <Typography color="inherit" variant="h5">
-                  Han:b a.k.a.한양비서
+                  Han:b
                 </Typography>
               </Button>
             </Grid>
             <Grid item xs={6} sx={{ textAlign:'right' }}>
               {props.userInfo.Name !== '' ?
-                <Typography color="inherit" sx={{ fontSize: 14 }}>
+                <Typography color="inherit" sx={{ fontSize: 16 }}>
                   {props.userInfo.Name} 님, 안녕하세요!
                 </Typography> :
-                <Button onClick={login} color="inherit">
-                  로그인 해주세요
+                <Button onClick={login} color="inherit" sx={{ fontSize: 16 }}>
+                  로그인
                 </Button>
               }
             </Grid>

@@ -66,28 +66,6 @@ export default function Setting(props){
     }
   }, [myKeysId, listKeys])
 
-  // user Key info setting
-  // useEffect(() => {
-  //   console.log('props', props);
-  //   API.graphql({ query: getUser, variables:{ id: props.userInfo.id }})
-  //   .then(res => {
-  //     console.log('res' , res);
-  //     let myItem = res.data.getUser.keywords.items;
-
-  //     let mykeys_id = myItem.map((item) => item.keyword.id);
-  //     console.log('myKeys_id', mykeys_id);
-  //     setMyKeysId(mykeys_id.map((id) => id));
-
-  //     let mykeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) >= 0);
-  //     console.log('mykeys_', mykeys_);
-  //     setMyKeys(mykeys_.map((item) => item));
-
-  //     let remainkeys_ = listKeys.filter((item) => mykeys_id.indexOf(item.id) < 0);
-  //     console.log('remainkeys_', remainkeys_);
-  //     setRemainKeys(remainkeys_.map((item) => item));
-  //   })
-  //   .catch(e => console.log(e));
-  // },[props]);
 
 
   const handleLogin = (e) => {
@@ -176,12 +154,25 @@ export default function Setting(props){
           </Grid>
         </Toolbar>
       </AppBar>
+      <Grid container justifyContent="center" flexDirection="column" sx={{ my:1 }}>
+        <Typography color="text.secondary" sx={{ mt:0.5 }} variant="h6">
+          키워드 알람 이용 가이드
+        </Typography>
+        {/* <Typography color="text.secondary" sx={{ mt:0.3, fontSize: 15 }}>
+          클릭으로 키워드 추가 및 삭제 
+        </Typography> */}
+        <Typography color="text.secondary" sx={{ mt:0.3, fontSize: 15 }}>
+         매일 08시에 내 키워드가 포함된 최신 공지를 이메일로 보내드립니다
+        </Typography>
+      </Grid>
       <Grid container>
         {/* 내 키워드 */}
         <Grid item xs={12} md={6}>
           <Paper
             sx={{
-              m: 2,
+              mx: 2,
+              mt: 1,
+              mb: 2,
               display: 'flex',
               flexDirection: 'column',
               height: 180,
@@ -216,7 +207,9 @@ export default function Setting(props){
         <Grid item xs={12} md={6}>
           <Paper
             sx={{
-              m: 2,
+              mx: 2,
+              mt: 1,
+              mb: 2,
               display: 'flex',
               flexDirection: 'column',
               height: 180,

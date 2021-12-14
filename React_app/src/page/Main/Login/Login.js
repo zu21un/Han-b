@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import FormHelperText from '@mui/material/FormHelperText';
 
 import Typography from '@mui/material/Typography';
@@ -84,7 +82,7 @@ export default function Login(props) {
           <Typography component="h1" variant="h5" >
             로그인
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1, mx:25 }}>
             <TextField
               margin="normal"
               fullWidth
@@ -110,7 +108,7 @@ export default function Login(props) {
               variant="contained"
               sx={{ mt: 2, mb: 1 }}
             >
-              Login
+              로그인
             </Button>
             <Grid container>
               <Grid item xs>
