@@ -12,13 +12,6 @@ import Button from '@mui/material/Button';
 
 
 function Header(props) {
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    setName(props.userName);
-    console.log('props', props);
-  }, [props])
-
   const login = () => {
     props.navigate("login");
   }
@@ -28,18 +21,19 @@ function Header(props) {
   return (
       <AppBar position="sticky" elevation={0} sx={{ pt:1.5, bgcolor:"#004ba0" }}>
         <Toolbar>
-          <Grid container spacing={1} alignItems="center">
-            <Grid item xs>
+        <Grid container alignItems="center">
+            <Grid item xs={4}/>
+            <Grid item xs={4}>
               <Button onClick={search} variant="h5" >
                 <Typography color="inherit" variant="h5">
                   HYU 공지알리
                 </Typography>
               </Button>
             </Grid>
-            <Grid item>
-              {name != '' ?
+            <Grid item xs={4} sx={{textAlign:'right'}}>
+              {props.userInfo.Name != '' ?
                 <Typography color="inherit">
-                  {name}님, 안녕하세요!
+                  {props.userInfo.Name}님, 안녕하세요!
                 </Typography> :
                 <Button onClick={login} color="inherit">
                   로그인 해주세요
@@ -49,7 +43,7 @@ function Header(props) {
           </Grid>
         </Toolbar>
         <Box component="div" position="static" elevation={0} sx={{ zIndex: 0, bgcolor:"#1976d2", mt:1 }}>
-          <Tabs value={1} textColor="inherit">
+          <Tabs value={props.select} textColor="inherit">
               <Tab label="검 색" component={RouterLink} to="/search"  />
               <Tab label="설 정" component={RouterLink} to="/setting" />
           </Tabs>

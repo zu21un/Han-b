@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import API from '@aws-amplify/api';
 import { getUser } from '../../../graphql/queries'
 
-import Header from './Header';
+import Header from '../Header';
 import Setting from './Setting';
 
 // function Copyright() {
@@ -188,7 +188,7 @@ export default function SettingPage (props) {
       <Box sx={{ display: 'flex', minHeight: '100vh', minWidth: '100%' }}>
         <CssBaseline />
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-          <Header userName={props.userInfo.Name} navigate={props.navigate}/>
+          <Header userInfo={props.userInfo} navigate={props.navigate} select={1}/>
             <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
               <Setting 
                 userInfo={props.userInfo}

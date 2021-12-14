@@ -45,15 +45,15 @@ export default function Router() {
       },
       {
         path: 'login',
-        element: <LoginPage handleUser={handleUser} navigate={navigate}/>
+        element: <LoginPage handleUser={handleUser} userInfo={userInfo} navigate={navigate}/>
       },
       {
         path: 'signup',
-        element: <SignupPage handleUser={handleUser} navigate={navigate}/>
+        element: <SignupPage handleUser={handleUser} userInfo={userInfo} navigate={navigate}/>
       },
       {
         path: 'findpassword',
-        element: <FindPasswordPage handleUser={handleUser} navigate={navigate}/>
+        element: <FindPasswordPage handleUser={handleUser} userInfo={userInfo} navigate={navigate}/>
       }
     ]);
   }
