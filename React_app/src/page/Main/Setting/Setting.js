@@ -98,6 +98,8 @@ export default function Setting(props){
 
     
   const handleDeletekey = (item,e) => {
+    console.log(item)
+    console.log(e)
     API.graphql({ query: getUserKeyword, variables:{ userId: props.userInfo.id }})
     .then(res =>{
       console.log('getUserKeyword',res);
@@ -114,6 +116,7 @@ export default function Setting(props){
   }
 
   const handleAddkey = (item,e) => {
+    
     API.graphql({ query: createUserKeyword, variables:
       { input:{ userId: props.userInfo.id, keywordId: item.id }}})
       .then(res => {
@@ -127,8 +130,8 @@ export default function Setting(props){
   const Mykeys = () => {
     // console.log('Mykeys', myKeys);
     return (myKeys.length > 0 && props.userInfo.id != "" ?
-    myKeys.map((item) => 
-      <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
+    myKeys.map((item, key) => 
+      <Button variant="contained" onClick={(e)=>handleDeletekey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }} key={key}>
         <Typography>
         {item.name}
         </Typography>
@@ -139,8 +142,8 @@ export default function Setting(props){
   const RemainKeys = () => {
     // console.log('RemainKeys', remainKeys);
     return (remainKeys.length > 0 && props.userInfo.id != "" ?
-      remainKeys.map((item) => 
-        <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }}>
+      remainKeys.map((item,key) => 
+        <Button variant="contained" onClick={(e)=>handleAddkey(item,e)} sx={{ width:'auto', mx: 1, my: 1 }} key={key}>
           <Typography>
           {item.name}
           </Typography>

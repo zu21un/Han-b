@@ -12,11 +12,24 @@ import Box from '@mui/material/Box'
 import {API} from 'aws-amplify'
 import {listNotifications, listUsers} from '../../../graphql/queries'
 
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TablePagination from '@mui/material/TablePagination';
+import { fontSize } from '@mui/system';
+
+
 
 export default function Search() {
   const [keyword, setKeyword] = useState('');
-  const [searchList, setSearchList] = useState([])
-  const [searchKeyword, setSearchKeyword] = useState('')
+  const [searchList, setSearchList] = useState([]);
+  const [searchKeyword, setSearchKeyword] = useState('');
+  const [notisPerPage, setNotisPerPage] = useState(5);
+  const [page, setPage] = useState(0)
+
 
   const handleChange = ({ target: { value } }) => setKeyword(value);
 
@@ -37,8 +50,11 @@ export default function Search() {
             notiList.push(item)
           }
         }
+        if (notiList.length != 0){
+          notiList = notiList.sort((a,b) => new Date(b.date) - new Date(a.date));
+        }
         setSearchList(notiList);
-        console.log(notiList)
+        
       }).then(() => {
         setSearchKeyword(keyword);
       }).catch(e => {
@@ -47,7 +63,64 @@ export default function Search() {
     }
   }
 
-
+  const handleChangePage = (event, newPage) =>{
+    setPage(newPage);
+  }
+  const handleChangeRowsPerPage = (event)=>{
+    setNotisPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
+  const SearchResult = () => {
+    return(
+        searchList.length != 0 &&
+        <Paper sx={{m:1}}>
+          <TableContainer component={Paper}>
+            <Table sx={{ width: 98/100 }} align="center" aria-label="simple table">
+              <TableHead>
+                <TableRow >
+                  <TableCell sx={{width:'7%'}} align="center">번호</TableCell>              
+                  <TableCell sx={{width:'63%'}} align="center">공지 제목</TableCell>
+                  <TableCell sx={{width:'12%'}} align="center">날짜</TableCell>
+                  <TableCell sx={{width:'18%'}} align="center">출처</TableCell>
+                </TableRow>
+              </TableHead>
+              
+              <TableBody>
+                {searchList
+                .slice(page* notisPerPage, page*notisPerPage + notisPerPage)
+                .map((noti, key) => (
+                  <TableRow
+                    key={noti.id}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                  >
+                    <TableCell align="center">
+                      {page*notisPerPage +key+1}
+                    </TableCell>
+                    <TableCell component="th" scope="row">
+                      <Link color="text.primary" fontSize="14px" target="_blank" href={noti.link} underline="none">
+                        {noti.name} 
+                      </Link>
+                    </TableCell>
+                    <TableCell align="center">{noti.date}</TableCell>
+                    <TableCell align="center">{noti.organization.name}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 15]}
+            component="div"
+            count={searchList.length}
+            rowsPerPage={notisPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            labelRowsPerPage={"표시할 공지 수"}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+    );
+  }
   return (
     <Paper sx={{ maxWidth: 936, margin: 'auto', overflow: 'hidden' }}>
       <AppBar
@@ -99,20 +172,11 @@ export default function Search() {
             "{searchKeyword}" 에 대한 검색 결과 : {searchList.length} 건
           </Typography>
           :
-            <Typography sx={{ mt: 5, mb: 3, mx: 2 }} color="text.secondary" align="center">
-              {searchKeyword} 검색 결과가 없습니다
-            </Typography>
+          <Typography sx={{ mt: 5, mb: 3, mx: 2 }} color="text.secondary" align="center">
+            {searchKeyword == "" ? "" : "\"" + searchKeyword + "\""} 검색 결과가 없습니다
+          </Typography>
         }
-        { searchList.length > 0 ?
-            searchList.map((item, key, idx) => {
-              return  <div sx={{textAlign:'left'}} key={key}>
-                        <Link sx={{ mx: 8 }} color="text.secondary" fontSize="14px" target="_blank" href={item.link} underline="none" key={key}>
-                          {item.name + ' | ' + item.date + ' | ' + item.organization.name} 
-                        </Link>
-                      </div>
-            })
-            : ""
-        }
+        <SearchResult />
       </Box>
     </Paper>
   );
