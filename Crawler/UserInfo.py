@@ -42,6 +42,9 @@ class UserInfo(): #user마다의 아이디 이메일 이름등을 관리하는 �
     def add_keyword(self, keyword):
         self.keyword.append(keyword)
 
+    def get_user_list():
+        return UserInfo.user_list
+
 
 #디비에서 모든 유저들을 불러오는 함수
 def all_userId_get():
