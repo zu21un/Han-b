@@ -7,7 +7,7 @@ import email
 # send_mail 함수에 구현하겠습니다.
 
 class Email:
-    def send_mail(self, text):
+    def send_mail(self, text, useremail):
         # 메일 내용을 담을 문자열을 선언합니다.
         self.text = ''
 
@@ -32,7 +32,7 @@ class Email:
         message['To'] = 'from email address'
 
         # smtp sendmail 함수를 이용하여 실제로 메일을 발송해줍니다.
-        smtp.sendmail('sungsoo6811@gmail.com', 'yongseong97@gmail.com', message.as_string())
+        smtp.sendmail('sungsoo6811@gmail.com', useremail, message.as_string())
 
         # smtp quit 함수로 인스턴스를 종료시킵니다.
         print('adfadf')
