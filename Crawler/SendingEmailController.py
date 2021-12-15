@@ -13,6 +13,16 @@ class EmailController():
         self.user_list = []
 
     def run(self):
+        print("run start")
+        self.set_user_list()
+        self.set_user_list_keyword()
+        self.set_noti_list()
+        self.set_notikey_list()
+        self.send_to_user()
+        print("run finish")
+
+
+    def send_to_user(self):
         for user in self.user_list:
             email = user.get_email()
             keyword = user.get_keyword()
@@ -20,12 +30,13 @@ class EmailController():
             key_id_list = []
             for key in keyword:
                 key_id_list.append(key['id'])
-            print(key_id_list)
+            # print(key_id_list)
             all_notilist = self.get_noti_list(key_id_list)
             today_notilist = []
             for notice in self.noti_list:
                 if notice['id'] in all_notilist:
                     today_notilist.append(notice)
+            print("today_notilist")
             print(today_notilist)
             payload = today_notilist # 메일 내용 형식으로 추후 수정해야함
             if payload: 
@@ -60,7 +71,7 @@ class EmailController():
     # keylist에 있는 key를 포함한 오늘 공지들을 return
     def get_noti_list(self, key_id_list):
         my_noti_list = []
-        print("get_noti_list start")
+        # print("get_noti_list start")
         for notikey in self.notikey_list:
             if notikey['keywordId'] in key_id_list:
                 my_noti_list.append(notikey['notiId'])
@@ -82,7 +93,7 @@ class EmailController():
         for item in response['Items']:#user_list에 user를 추가.
             self.user_list.append(UserInfo.UserInfo(item['email'], item['id'], item['name'], item['alarmTime']))
 
-        print(self.user_list)
+        # print(self.user_list)
 
     # user list 에 있는 user들의 keyword를 setting
     def set_user_list_keyword(self):
@@ -117,14 +128,5 @@ class EmailController():
                     user.add_keyword( keyword_list[ int(userkeyword['keywordId']) - 1 ] )
 
         #user_list돌면서 각 user가 가지고 있는 keyword 하기
-        for user in self.user_list:
-            print(user.keyword)
-
-ec = EmailController()
-ec.set_user_list()
-print()
-ec.set_user_list_keyword()
-ec.set_noti_list()
-ec.set_notikey_list()
-ec.run()
-
+        # for user in self.user_list:
+            # print(user.keyword)

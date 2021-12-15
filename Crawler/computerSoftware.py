@@ -9,7 +9,8 @@ import os.path
 import boto3
 import datetime
 import Crawler
-import main
+# import main
+
 
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
@@ -27,27 +28,24 @@ def put_noti(info):
 
     try:
         print('PUT_ITEM')
+        noti_list = []
         for i in range(0, len(info)):
             for j in range(0, len(info[i].hypertitle)):
-                # print(cnt)
+                item = {'id': str(cnt),'link': info[i].hypertitle[j],'name': info[i].title[j],'orgId' : str(info[i].organization),'date' : info[i].date[j].strftime("%Y-%m-%d")}
                 table.put_item(
-                    Item={
-                            'id': str(cnt),
-                            'link': info[i].hypertitle[j],
-                            'name': info[i].title[j],
-                            'orgId' : str(info[i].organization),
-                            'date' : info[i].date[j].strftime("%Y-%m-%d")
-                        }
+                    Item=item
                     )
+                noti_list.append(item)
                 cnt += 1
+
+        put_NotiKeyword(session, dynamodb, noti_list)
     except Exception as e:
         print('Exception : ', e)
 
 
-def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
-    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
-    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
-    notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
+    # session = boto3.Session(profile_name='bns')
+    # dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -63,47 +61,56 @@ def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함
         keyword_list.append(item)
         # print(item)
 
-    response = notiTable.scan (
-        FilterExpression = Attr('id').exists()
-    )
+    # response = notiTable.scan (
+    #     FilterExpression = Attr('id').exists()
+    # )
 
-    for item in response['Items']:
-        # print(item['name'])
-        # print(item['link'])
-        # print(item['id'])
-        notification_list.append(item)
+    # for item in response['Items']:
+    #     notification_list.append(item)
     
+    notification_list = noti_list
+
+    keyword_list = sorted(keyword_list, key=lambda x: -int(x["id"]))
+    
+    for item in notification_list:
+        print(item)
+
+    for item in keyword_list:
+        print(item)
+
     notikey_db = noti_key_Table.scan()
     notikey_list = notikey_db['Items']
     notikey_list = sorted(notikey_list, key=lambda x: -int(x["id"]))
 
+
     if notikey_db['Count'] == 0:
         cnt = 1
     else:
-        cnt = int(notikey_list[0]['id']) + 1
-    
+        cnt = len(notikey_list) + 1
+
+# notification_list, keyword_list, notikey_list
     try:
         print('PUT_NOTIKEYWORD_ITEM')
-        for i in range(0, len(notification_list)):
-            for j in range(0, len(keyword_list)):
-                if keyword_list[j]['name'] in notification_list[i]['name']:
-                    title =  notification_list[i]['name']
-                    key = keyword_list[j]['name']
 
-                    res = f'{key} : {title}'
-                    print(res)
+        for noti in notification_list:
+            for keyword in keyword_list:
+                if keyword['name'] in noti['name']:
                     noti_key_Table.put_item(
-                        Item={
+                        Item = {
                                 'id': str(cnt),
-                                'keywordId': keyword_list[j]['id'],
-                                'notiId': notification_list[i]['id'],
+                                'keywordId': keyword['id'],
+                                'notiId': noti['id'],
                             }
                     )
                     cnt += 1
+
+
+
     except Exception as e:
         print('Exception : ', e)
 
 def computerSoftware():
+    global update_num
     req = Request("http://cs.hanyang.ac.kr/board/info_board.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
     req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     req.add_header("Accept-Language", "ko-KR,ko;")
@@ -143,8 +150,7 @@ def computerSoftware():
     filter_hyperTitle = []
     filter_date = []
     num_data = soup.select('#content_box > div > table > tbody > tr > td:nth-child(2)') #번호
-
-
+    
     file = './한양대학교 컴퓨터소프트웨어학부.txt' 
 
     i = 0
@@ -158,7 +164,9 @@ def computerSoftware():
 
                 text = f.readlines()
                 list = text[0].split('~:')
+                
                 print(list[0] +' ' +list[1])
+
                 if(list[0] == num_data[i].get_text().strip() and list[1] == title[i]):#같으면 할필요없음.
                     print('새로운 공지 올라오지 않았습니다.')
                 else:#같지 않으면 새로운 공지가 올라왔다는 소리.
@@ -178,23 +186,22 @@ def computerSoftware():
                         else : 
                             break
                         j += 1
-                    
+
+                    filter_date.reverse()
+                    filter_title.reverse()
+                    filter_hyperTitle.reverse()
+
                     f = open(file,'w')
                     res = num_data[i].get_text().strip() + '~:' + title[i]
                     f.write(res)
                     f.close()
-                    info1 = Crawler.Information(filter_hyperTitle, title, 1, date)
+                    info1 = Crawler.Information(filter_hyperTitle, filter_title, 1, filter_date)
                     info = []
                     info.append(info1)
                     
                     put_noti(info)
 
-
-
-                    put_NotiKeyword()
                     print('\n새로운 공지 올라왔습니다.')
-
-
 
             else: #파일이 없으면 그냥 쓰기. 
                 f = open(file,'w')
@@ -205,5 +212,3 @@ def computerSoftware():
         else :
             print(num_data[i].get_text().strip())
         i += 1
-        
-# test()

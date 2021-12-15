@@ -8,23 +8,39 @@ import computerSoftware
 import Engineering
 import softwareCenter
 import time
-import SendingEmail
-
+import SendingEmailController
 AMAZON_PROFILE = 'default'
+def test1():
+    print('test1')
+def test2():
+    print('test2')
 
 def main():
-    #Notification crawling
-    #information class를 저장하는 변수
-
-    # 매주 월요일 실행
+    
     # schedule.every().day.at("10:00").do(computerSoftware())
-    schedule.every(30).seconds.do(computerSoftware.test)
+    # 10초에 한번씩 실행
+    # schedule.every(10).second.do(job)
+    # # 10분에 한번씩 실행
+    # schedule.every(10).minutes.do(job)
+    # # 매 시간 실행
+    # schedule.every().hour.do(job)
+    # # 매주 월요일 실행
+    # schedule.every().monday.do(job)
+    # # 매주 수요일 13:15 에 실행
+    # schedule.every().wednesday.at("13:15").do(job)
+    # schedule.every(30).seconds.do(test1)
+    # schedule.every(35).seconds.do(test2)
 
-    schedule.every(30).seconds.do(SendingEmail.Email().send_mail)
+    # schedule.every().day.at("07:00").do(computerSoftware.computerSoftware)
+    # schedule.every().day.at("07:00").do(Engineering.Engineering)
+    # schedule.every().day.at("07:00").do(softwareCenter.softwareCenter)
 
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    ec = SendingEmailController.EmailController()
+    ec.run()
+
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
 
     crawler = Crawler.Crawler()
     info = []
@@ -41,7 +57,7 @@ def main():
 
     # put_noti(info)
     # put_NotiKeyword()
-
+    
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
     session = boto3.Session(profile_name=AMAZON_PROFILE)
@@ -143,10 +159,10 @@ def debugging_info(info):
             print('date: %s'%(info[i].date[j]))
 
 
-def get_random_string(length):
-    # choose from all lowercase letter
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
+# def get_random_string(length):
+#     # choose from all lowercase letter
+#     letters = string.ascii_lowercase
+#     result_str = ''.join(random.choice(letters) for i in range(length))
 
 if __name__ == "__main__":
     main()

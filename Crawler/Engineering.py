@@ -2,12 +2,114 @@
 # import requests
 from urllib.request import urlopen
 from urllib.request import Request
+from boto3.dynamodb.conditions import Key, Attr
 from bs4 import BeautifulSoup
 import os
 import os.path 
 import boto3
 import datetime
 import main 
+import Crawler
+# import main
+def put_noti(info):
+    # 크롤링한 내용 Database에  넣는 작업
+    session = boto3.Session(profile_name='bns')
+    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
+    table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    
+    noti_db = table.scan()
+    noti_list = noti_db['Items']
+    noti_list = sorted(noti_list, key=lambda x: -int(x["id"]))
+    if noti_db['Count'] == 0:
+        cnt = 1
+    else:
+        cnt = int(noti_list[0]['id']) + 1
+
+    try:
+        print('PUT_ITEM')
+        noti_list = []
+        for i in range(0, len(info)):
+            for j in range(0, len(info[i].hypertitle)):
+                item = {'id': str(cnt),'link': info[i].hypertitle[j],'name': info[i].title[j],'orgId' : str(info[i].organization),'date' : info[i].date[j].strftime("%Y-%m-%d")}
+                table.put_item(
+                    Item=item
+                    )
+                noti_list.append(item)
+                cnt += 1
+
+        put_NotiKeyword(session, dynamodb, noti_list)
+    except Exception as e:
+        print('Exception : ', e)
+
+
+def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
+
+    keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    
+    keyword_list = []
+    notification_list = []
+
+    response = keywordTable.scan (
+        FilterExpression = Attr('id').exists()
+    ) 
+
+    for item in response['Items']:
+        # print(item['name'])
+        keyword_list.append(item)
+        # print(item)
+
+    # response = notiTable.scan (
+    #     FilterExpression = Attr('id').exists()
+    # )
+
+    # for item in response['Items']:
+    #     notification_list.append(item)
+    
+    notification_list = noti_list
+
+    keyword_list = sorted(keyword_list, key=lambda x: -int(x["id"]))
+    
+    for item in notification_list:
+        print(item)
+    print
+    print
+    for item in keyword_list:
+        print(item)
+    print
+
+
+    notikey_db = noti_key_Table.scan()
+    notikey_list = notikey_db['Items']
+    notikey_list = sorted(notikey_list, key=lambda x: -int(x["id"]))
+
+
+    if notikey_db['Count'] == 0:
+        cnt = 1
+    else:
+        cnt = len(notikey_list) + 1
+
+# notification_list, keyword_list, notikey_list
+    try:
+        print('PUT_NOTIKEYWORD_ITEM')
+
+        for noti in notification_list:
+            for keyword in keyword_list:
+                if keyword['name'] in noti['name']:
+                    noti_key_Table.put_item(
+                        Item = {
+                                'id': str(cnt),
+                                'keywordId': keyword['id'],
+                                'notiId': noti['id'],
+                            }
+                    )
+                    cnt += 1
+
+
+
+    except Exception as e:
+        print('Exception : ', e)
+
 def Engineering():
     print ("한양대학교 공과대학교")
     req = Request("http://eng.hanyang.ac.kr/people/notice.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
@@ -34,6 +136,11 @@ def Engineering():
     hyperTitle = []
     date = []
     num_data = []
+
+    filter_title = []
+    filter_hyperTitle = []
+    filter_date = []
+
     data = soup.select('tbody > tr')
     for tr in data:
         tds = tr.select('td')
@@ -75,14 +182,27 @@ def Engineering():
 
                     if not list[0] in num_data[j]:#새로운 공지 올라왔으니 이전공지까지 데이터를 넣어주려고함.
                         #여기에 올려주면됨
+                        filter_date.append(date[j])
+                        filter_title.append(title[j])
+                        filter_hyperTitle.append(hyperTitle[j])
                         print( num_data[j] + ' ' + title[j] )
                     else : 
                         break
                     j += 1
                 
+                filter_date.reverse()
+                filter_title.reverse()
+                filter_hyperTitle.reverse()
+
                 f = open(file,'w')
                 res = num_data[i] + '~:' + title[i]
                 f.write(res)
+                f.close()
+                info1 = Crawler.Information(filter_hyperTitle, filter_title, 1, filter_date)
+                info = []
+                info.append(info1)
+
+                put_noti(info)
 
                 print('\n새로운 공지 올라왔습니다.')
 
@@ -95,5 +215,3 @@ def Engineering():
             break
         
         i += 1
-        
-
