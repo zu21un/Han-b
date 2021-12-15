@@ -157,7 +157,7 @@ def computerSoftware():
             if os.path.isfile(file):#파일이 존재하면 비교해서 새로운 공지가 올라왔는지 판단.
                 print("파일이 존재합니다.")
                 
-                f = open(file,'r')
+                f = open(file,'r',encoding='utf-8')
 
                 text = f.readlines()
                 list = text[0].split('~:')
@@ -189,7 +189,7 @@ def computerSoftware():
                     filter_hyperTitle.reverse()
 
                     f = open(file,'w')
-                    res = num_data[i].get_text().strip() + '~:' + title[i]
+                    res = num_data[i].get_text().strip() + '~:' + "title"
                     f.write(res)
                     f.close()
                     info1 = Crawler.Information(filter_hyperTitle, filter_title, 1, filter_date)
