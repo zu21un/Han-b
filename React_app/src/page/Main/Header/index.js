@@ -11,6 +11,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import logo from '../../../logo/logo_hanb_white.png'
+import logo2 from '../../../logo/logo_hanb_long2.png'
+import logo3 from '../../../logo/logo_hanb_long3.png'
 
 function Header(props) {
   const login = () => {
@@ -24,15 +26,16 @@ function Header(props) {
   }
 
   return (
-      <AppBar position="sticky" elevation={0} sx={{ py:1, color:"white",bgcolor:"#003F75"}}>
+      <AppBar position="sticky" elevation={0} sx={{ py:0.5,  color:"white",bgcolor:"#003F75"}}>
         <Toolbar>
         <Grid container alignItems="center">
             <Grid item xs={8} sx={{ textAlign:'left' }}>
-              <Box display="flex" justifyContent="flex-start" alignItems="center">
+              <Box display="flex" justifyContent="flex-start" alignItems="center" gap="100px">
                 <Button onClick={search} variant="h5" >
-                  <img src={logo} width='110' height='50' />
+                  <img src={logo3} width='289' height='51' />
+                  {/* width:height -> 17:3 */}
                 </Button>
-                <Tabs value={false} textColor="white" >
+                <Tabs value={false} textColor="white">
                   <Tab label="검 색" component={RouterLink} to="/search" sx={{ fontSize: 18 }} />
                   <Tab label="설 정" component={RouterLink} to="/setting" sx={{ fontSize: 18 }} />
                 </Tabs>

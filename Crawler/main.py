@@ -38,15 +38,15 @@ def main():
     # schedule.every().day.at("07:00").do(Engineering.Engineering)
     # schedule.every().day.at("07:00").do(softwareCenter.softwareCenter)
 
-    ec = SendingEmailController.EmailController()
-    ec.run()
+    # ec = SendingEmailController.EmailController()
+    # ec.run()
 
     # while True:
     #     schedule.run_pending()
     #     time.sleep(1)
 
-    # crawler = Crawler.Crawler()
-    # info = []
+    crawler = Crawler.Crawler()
+    info = []
     # info1 = crawler.getData1()
     # info.append(info1)
 
@@ -59,7 +59,7 @@ def main():
     # debugging_info(info)
 
     # put_noti(info)
-    # put_NotiKeyword()
+    put_NotiKeyword()
     
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업

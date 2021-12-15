@@ -44,6 +44,7 @@ export default function Search() {
       API.graphql({query:listNotifications, variables:{}})
       .then(res => {
         let notiList = []
+        // console.log(res.data.listNotifications.items)
         for(let item of res.data.listNotifications.items){
           if(item.name.includes(keyword)){
             notiList.push(item)

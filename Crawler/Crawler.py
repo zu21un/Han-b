@@ -28,7 +28,7 @@ class Crawler:
 
     def getData1(self): #데이터 가져오는것.
         print ("한양대학교 컴퓨터소프트웨어 학부")
-        req = Request("http://cs.hanyang.ac.kr/board/info_board.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
+        req = Request("http://cs.hanyang.ac.kr/board/info_board.php?ptype=&page=1&code=notice")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
         req.add_header("Accept-Language", "ko-KR,ko;")
 
@@ -39,19 +39,27 @@ class Crawler:
             html = response.read()
             soup = BeautifulSoup(html, 'html.parser')
             data_date = soup.select('#content_box > div > table > tbody > tr > td:nth-child(5)')
-
+            num = soup.select('#content_box > div > table > tbody > tr > td:nth-child(2)')
+            # print(num[0].get_text().strip())
             data = soup.select('.left')
             #head태그의 link에 접근해 한양대학교 컴퓨터소프트웨어학부의 처음 url을 가져옴
             headInlink = soup.find('head').find('link')
             link = headInlink['href']
-
+            
+            start_idx = 0
+            for idx,i in enumerate(num):
+                # print(i.get_text().strip(), idx)
+                if i.get_text().strip() != '[공지]':
+                    start_idx = idx
+                    break
+               
             title = []
-            for i in range(0, len(data) ):
+            for i in range(start_idx, len(data) ):
                 title.append(data[i].get_text().strip() )
 
             # 하이퍼링크 저장
             hyperTitle = []
-            for i in range(0, len(data)):
+            for i in range(start_idx, len(data)):
                 if data[i].find('a')['href'][:4] == "http":
                     hyperTitle.append(data[i].find('a')['href'].strip())
                 else:
@@ -59,12 +67,12 @@ class Crawler:
 
             #date 저장
             date = []
-            for i in range(0, len(data_date)):
+            for i in range(start_idx, len(data_date)):
                 list = (data_date[i].get_text().strip()).split('.')
                 d = datetime.datetime( int( '20'+list[0]) , int(list[1]) , int(list[2]) )
 
                 date.append( d )
-            
+            print(title)
             info = Information(hyperTitle, title, 1, date)
 
         except Exception as e:
@@ -75,7 +83,7 @@ class Crawler:
 
     def getData2(self): #데이터 가져오는것.
         print ("한양대학교 소프트웨어중심대학")
-        req = Request("http://hysoft.hanyang.ac.kr/modules/board/bd_list.html?id=wt_notice")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
+        req = Request("http://hysoft.hanyang.ac.kr/modules/board/bd_list.html?id=wt_notice&or=bd_order&al=asc&p=1")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
         req.add_header("Accept-Language", "ko-KR,ko;")
     
@@ -111,7 +119,7 @@ class Crawler:
                 
                 d = datetime.datetime( int( list[0]) , int(list[1]) , int(list[2]) )
                 date.append( d )
-
+            print(title)
             info = Information(hyperTitle, title, 2, date)
 
             
@@ -123,7 +131,7 @@ class Crawler:
 
     def getData3(self): #데이터 가져오는것.
         print ("한양대학교 공과대학교")
-        req = Request("http://eng.hanyang.ac.kr/people/notice.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
+        req = Request("http://eng.hanyang.ac.kr/people/notice.php?ptype=&page=1&code=notice")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
         req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
         req.add_header('Accept-Language', 'ko;q=0.8')
         req.add_header('Accept-Charset', 'utf-8;q=0.7,*;q=0.3')
@@ -150,7 +158,7 @@ class Crawler:
                 # print(tds[1].select('a')[0]['href'])
                 # print(tds[1].select('a')[0].text)
                 # print(tds[3].text)
-
+            print(title)
             info = Information(hyperTitle, title, 3, date)
 
         except Exception as e:

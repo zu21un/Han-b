@@ -48,14 +48,17 @@ class EmailController():
         dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
         table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
-        # 오늘 날짜
+        # 어제 날짜
         now = datetime.datetime.now()
-        nowDate = now.strftime('%Y-%m-%d')
-
+        yesterday = datetime.datetime(now.year,now.month,now.day-1)
+        # print('now', now.year, now.month, now.day, now.hour, now.minute)
+        # nowDate = '2021-11-16'
+        yesterDate = yesterday.strftime('%Y-%m-%d')
         # db 스캔 후 오늘 날짜의 공지만 filter
         noti_db = table.scan()
         noti_list = noti_db['Items']
-        noti_list = filter(lambda x: x['date'] == nowDate, noti_list)
+        noti_list = filter(lambda x: x['date'] == yesterDate, noti_list)
+        print(noti_db)
         self.noti_list = noti_list
 
     # notikeyword list 오늘 날짜의 공지 가져와 notikey_list 멤버 변수에 저장

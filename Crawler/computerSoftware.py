@@ -104,8 +104,6 @@ def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정�
                     )
                     cnt += 1
 
-
-
     except Exception as e:
         print('Exception : ', e)
 
@@ -115,7 +113,6 @@ def computerSoftware():
     req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     req.add_header("Accept-Language", "ko-KR,ko;")
 
-        
     response = urlopen(req, None, 60) # url : 열고자 하는 URL 문자열, request 클래스의 인스턴스가 포함. 아마 html을 return함.
 
     html = response.read()
