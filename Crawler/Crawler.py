@@ -110,7 +110,6 @@ class Crawler:
                 list = (data_date[i].get_text().strip()).split('.')
                 
                 d = datetime.datetime( int( list[0]) , int(list[1]) , int(list[2]) )
-                
                 date.append( d )
 
             info = Information(hyperTitle, title, 2, date)
@@ -154,26 +153,6 @@ class Crawler:
 
             info = Information(hyperTitle, title, 3, date)
 
-            #Beautifulsoup를 통해 가져온 html을 select로 뽑아내기.
-            # data = soup.select('.left > a:nth-of-type(1)')
-            # #content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)
-            # #content_in > div > table.bbs_con > tbody > tr:nth-child(14) > td.left > a:nth-child(2)
-            # data_date = soup.select('#content_in > div > table.bbs_con > tbody > tr:nth-child(17) > td.left > a:nth-child(2)')
-            # title = []
-            # for i in range(0, len(data) ):
-            #     title.append(data[i].get_text().strip())
-            #     # print(title[i])
-
-            # hyperTitle = []
-            # for i in range(0, len(data)):
-            #     hyperTitle.append((link + (data[i])['href']).strip())
-            # date = []
-            # for i in range(0, len(data_date)):
-            #     list = (data_date[i].get_text().strip()).split('.')
-            #     print(list)
-            #     d = datetime.datetime( int( list[0]) , int(list[1]) , int(list[2]) )    
-            #     date.append( d )
-            
         except Exception as e:
             print('Exception!', e)
         #   raise CrawlerException(e)
@@ -203,7 +182,3 @@ class Crawler:
 
 # e = SendingEmail.Email()
 
-# schedule.every(3).minutes.do(e.send_mail,Crawler.text) # 3분마다 job 실행
-# while True:
-#     schedule.run_pending()
-#     time.sleep(1)
