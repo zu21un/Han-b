@@ -5,7 +5,7 @@ import UserInfo
 from SendingEmail import Email
 import datetime
 
-class EmailController:
+class EmailController():
     def __init__(self):
         self.noti_list = []
         self.notikey_list = []
@@ -15,15 +15,19 @@ class EmailController:
         for user in self.user_list:
             email = user.get_email()
             keyword = user.get_keyword()
-
+  
             key_id_list = []
             for key in keyword:
                 key_id_list.append(key['id'])
-
-            notilist = self.get_noti_list(key_id_list)
-
-            text = str(notilist) # 메일 내용 형식으로 추후 수정해야함
-            Email.send_mail(text,email)
+            print(key_id_list)
+            all_notilist = self.get_noti_list(key_id_list)
+            today_notilist = []
+            for notice in self.noti_list:
+                if notice['id'] in all_notilist:
+                    today_notilist.append(notice)
+            print(today_notilist)
+            text = str(today_notilist) # 메일 내용 형식으로 추후 수정해야함
+            # Email.send_mail(text,"jwjoo03@gmail.com")
 
     # db에서 오늘 날짜 공지를 가져와 noti_list 멤버 변수에 저장
     def set_noti_list(self):
@@ -54,11 +58,11 @@ class EmailController:
     # keylist에 있는 key를 포함한 오늘 공지들을 return
     def get_noti_list(self, key_id_list):
         my_noti_list = []
-
-        my_notikey_list = filter(lambda x: x['keywordId'] in key_id_list, self.notikey_list)
-        for notikey in my_notikey_list:
-            my_noti = filter(lambda x: x['id'] == notikey['keywordId'], self.noti_list)
-            my_noti_list.apppend(my_noti)
+        print("get_noti_list start")
+        for notikey in self.notikey_list:
+            if notikey['keywordId'] in key_id_list:
+                my_noti_list.append(notikey['notiId'])
+        my_noti_list = list(set(my_noti_list))
 
         return my_noti_list
 
@@ -72,10 +76,56 @@ class EmailController:
         response = user_table.scan (
             FilterExpression = Attr('id').exists()
         )
-
+        # print(response)
         for item in response['Items']:#user_list에 user를 추가.
-            self.user_list.append(UserInfo(item['email'], item['id'], item['name'], item['alarmTime']))
+            self.user_list.append(UserInfo.UserInfo(item['email'], item['id'], item['name'], item['alarmTime']))
+
+        print(self.user_list)
+
+    # user list 에 있는 user들의 keyword를 setting
+    def set_user_list_keyword(self):
+        session = boto3.Session(profile_name='bns')
+        dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
+        userkeyword_table = dynamodb.Table('UserKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+        keyword_table = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+
+        userkeyword_response = userkeyword_table.scan (
+            FilterExpression = Attr('id').exists()
+        )
+        
+        keyword_response = keyword_table.scan (
+            FilterExpression = Attr('id').exists()
+        )
+        userkeyword_list = userkeyword_response['Items']
+
+        #keyword_list를 정렬해서 가지고있음 (1번 장학, 2번 인턴, 3번 행사 이런식 )
+        keyword_list = keyword_response['Items']
+        keyword_list = sorted(keyword_list, key=lambda x: int(x["id"]))
+
+        # for item in userkeyword_list:
+        #     print(item)
+
+        for user in self.user_list:#각 user가 선택한 keyword를 userInfo 클래스에 저장해주기 위해서 2중 for문으로 체크하기.
+            id = user.get_id()
+            email = user.get_email()
+            
+            for userkeyword in userkeyword_list:
+
+                if userkeyword['userId'] == id:
+                    user.add_keyword( keyword_list[ int(userkeyword['keywordId']) - 1 ] )
+
+
+        #user_list돌면서 각 user가 가지고 있는 keyword 하기
+        for user in self.user_list:
+            print(user.keyword)
 
 
 
+ec = EmailController()
+ec.set_user_list()
+print()
+ec.set_user_list_keyword()
+ec.set_noti_list()
+ec.set_notikey_list()
+ec.run()
 

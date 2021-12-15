@@ -2,13 +2,108 @@
 # import requests
 from urllib.request import urlopen
 from urllib.request import Request
+from boto3.dynamodb.conditions import Key, Attr
 from bs4 import BeautifulSoup
 import os
 import os.path 
 import boto3
 import datetime
+import Crawler
+import main
 
-def test():
+def put_noti(info):
+    # 크롤링한 내용 Database에  넣는 작업
+    session = boto3.Session(profile_name='bns')
+    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
+    table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    
+    noti_db = table.scan()
+    noti_list = noti_db['Items']
+    noti_list = sorted(noti_list, key=lambda x: -int(x["id"]))
+    if noti_db['Count'] == 0:
+        cnt = 1
+    else:
+        cnt = int(noti_list[0]['id']) + 1
+
+    try:
+        print('PUT_ITEM')
+        for i in range(0, len(info)):
+            for j in range(0, len(info[i].hypertitle)):
+                # print(cnt)
+                table.put_item(
+                    Item={
+                            'id': str(cnt),
+                            'link': info[i].hypertitle[j],
+                            'name': info[i].title[j],
+                            'orgId' : str(info[i].organization),
+                            'date' : info[i].date[j].strftime("%Y-%m-%d")
+                        }
+                    )
+                cnt += 1
+    except Exception as e:
+        print('Exception : ', e)
+
+
+def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
+    session = boto3.Session(profile_name='bns')
+    dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
+    notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
+    
+    keyword_list = []
+    notification_list = []
+
+    response = keywordTable.scan (
+        FilterExpression = Attr('id').exists()
+    ) 
+
+    for item in response['Items']:
+        # print(item['name'])
+        keyword_list.append(item)
+        # print(item)
+
+    response = notiTable.scan (
+        FilterExpression = Attr('id').exists()
+    )
+
+    for item in response['Items']:
+        # print(item['name'])
+        # print(item['link'])
+        # print(item['id'])
+        notification_list.append(item)
+    
+    notikey_db = noti_key_Table.scan()
+    notikey_list = notikey_db['Items']
+    notikey_list = sorted(notikey_list, key=lambda x: -int(x["id"]))
+
+    if notikey_db['Count'] == 0:
+        cnt = 1
+    else:
+        cnt = int(notikey_list[0]['id']) + 1
+    
+    try:
+        print('PUT_NOTIKEYWORD_ITEM')
+        for i in range(0, len(notification_list)):
+            for j in range(0, len(keyword_list)):
+                if keyword_list[j]['name'] in notification_list[i]['name']:
+                    title =  notification_list[i]['name']
+                    key = keyword_list[j]['name']
+
+                    res = f'{key} : {title}'
+                    print(res)
+                    noti_key_Table.put_item(
+                        Item={
+                                'id': str(cnt),
+                                'keywordId': keyword_list[j]['id'],
+                                'notiId': notification_list[i]['id'],
+                            }
+                    )
+                    cnt += 1
+    except Exception as e:
+        print('Exception : ', e)
+
+def computerSoftware():
     req = Request("http://cs.hanyang.ac.kr/board/info_board.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
     req.add_header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
     req.add_header("Accept-Language", "ko-KR,ko;")
@@ -44,12 +139,9 @@ def test():
 
         date.append( d )
 
-
-    # for item in title:
-    #     print(item)
-        
-
-
+    filter_title = []
+    filter_hyperTitle = []
+    filter_date = []
     num_data = soup.select('#content_box > div > table > tbody > tr > td:nth-child(2)') #번호
 
 
@@ -78,10 +170,11 @@ def test():
                         if j >= len(num_data):
                             break
                         if not list[0] in num_data[j].get_text().strip():#새로운 공지 올라왔으니 이전공지까지 데이터를 넣어주려고함.
-                            
+                            filter_date.append(date[j])
+                            filter_title.append(title[j])
+                            filter_hyperTitle.append(hyperTitle[j])
                             #여기에 올려주면됨
-                            print( num_data[j].get_text().strip() + ' ' + title[j] )
-
+                            print( num_data[j].get_text().strip() + ' ' + title[j])
                         else : 
                             break
                         j += 1
@@ -89,7 +182,16 @@ def test():
                     f = open(file,'w')
                     res = num_data[i].get_text().strip() + '~:' + title[i]
                     f.write(res)
+                    f.close()
+                    info1 = Crawler.Information(filter_hyperTitle, title, 1, date)
+                    info = []
+                    info.append(info1)
+                    
+                    put_noti(info)
 
+
+
+                    put_NotiKeyword()
                     print('\n새로운 공지 올라왔습니다.')
 
 
@@ -99,27 +201,9 @@ def test():
                 res = num_data[i].get_text().strip() + '~:' + title[i]
                 f.write(res)
             break
+
         else :
             print(num_data[i].get_text().strip())
         i += 1
         
-
-
-# req = requests.get('http://clien.net/cs2/bbs/board.php?bo_table=sold')
-# req.encoding = 'utf-8'
-
-# html = req.text
-# soup = BeautifulSoup(html, 'html.parser')
-# posts = soup.select('td.post_subject')
-# latest = posts[1].text
-
-# with open(os.path.join(BASE_DIR, 'latest.txt'), 'r+') as f_read:
-#     before = f_read.readline()
-#     if before != latest:
-#         # 같은 경우는 에러 없이 넘기고, 다른 경우에만
-#         # 메시지 보내는 로직을 넣으면 됩니다.
-#     f_read.close()
-
-# with open(os.path.join(BASE_DIR, 'latest.txt'), 'w+') as f_write:
-#     f_write.write(latest)
-#     f_write.close()
+test()
