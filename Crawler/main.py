@@ -8,6 +8,7 @@ import computerSoftware
 import Engineering
 import softwareCenter
 import time
+import SendingEmail
 
 def main():
     #Notification crawling
@@ -16,6 +17,9 @@ def main():
     # 매주 월요일 실행
     # schedule.every().day.at("10:00").do(computerSoftware())
     schedule.every(30).seconds.do(computerSoftware.test)
+
+    schedule.every(30).seconds.do(SendingEmail.Email().send_mail)
+
     while True:
         schedule.run_pending()
         time.sleep(1)
