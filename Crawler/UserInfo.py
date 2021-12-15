@@ -9,8 +9,8 @@ import boto3
 import time
 import traceback
 import datetime
-import main
 from boto3.dynamodb.conditions import Key, Attr
+from aws_setting import AMAZON_PROFILE
 
 user_list = []
 
@@ -49,7 +49,7 @@ class UserInfo(): #user마다의 아이디 이메일 이름등을 관리하는 �
 
 #디비에서 모든 유저들을 불러오는 함수
 def all_userId_get():
-    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     user_table = dynamodb.Table('User-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
@@ -67,7 +67,7 @@ def userKeyword():#
     # for user in user_list:
     #     print(user.get_email())
 
-    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     userkeyword_table = dynamodb.Table('UserKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     keyword_table = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')

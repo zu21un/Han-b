@@ -9,7 +9,10 @@ import Engineering
 import softwareCenter
 import time
 import SendingEmailController
-AMAZON_PROFILE = 'default'
+from aws_setting import AMAZON_PROFILE
+
+
+
 def test1():
     print('test1')
 def test2():
@@ -42,10 +45,10 @@ def main():
     #     schedule.run_pending()
     #     time.sleep(1)
 
-    crawler = Crawler.Crawler()
-    info = []
-    info1 = crawler.getData1()
-    info.append(info1)
+    # crawler = Crawler.Crawler()
+    # info = []
+    # info1 = crawler.getData1()
+    # info.append(info1)
 
     # info2 = crawler.getData2()
     # info.append(info2)
