@@ -32,7 +32,7 @@ export default function Search() {
 
   const handleChange = ({ target: { value } }) => setKeyword(value);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     
     if (keyword.length == 0){
@@ -41,25 +41,51 @@ export default function Search() {
     } 
     
     else{
-      API.graphql({query:listNotifications, variables:{}})
-      .then(res => {
-        let notiList = []
-        // console.log(res.data.listNotifications.items)
-        for(let item of res.data.listNotifications.items){
-          if(item.name.includes(keyword)){
-            notiList.push(item)
+      let finish = true;
+      let token = ""
+      let default_payload = {};
+      let nowList = [];
+      
+      
+      while(finish){
+        if (token == ""){
+          default_payload = {}
+        } else{
+          default_payload = {
+            nextToken: token
           }
-        }
-        if (notiList.length != 0){
-          notiList = notiList.sort((a,b) => new Date(b.date) - new Date(a.date));
-        }
-        setSearchList(notiList);
-        
-      }).then(() => {
-        setSearchKeyword(keyword);
-      }).catch(e => {
-        console.log(e)
-      })
+        }        
+
+        await API.graphql({query:listNotifications, variables:default_payload})
+            .then(res => {
+              let notiList = []
+              if (res.data.listNotifications.nextToken) {
+                token = res.data.listNotifications.nextToken
+              } else{
+                finish = false;
+              }
+              for(let item of res.data.listNotifications.items){
+                if(item.name.includes(keyword)){
+                  notiList.push(item)
+                }
+              }
+              if (notiList.length != 0){
+                notiList = notiList.sort((a,b) => new Date(b.date) - new Date(a.date));
+              }
+              
+              for( let noti of notiList){
+                nowList.push(noti)
+              }
+              // setSearchList(nowList);
+            }).catch(e => {
+              console.log(e)
+            })
+            console.log('제발')
+      }
+      console.log(keyword)
+      setSearchKeyword(keyword);
+      setSearchList(nowList);
+
     }
   }
 
