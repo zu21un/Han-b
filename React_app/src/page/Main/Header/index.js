@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
+import logo from '../../../logo/logo_hanb_white.png'
 
 function Header(props) {
   const login = () => {
@@ -29,9 +30,7 @@ function Header(props) {
             <Grid item xs={8} sx={{ textAlign:'left' }}>
               <Box display="flex" justifyContent="flex-start" alignItems="center">
                 <Button onClick={search} variant="h5" >
-                  <Typography color="inherit" variant="h4">
-                    Han:b
-                  </Typography>
+                  <img src={logo} width='110' height='50' />
                 </Button>
                 <Tabs value={false} textColor="white" >
                   <Tab label="검 색" component={RouterLink} to="/search" sx={{ fontSize: 18 }} />
