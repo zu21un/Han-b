@@ -3,14 +3,28 @@ import boto3
 from boto3.dynamodb.conditions import Key, Attr
 import string
 import random
+import schedule
+import computerSoftware
+import Engineering
+import softwareCenter
+import time
 
 def main():
     #Notification crawling
     #information class를 저장하는 변수
+
+    # 매주 월요일 실행
+    # schedule.every().day.at("10:00").do(computerSoftware())
+    schedule.every(30).seconds.do(computerSoftware.test)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+
     crawler = Crawler.Crawler()
     info = []
     info1 = crawler.getData1()
     info.append(info1)
+
     # info2 = crawler.getData2()
     # info.append(info2)
     # info3 = crawler.getData3()
@@ -126,5 +140,5 @@ def get_random_string(length):
     letters = string.ascii_lowercase
     result_str = ''.join(random.choice(letters) for i in range(length))
 
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
