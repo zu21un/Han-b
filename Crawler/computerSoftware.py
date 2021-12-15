@@ -13,7 +13,7 @@ import main
 
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -45,7 +45,7 @@ def put_noti(info):
 
 
 def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
@@ -162,7 +162,7 @@ def computerSoftware():
                 if(list[0] == num_data[i].get_text().strip() and list[1] == title[i]):#같으면 할필요없음.
                     print('새로운 공지 올라오지 않았습니다.')
                 else:#같지 않으면 새로운 공지가 올라왔다는 소리.
-                    session = boto3.Session(profile_name='bns')
+                    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
                     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
                     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
                     j = i
@@ -206,4 +206,4 @@ def computerSoftware():
             print(num_data[i].get_text().strip())
         i += 1
         
-test()
+# test()

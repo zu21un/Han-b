@@ -10,6 +10,8 @@ import softwareCenter
 import time
 import SendingEmail
 
+AMAZON_PROFILE = 'default'
+
 def main():
     #Notification crawling
     #information class를 저장하는 변수
@@ -42,7 +44,7 @@ def main():
 
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -74,7 +76,7 @@ def put_noti(info):
 
 
 def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')

@@ -4,10 +4,11 @@
 import smtplib
 from email.mime.text import MIMEText
 import email
+from email.mime.multipart import MIMEMultipart
 # send_mail 함수에 구현하겠습니다.
 
 class Email:
-    def send_mail(text, usermail):
+    def send_mail(payload, usermail):
         # 메일 내용을 담을 문자열을 선언합니다.
 
         # smtp 인스턴스를 만들어줍니다.
@@ -23,18 +24,34 @@ class Email:
         # id는 @가 들어간 email형식으로 입력합니다.
         smtp.login('sungsoo6811@gmail.com','bnsghkdlxld')
 
-        # MIMEText 인스턴스에는 보내려는 메일 내용을 인자값으로 넣어줍니다.
-        message = MIMEText(text)
-        # 메일 제목은 Subject, 보내는 사람은 From, 받을 사람 정보는 To로 설정합니다.
-        message['Subject'] = 'mail subject'
-        message['From'] = 'from email address'
-        message['To'] = 'from email address'
+        html_massage= templete(payload[0])
+        body = make('sungsoo6811@gmail.com', usermail, '오늘의 공지입니다.', html_massage)
 
         # smtp sendmail 함수를 이용하여 실제로 메일을 발송해줍니다.
-        smtp.sendmail('sungsoo6811@gmail.com', usermail, message.as_string())
+        smtp.sendmail('sungsoo6811@gmail.com', usermail, body)
 
         # smtp quit 함수로 인스턴스를 종료시킵니다.
         print('adfadf')
         smtp.quit()
+
+def templete(payload):
+    return '''
+        <h1>안녕하세요. 한양비서 한삐입니다.</h1>
+        <p>{orgId}</p>
+        <p>{name}</p>
+        <p>{link}</p>
+        <p>{date}</p>
+    '''.format( orgId=payload['orgId'], name=payload["name"], link=payload["link"], date=payload["date"])
+
+def make(sender, receiver, title, content):
+    # MIMEText 인스턴스에는 보내려는 메일 내용을 인자값으로 넣어줍니다.
+    # 메일 제목은 Subject, 보내는 사람은 From, 받을 사람 정보는 To로 설정합니다.
+    msg = MIMEMultipart('alternative')
+    msg['Subject'] = "%s"%title
+    msg['From'] = sender
+    msg['To'] = receiver
+    html = MIMEText(content, 'html')
+    msg.attach(html)
+    return msg.as_string()
 
 # send_mail()

@@ -4,6 +4,7 @@ from boto3.dynamodb.conditions import Key, Attr
 import UserInfo
 from SendingEmail import Email
 import datetime
+import main
 
 class EmailController():
     def __init__(self):
@@ -26,12 +27,13 @@ class EmailController():
                 if notice['id'] in all_notilist:
                     today_notilist.append(notice)
             print(today_notilist)
-            text = str(today_notilist) # 메일 내용 형식으로 추후 수정해야함
-            # Email.send_mail(text,"jwjoo03@gmail.com")
+            payload = today_notilist # 메일 내용 형식으로 추후 수정해야함
+            if payload: 
+                Email.send_mail(payload,email)
 
     # db에서 오늘 날짜 공지를 가져와 noti_list 멤버 변수에 저장
     def set_noti_list(self):
-        session = boto3.Session(profile_name='bns')
+        session = boto3.Session(profile_name=main.AMAZON_PROFILE)
         dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
         table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
@@ -47,7 +49,7 @@ class EmailController():
 
     # notikeyword list 오늘 날짜의 공지 가져와 notikey_list 멤버 변수에 저장
     def set_notikey_list(self):
-        session = boto3.Session(profile_name='bns')
+        session = boto3.Session(profile_name=main.AMAZON_PROFILE)
         dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
         noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
@@ -68,7 +70,7 @@ class EmailController():
 
     # 전체 user list를 setting
     def set_user_list(self):
-        session = boto3.Session(profile_name='bns')
+        session = boto3.Session(profile_name=main.AMAZON_PROFILE)
         dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
         user_table = dynamodb.Table('User-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
 
@@ -84,7 +86,7 @@ class EmailController():
 
     # user list 에 있는 user들의 keyword를 setting
     def set_user_list_keyword(self):
-        session = boto3.Session(profile_name='bns')
+        session = boto3.Session(profile_name=main.AMAZON_PROFILE)
         dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
         userkeyword_table = dynamodb.Table('UserKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
         keyword_table = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
@@ -114,12 +116,9 @@ class EmailController():
                 if userkeyword['userId'] == id:
                     user.add_keyword( keyword_list[ int(userkeyword['keywordId']) - 1 ] )
 
-
         #user_list돌면서 각 user가 가지고 있는 keyword 하기
         for user in self.user_list:
             print(user.keyword)
-
-
 
 ec = EmailController()
 ec.set_user_list()
