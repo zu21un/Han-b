@@ -1,0 +1,189 @@
+<style>
+	@import url('https://fonts.googleapis.com/css?family=Fredericka+the+Great|Zilla+Slab:300,400');
+
+.body {
+	background: #201C29;
+}
+
+.frame {
+  position: absolute;
+  /* top: 50%;
+  left: 50%; */
+  width: 800px;
+  height: 800px;
+  /* margin-top: -200px;
+  margin-left: -200px; */
+  border-radius: 2px;
+  box-shadow: .5rem .5rem 1rem rgba(0, 0, 0, 0.6);
+  background: #003F75;
+  color: #497081;
+  font-family: 'zilla slab', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+	font-size: .9rem;
+}
+
+.list {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  box-shadow: 1rem 1rem .5rem rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+.list .head {
+  padding: 20px 0;
+  margin: auto;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 62, 117, .5);
+}
+
+.list .title {
+	font-family: 'fredericka the great', cursive;
+    font-weight: 500;
+    text-align: center;
+	font-size: 2.5rem;
+	color: rgba(0, 62, 117, .8);
+}
+
+.list .subtitle {
+  font-size: .9rem;
+  text-align: center;
+	letter-spacing: .5px;
+}
+
+.list ul {
+  list-style: none;
+  padding: 4px 0;
+  margin: 0 30px;
+	font-weight: 300;
+}
+
+.list ul li {
+  position: relative;
+  display: block;
+  margin: 24px 0;
+  height: 14px;
+}
+
+a:link {
+  color:rgb(92, 89, 89);
+  text-decoration: none;
+}
+a:visited {
+  color:rgb(92, 89, 89);
+  text-decoration: none;
+}
+a:active {
+  color:rgb(92, 89, 89);
+  text-decoration: none;
+}
+
+.list ul .text {
+  float: left;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all .3s ease-in-out;
+}
+
+ul li:nth-of-type(2) {
+	animation: slide-up 1s;
+}
+
+ul li:nth-of-type(3) {
+	animation: slide-up 1.5s;
+}
+
+ul li:nth-of-type(4) {
+	animation: slide-up 2s;
+}
+
+@keyframes slide-up {
+	0% {
+		opacity: 0;
+		transform: translateY(5rem);
+	}
+}
+
+.list ul .button {
+  position: relative;
+	z-index: 2; 
+  box-sizing: border-box;
+  float: right;
+  width: 20px;
+  height: 20px;
+  border: 1px solid fade-out(#003F75, .5);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+
+.list ul .checkmark {
+  position: absolute;
+  stroke: rgba(100, 58, 122, .5);
+  fill: none;
+  stroke-dashoffset: 340;
+  stroke-dasharray: 360;
+}
+
+.list ul input {
+  display: none;
+}
+
+ul li .wrapper {
+	position: absolute;
+	width: 20px;
+  right: 0;
+}
+
+.checkmark {
+  display: block;
+  stroke-width: 8;
+	opacity: 0;
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 340;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+</style>
+
+<!-- TO DO : Find out how to create new items + congrats message when all done-->
+
+<body class="body">
+	<div class="frame">
+		<div class="list">
+			<div class="head">
+                <img src="hanb.png" width="350px"/>
+                <div class="subtitle">2021-12-14일 공지</div>
+				<div class="subtitle">March 4, 2016</div>
+			</div>
+			<ul>
+				<li>
+					<a href="https://www.naver.com" target="_blank" class="text">- Create a list</a>
+                    <p>&nbsp;&nbsp;컴퓨터소프트웨어학부</p>
+				</li>
+				<li>
+					<a href="https://www.naver.com" target="_blank" class="text">- Create a list</a>
+                    <p>&nbsp;&nbsp;컴퓨터소프트웨어학부</p>
+				</li>
+                <li>
+					<a href="https://www.naver.com" target="_blank" class="text">- Create a list</a>
+                    <p>&nbsp;&nbsp;컴퓨터소프트웨어학부</p>
+				</li>
+                <li>
+					<a href="https://www.naver.com" target="_blank" class="text">- Create a list</a>
+                    <p>&nbsp;&nbsp;컴퓨터소프트웨어학부</p>
+				</li>
+			</ul>
+		</div>
+	</div>	
+</body>

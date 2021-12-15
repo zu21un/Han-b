@@ -14,7 +14,7 @@ import Crawler
 
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -46,7 +46,6 @@ def put_noti(info):
 def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
     # session = boto3.Session(profile_name='bns')
     # dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
-
     keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     noti_key_Table = dynamodb.Table('NotiKeyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -75,12 +74,9 @@ def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정�
     
     for item in notification_list:
         print(item)
-    print
-    print
+
     for item in keyword_list:
         print(item)
-    print
-
 
     notikey_db = noti_key_Table.scan()
     notikey_list = notikey_db['Items']
@@ -150,15 +146,10 @@ def computerSoftware():
 
         date.append( d )
 
-
-
-
     filter_title = []
     filter_hyperTitle = []
     filter_date = []
     num_data = soup.select('#content_box > div > table > tbody > tr > td:nth-child(2)') #번호
-    
-
     
     file = './한양대학교 컴퓨터소프트웨어학부.txt' 
 
@@ -179,7 +170,7 @@ def computerSoftware():
                 if(list[0] == num_data[i].get_text().strip() and list[1] == title[i]):#같으면 할필요없음.
                     print('새로운 공지 올라오지 않았습니다.')
                 else:#같지 않으면 새로운 공지가 올라왔다는 소리.
-                    session = boto3.Session(profile_name='bns')
+                    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
                     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
                     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
                     j = i
@@ -212,8 +203,6 @@ def computerSoftware():
 
                     print('\n새로운 공지 올라왔습니다.')
 
-
-
             else: #파일이 없으면 그냥 쓰기. 
                 f = open(file,'w')
                 res = num_data[i].get_text().strip() + '~:' + title[i]
@@ -223,4 +212,3 @@ def computerSoftware():
         else :
             print(num_data[i].get_text().strip())
         i += 1
-        

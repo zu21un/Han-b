@@ -7,6 +7,7 @@ import os
 import os.path 
 import boto3
 import datetime
+import main
 import Crawler
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
@@ -75,11 +76,9 @@ def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정�
         print(item)
     print
 
-
     notikey_db = noti_key_Table.scan()
     notikey_list = notikey_db['Items']
     notikey_list = sorted(notikey_list, key=lambda x: -int(x["id"]))
-
 
     if notikey_db['Count'] == 0:
         cnt = 1
@@ -175,7 +174,7 @@ def softwareCenter():
                 if(list[0] == num_data[i].get_text().strip() and list[1] == title[i]):#같으면 할필요없음.
                     print('새로운 공지 올라오지 않았습니다.')
                 else:#같지 않으면 새로운 공지가 올라왔다는 소리.
-                    session = boto3.Session(profile_name='bns')
+                    session = boto3.Session(profile_name=main.AMAZON_PROFILE)
                     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
                     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
                     j = i

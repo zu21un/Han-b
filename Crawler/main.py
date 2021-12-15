@@ -8,34 +8,27 @@ import computerSoftware
 import Engineering
 import softwareCenter
 import time
-
 import SendingEmailController
-
+AMAZON_PROFILE = 'default'
 def test1():
     print('test1')
 def test2():
     print('test2')
-def main():
-    #Notification crawling
-    #information class를 저장하는 변수
 
-    # 매주 월요일 실행
-    # schedule.every().day.at("10:00").do(computerSoftware())
+def main():
     
+    # schedule.every().day.at("10:00").do(computerSoftware())
     # 10초에 한번씩 실행
     # schedule.every(10).second.do(job)
     # # 10분에 한번씩 실행
     # schedule.every(10).minutes.do(job)
     # # 매 시간 실행
     # schedule.every().hour.do(job)
-    
     # # 매주 월요일 실행
     # schedule.every().monday.do(job)
     # # 매주 수요일 13:15 에 실행
     # schedule.every().wednesday.at("13:15").do(job)
-
     # schedule.every(30).seconds.do(test1)
-
     # schedule.every(35).seconds.do(test2)
 
     # schedule.every().day.at("07:00").do(computerSoftware.computerSoftware)
@@ -44,7 +37,6 @@ def main():
 
     ec = SendingEmailController.EmailController()
     ec.run()
-
 
     # while True:
     #     schedule.run_pending()
@@ -65,9 +57,10 @@ def main():
 
     # put_noti(info)
     # put_NotiKeyword()
+    
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     table = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     
@@ -99,7 +92,7 @@ def put_noti(info):
 
 
 def put_NotiKeyword(): #현재 디비에 있는 정보를 바탕으로 분류함. key값에 대해 문제가 생길듯. 
-    session = boto3.Session(profile_name='bns')
+    session = boto3.Session(profile_name=AMAZON_PROFILE)
     dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
     notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
     keywordTable = dynamodb.Table('Keyword-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
@@ -166,10 +159,10 @@ def debugging_info(info):
             print('date: %s'%(info[i].date[j]))
 
 
-def get_random_string(length):
-    # choose from all lowercase letter
-    letters = string.ascii_lowercase
-    result_str = ''.join(random.choice(letters) for i in range(length))
+# def get_random_string(length):
+#     # choose from all lowercase letter
+#     letters = string.ascii_lowercase
+#     result_str = ''.join(random.choice(letters) for i in range(length))
 
 if __name__ == "__main__":
     main()

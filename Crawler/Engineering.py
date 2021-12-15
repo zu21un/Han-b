@@ -8,6 +8,7 @@ import os
 import os.path 
 import boto3
 import datetime
+import main 
 import Crawler
 # import main
 def put_noti(info):
@@ -109,7 +110,6 @@ def put_NotiKeyword(session, dynamodb, noti_list): #현재 디비에 있는 정�
     except Exception as e:
         print('Exception : ', e)
 
-
 def Engineering():
     print ("한양대학교 공과대학교")
     req = Request("http://eng.hanyang.ac.kr/people/notice.php")# urllib.request 데이터를 보낼 때 인코딩하여 바이너리 형태로 보낸다 없는 페이지를 요청해도 에러를 띄운다
@@ -172,7 +172,7 @@ def Engineering():
             if(list[0] == num_data[i] and list[1] == title[i]):#같으면 할필요없음.
                 print('새로운 공지 올라오지 않았습니다.')
             else:#같지 않으면 새로운 공지가 올라왔다는 소리.
-                session = boto3.Session(profile_name='bns')
+                session = boto3.Session(profile_name=main.AMAZON_PROFILE)
                 dynamodb = session.resource('dynamodb', region_name='ap-northeast-2')
                 notiTable = dynamodb.Table('Notification-iwrkzo6ufzfpxidyj5nch7lk5a-dev')
                 j = i
