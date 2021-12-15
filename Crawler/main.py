@@ -65,7 +65,6 @@ def main():
 
     # put_noti(info)
     # put_NotiKeyword()
-
 def put_noti(info):
     # 크롤링한 내용 Database에  넣는 작업
     session = boto3.Session(profile_name='bns')
